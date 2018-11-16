@@ -1,0 +1,23 @@
+/*蒙层*/
+#coverload{
+    display: none;
+}
+
+#graycover{
+    background: black;
+    opacity: 0.2;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 999999;
+}
+
+#loading{
+    font-size: 32px;
+    position: fixed;
+    top: 48%;
+    left: 48%;
+    z-index: 999999;
+}

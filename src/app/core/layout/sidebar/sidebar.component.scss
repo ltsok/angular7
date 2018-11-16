@@ -1,0 +1,84 @@
+mat-list-item {
+    i {
+        align-self:flex-start;
+    }
+}
+.brand-wrap {
+    background-image: url('/assets/img/sidebar/brand.jpg');
+    .brand {
+        padding: 40px 20px 2em;
+        background: rgba(63, 81, 181, 0.5);
+        .head-portrait {
+            display: block;
+            width: 80px;
+            height: 80px;
+            border: 2px solid #fff;
+            border-radius: 50%;
+            overflow: hidden;
+            box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16), 0 2px 10px 0 rgba(0,0,0,0.12);
+            img {
+                width: 80px;
+            }
+        }
+        .introduce {
+            margin: 1em 0 0;
+            color: #fff;
+            .nickname {
+                font-size: 16px;
+                line-height: 24px;
+            }
+            .mail {
+                display: inline-block;
+                padding-top: 4px;
+                color: #c5cae9;
+                font-size: 13px;
+            }
+        }
+    }
+}
+.lts-font-sidebar {
+    overflow: hidden;
+    width: 64px;
+    height: 64px;
+    font-size: 64px;
+    color: rgb(253, 87, 144);
+    border-radius: 50%;
+    margin: 12px;
+}
+.svgicon {
+    width: 2em;
+    height: 2em;
+    vertical-align: -0.15em;
+    fill: currentColor;
+    overflow: hidden;
+}
+
+// 覆盖material自带样式
+mat-nav-list {
+    user-select: none;
+}
+
+mat-list-item {
+    height: 45px !important;
+    i {
+        color: #727272;
+        font-size: 16px;
+        margin: 0 5px 0 15px;
+    }
+    h3 {
+        font-size: 15px !important;
+        font-weight: bold !important;
+        color: #727272 !important;
+    }
+}
+
+// 导航栏激活时的样式
+.active {
+    background: rgba(0,0,0,0.05) !important;
+    i {
+        color: #3f51b5 !important; 
+    }
+    h3 {
+        color: #3f51b5 !important;
+    }
+}

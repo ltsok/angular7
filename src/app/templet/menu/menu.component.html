@@ -1,0 +1,9 @@
+<mat-nav-list>
+    <mat-list-item *ngFor = "let item of menuItems, let i = index;"  (click)="navigate(i)" [class.active]="item.isActive">
+        <!-- <svg matListIcon class="svgicon" aria-hidden="true">
+            <use xlink:href="item.icon"></use>
+        </svg> -->
+        <mat-icon matListIcon>{{item.icon}}</mat-icon>
+        <h3 mat-line>{{item.name}}</h3>
+    </mat-list-item>
+</mat-nav-list>

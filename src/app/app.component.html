@@ -1,0 +1,23 @@
+<!-- 模板：全局功能 -->
+<div id="global">
+  <classic-global></classic-global>
+</div>
+
+<mat-sidenav-container [class.myapp-dark-theme]="darkTheme">
+  <mat-sidenav #sidenav mode="side" opened="true" position="start">
+    <app-sidebar></app-sidebar>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <div class="side">
+      <header>
+        <app-header (toggle)="sidenav.toggle()" (toggleDarkTheme)="switchTheme($event)"></app-header>
+      </header>
+      <main>
+        <router-outlet></router-outlet>
+      </main>
+      <footer>
+        <app-footer></app-footer>
+      </footer>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>
