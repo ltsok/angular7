@@ -1,0 +1,16 @@
+<nz-input-group [nzSuffix]="suffixTemplate" [nzPrefix]="prefixTemplate">
+  <input type="text"
+  id="waf-input"
+  class="ip-input"
+  (keyup)="_keyup()"
+  nz-input
+  [placeholder]="placeHolder"
+  [(ngModel)]="inputValue">
+</nz-input-group>
+<ng-template #prefixTemplate>
+  <span class="ip-icon-container" (click) = 'switchIp()'>
+    <i class="ip-icon ip-v4" [@v4ShowToV4Hide]="showIpv4 ? 'v4Show' : 'V4Hide'"></i>
+    <i class="ip-icon ip-v6" [@v6HideToV6Show]="showIpv4 ? 'v6Hide' : 'V6Show'"></i>
+  </span>
+</ng-template>
+<ng-template #suffixTemplate><i nz-icon type="close-circle" (click)="clearInput()" *ngIf="inputValue"></i></ng-template>

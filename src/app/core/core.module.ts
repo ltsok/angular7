@@ -54,11 +54,11 @@ export function createTranslateHttpLoader(http: HttpClient) {
     BrowserAnimationsModule,
     MenuModule,
     TranslateModule.forRoot({
-      loader: {
-        provide: TranslateLoader,
-        useFactory: (createTranslateHttpLoader),
-        deps: [HttpClient]
-      }
+      // loader: {
+      //   provide: TranslateLoader,
+      //   useFactory: (createTranslateHttpLoader),
+      //   deps: [HttpClient]
+      // }
     })
   ],
   declarations: [

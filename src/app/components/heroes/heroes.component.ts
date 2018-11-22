@@ -17,6 +17,8 @@ export class HeroesComponent implements OnInit {
   @HostBinding('@routerAnim') state;
   ads: AdItem[];
   isOpen: boolean = true;
+  
+
   constructor(
     private heroservice: HeroService,
     private _iconService: NzIconService,
@@ -29,9 +31,6 @@ export class HeroesComponent implements OnInit {
   }
 
   ngOnInit() {
-    // this.heroservice.getHeroes().subscribe((res:any)=> {
-    //   console.log(res);
-    // });
     this.ads = this.heroservice.getAds();
     // $.ajax({
     //   url: "http://10.5.43.9:9999/users/all",
@@ -43,19 +42,7 @@ export class HeroesComponent implements OnInit {
     //     console.log(res);
     //   }
     // });
-    // this.queryAll();
+    
   }
-
-  // queryById(id = 1): void {
-  //   this.heroservice.queryById(id).subscribe((res) => {
-  //     console.log(res);
-  //   });
-  // }
-
-  // queryAll(): void {
-  //   this.heroservice.queryALL().subscribe((res) => {
-  //     console.log(res);
-  //   });
-  // }
 
 }

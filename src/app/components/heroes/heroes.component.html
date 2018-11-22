@@ -1,6 +1,15 @@
-<div style="height: 300px;">
+<!-- <div style="height: 150px;">
   <app-c-adds [ads]="ads"></app-c-adds>
-</div>
-<div>
-    <button nz-button nzType="primary" [nzSize]="size"><i nz-icon [iconfont]="'lts lts-month'"></i>Download</button>
+</div> -->
+<div style="width:500px; padding: 100px">
+  <!-- <nz-select style="width: 100%" [(ngModel)]="tagValue" [nzSize]="size" nzMode="multiple" nzPlaceHolder="Please select">
+    <nz-option *ngFor="let option of listOfOption" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+  </nz-select> -->
+  <h3 style="margin-bottom: 30px;">waf-input</h3>
+  <waf-input [(ngModel)]="xxx" type="ipaddress"></waf-input>
+  <p>{{xxx}}</p>
+
+  <h3 style="margin: 30px 0 30px 0;">multi-slect</h3>
+  <waf-multiselect></waf-multiselect>
+
 </div>
