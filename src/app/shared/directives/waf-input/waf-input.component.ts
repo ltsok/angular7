@@ -1,10 +1,15 @@
-import { trigger, state, style, transition, animate, keyframes } from '@angular/animations';
-import { Component, Input, Output, EventEmitter, forwardRef, OnInit } from '@angular/core';
+import { trigger, state, style, transition, animate } from '@angular/animations';
+import { Component, Input, Output, EventEmitter, forwardRef, OnInit, AfterViewInit, ViewChild, ElementRef} from '@angular/core';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
+import { fromEvent, interval } from 'rxjs';
+import { switchMap, take, debounceTime } from 'rxjs/operators';
 
 const regExps = {
-  IPV4: '^((25[0-5]|2[0-4]\\d|[01]?\\d\\d?)\.){3}(25[0-5]|2[0-4]\\d|[01]?\\d\\d?)$',
-  IPV6: '^([\\da-fA-F]{1,4}:){7}[\\da-fA-F]{1,4}$'
+  IPV4: `^((25[0-5]|2[0-4]\\d|[01]?\\d\\d?)\.){3}(25[0-5]|2[0-4]\\d|[01]?\\d\\d?)$`,
+  IPV6: `^(([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}{1}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}{1}|((22[0-3]丨2[0-1][0-9]|[0-1][0-9][0-9]|0[1 -9][0-9]|([0-9])]{1,2})([.](25[0-5]|2[0-4][0-9]|[0-1][0-9][0-9]|0[1 -9][0-9]|([0-9])]{1,2})){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(:[0-9A-Fa-f]{1,4}{1,2}|:((22[0-3]丨2[0-1][0-9]|[0-1][0-9][0-9]|0[1 -9][0-9]|([0-9])]{1,2})([.](25[0-5]|2[0-4][0-9]|[0-1][0-9][0-9]|0[1 -9][0-9]|([0-9])]{1,2})){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(:[0-9A-Fa-f]{1,4}{1,3}|:((22[0-3]丨2[0-1][0-9]|[0-1][0-9][0-9]|0[1 -9][0-9]|([0-9])]{1,2})([.](25[0-5]|2[0-4][0-9]|[0-1][0-9][0-9]|0[1 -9][0-9]|([0-9])]{1,2})){3})|:))|(([0-9A-Fa-f]{1,4}:){3}(:[0-9A-Fa-f]{1,4}{1,4}|:((22[0-3]丨2[0-1][0-9]|[0-1][0-9][0-9]|0[1 -9][0-9]|([0-9])]{1,2})([.](25[0-5]|2[0-4][0-9]|[0-1][0-9][0-9]|0[1 -9][0-9]|([0-9])]{1,2})){3})|:))|(([0-9A-Fa-f]{1,4}:){2}(:[0-9A-Fa-f]{1,4}{1,5}|:((22[0-3]丨2[0-1][0-9]|[0-1][0-9][0-9]|0[1 -9][0-9]|([0-9])]{1,2})([.](25[0-5]|2[0-4][0-9]|[0-1][0-9][0-9]|0[1 -9][0-9]|([0-9])]{1,2})){3})|:))|(([0-9A-Fa-f]{1,4}:){1}(:[0-9A-Fa-f]{1,4}{1,6}|:((22[0-3]丨2[0-1][0-9]|[0-1][0-9][0-9]|0[1 -9][0-9]|([0-9])]{1,2})([.](25[0-5]|2[0-4][0-9]|[0-1][0-9][0-9]|0[1 -9][0-9]|([0-9])]{1,2})){3})|:))|(:(:[0-9A-Fa-f]{1,4}{1,7}|:((22[0-3]丨2[0-1][0-9]|[0-1][0-9][0-9]|0[1 -9][0-9]|([0-9])]{1,2})([.](25[0-5]|2[0-4][0-9]|[0-1][0-9][0-9]|0[1 -9][0-9]|([0-9])]{1,2})){3})|:))$`,
+  mask: ``,
+  phone: ``,
+  mail: ``
 };
 
 @Component({
@@ -45,14 +50,11 @@ const regExps = {
 })
 
 
-export class WafInputComponent implements OnInit, ControlValueAccessor{
+export class WafInputComponent implements OnInit, AfterViewInit, ControlValueAccessor{
 
   /** 输入框类型 */
-  @Input()
-  type: string;
-
-  /** 输入正则 */
-  private _regExp: RegExp;
+  @Input('type')
+  inputType: string;
 
   @Input()
   set regExp(reg: RegExp){
@@ -60,17 +62,45 @@ export class WafInputComponent implements OnInit, ControlValueAccessor{
       this._regExp = new RegExp(reg);
     }
   }
+  
+  /** 输入正则 */
+  private _regExp: RegExp;
 
-  /** 是否显示图标 */
-  private showIcon: boolean = false;
+  /** 校验结果 */
+  private vertifiedResult: boolean = false;
+
+  /** 提示信息 */
+  private toolTip: string;
+
+  /** 是否显示tooltip */
+  private showTooltip: boolean;
+
+  /** 是否显示前置内容 */
+  private showPrefixTemp: boolean;
+
+  /** 是否显示后置内容 */
+  private showSuffixTemp: boolean;
 
   /** input输入值 */
   private _inputValue: string;
+
+  /** 输入默认为IPV4 */
+  private showIpv4:boolean = true;
+
+  /** 输入框placeholder */
+  private placeHolder: string;
+
+  /** 邮箱后缀 */
+  private mailSuffix: string[];
 
   /** 定义空函数,在view => model变化时被赋值 */
   private onChange: (value: string | string[]) => void = () => null;
 
   private onTouched: () => void = () => null;
+
+  /** 获取input元素 */
+  @ViewChild('wafInput')
+  inputEle: ElementRef;
 
   set inputValue(v: any) {
     if (v !== this._inputValue) {
@@ -83,26 +113,72 @@ export class WafInputComponent implements OnInit, ControlValueAccessor{
     return this._inputValue;
   }
 
-  /** 输入默认为IPV4 */
-  private showIpv4:boolean = true;
-
-  /** 输入框placeholder */
-  private placeHolder: string;
-
   ngOnInit(): void {
+    this.initData();
+  }
+
+  ngAfterViewInit(): void {
+    this.checkInputValue();
+  }
+
+  initData(): void {
 
     // 初始化默认placeholder和_regExp
-    switch(this.type) {
+    switch(this.inputType) {
       case 'ipaddress':
         this.placeHolder = '0.0.0.0';
         this._regExp = new RegExp(regExps.IPV4);
       break;
       case 'mask':
         this.placeHolder = '255.255.255.0';
+        this._regExp = new RegExp(regExps.mask);
+      break;
+      case 'phone':
+        this.placeHolder = '';
+        this._regExp = new RegExp(regExps.phone);
+      break;
+      case 'mail':
+        this.placeHolder = '';
+        this._regExp = new RegExp(regExps.mail);
+        console.log(this.placeHolder);
       break;
       default:
         this.placeHolder = '';
     }
+
+    // 初始化邮箱后缀
+    this.mailSuffix = [
+      '@fhrd.com','@fiberhome.com'
+    ]
+  }
+
+  /**
+   * 输入框校验
+   * @memberof WafInputComponent
+   */
+  checkInputValue(): void {
+    // input输入流
+    let input$ = 
+    fromEvent(this.inputEle.nativeElement, 'input')
+    .pipe(
+      debounceTime(1000)
+    )
+    .subscribe((inputEvent:any)=>{
+      let inputVal = inputEvent.target.value;
+      switch (this.inputType) {
+        case 'ipaddress':
+          this._regExp =this.showIpv4 ? new RegExp(regExps.IPV4) : new RegExp(regExps.IPV6);
+        break;
+        case 'mask':
+          this._regExp =this.showIpv4 ? new RegExp(regExps.IPV4) : new RegExp(regExps.IPV6);
+        break;
+      }
+      this.vertifiedResult = this._regExp.test(this._inputValue);
+    });
+  }
+
+  getVertifiedResult(): boolean {
+    return this.vertifiedResult;
   }
 
   /**
@@ -113,8 +189,8 @@ export class WafInputComponent implements OnInit, ControlValueAccessor{
     this.showIpv4 = !this.showIpv4;
     this.clearInput();
     setTimeout(()=>{
-      document.getElementById("waf-input").focus();
-      switch(this.type) {
+      this.inputEle.nativeElement.focus();
+      switch(this.inputType) {
         case 'ipaddress':
           this.placeHolder = this.placeHolder ? '': '0.0.0.0';
         break;
@@ -133,6 +209,8 @@ export class WafInputComponent implements OnInit, ControlValueAccessor{
    */
   private clearInput(): void {
     this._inputValue = '';
+    // invalid
+    this.vertifiedResult = false;
     this.onChange(this._inputValue);
   }
 
@@ -160,11 +238,6 @@ export class WafInputComponent implements OnInit, ControlValueAccessor{
 
   registerOnTouched(fn: () => void): void {
     this.onTouched = fn;
-  }
-
-  _keyup(): void {
-    let result = this._regExp.test(this._inputValue);
-    console.log(this._inputValue, result);
   }
 
 }
