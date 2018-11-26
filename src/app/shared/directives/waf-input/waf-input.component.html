@@ -6,8 +6,12 @@
     </nz-input-group>
     <!-- 前置内嵌图标 -->
     <ng-template #prefixTemplate>
-      <span class="ip-icon-container" (click)='switchIp()'>
+      <span class="ip-icon-container" (click)='switchIp()' *ngIf="!_iconUrl">
         <i class="ip-icon ip-v4" [@v4ShowToV4Hide]="showIpv4 ? 'v4Show' : 'V4Hide'"></i>
+        <i class="ip-icon ip-v6" [@v6HideToV6Show]="showIpv4 ? 'v6Hide' : 'V6Show'"></i>
+      </span>
+      <span class="ip-icon-container" (click)='switchIp()' *ngIf="_iconUrl && _iconUrl.length === 2">
+        <i class="ip-icon" [@v4ShowToV4Hide]="showIpv4 ? 'v4Show' : 'V4Hide'"></i>
         <i class="ip-icon ip-v6" [@v6HideToV6Show]="showIpv4 ? 'v6Hide' : 'V6Show'"></i>
       </span>
     </ng-template>
@@ -21,7 +25,7 @@
     </nz-input-group>
     <!-- 前置内嵌图标 -->
     <ng-template #prefixTemplate>
-      <i nz-icon type="mail"></i>
+      <i nz-icon type="mail" *ngIf="!_iconUrl"></i>
     </ng-template>
     <!-- 删除按钮 -->
     <ng-template #suffixTemplate><i nz-icon type="close-circle" (click)="clearInput()" *ngIf="inputValue"></i></ng-template>
@@ -31,5 +35,32 @@
         <nz-option *ngFor="let item of mailSuffix" [nzLabel]='item' [nzValue]='item'></nz-option>
       </nz-select>
     </ng-template>
+  </ng-container>
+  <!-- phone输入框 -->
+  <ng-container *ngSwitchCase="'phone'">
+    <nz-input-group [nzSuffix]="suffixTemplate" [nzPrefix]="prefixTemplate">
+      <input #wafInput nz-input [(ngModel)]="inputValue" [placeholder]="placeHolder">
+    </nz-input-group>
+    <!-- 前置内嵌图标 -->
+    <ng-template #prefixTemplate>
+      <i nz-icon type="phone" *ngIf="!_iconUrl"></i>
+    </ng-template>
+    <!-- 删除按钮 -->
+    <ng-template #suffixTemplate><i nz-icon type="close-circle" (click)="clearInput()" *ngIf="inputValue"></i></ng-template>
+  </ng-container>
+  <!-- 默认为ip、mask输入框 -->
+  <ng-container *ngSwitchDefault>
+    <nz-input-group [nzSuffix]="suffixTemplate" [nzPrefix]="prefixTemplate">
+      <input #wafInput nz-input class="ip-input" [(ngModel)]="inputValue" [placeholder]="placeHolder">
+    </nz-input-group>
+    <!-- 前置内嵌图标 -->
+    <ng-template #prefixTemplate>
+      <span class="ip-icon-container" (click)='switchIp()' *ngIf="!_iconUrl">
+        <i class="ip-icon ip-v4" [@v4ShowToV4Hide]="showIpv4 ? 'v4Show' : 'V4Hide'"></i>
+        <i class="ip-icon ip-v6" [@v6HideToV6Show]="showIpv4 ? 'v6Hide' : 'V6Show'"></i>
+      </span>
+    </ng-template>
+    <!-- 删除按钮 -->
+    <ng-template #suffixTemplate><i nz-icon type="close-circle" (click)="clearInput()" *ngIf="inputValue"></i></ng-template>
   </ng-container>
 </ng-container>

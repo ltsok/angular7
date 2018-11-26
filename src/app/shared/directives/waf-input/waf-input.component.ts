@@ -1,15 +1,23 @@
 import { trigger, state, style, transition, animate } from '@angular/animations';
-import { Component, Input, Output, EventEmitter, forwardRef, OnInit, AfterViewInit, ViewChild, ElementRef} from '@angular/core';
+import { Component, Input, Output, EventEmitter, forwardRef, OnInit, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
 import { fromEvent, interval } from 'rxjs';
 import { switchMap, take, debounceTime } from 'rxjs/operators';
 
+/** 默认正则 */
 const regExps = {
   IPV4: `^((25[0-5]|2[0-4]\\d|[01]?\\d\\d?)\.){3}(25[0-5]|2[0-4]\\d|[01]?\\d\\d?)$`,
-  IPV6: `^(([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}{1}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}{1}|((22[0-3]丨2[0-1][0-9]|[0-1][0-9][0-9]|0[1 -9][0-9]|([0-9])]{1,2})([.](25[0-5]|2[0-4][0-9]|[0-1][0-9][0-9]|0[1 -9][0-9]|([0-9])]{1,2})){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(:[0-9A-Fa-f]{1,4}{1,2}|:((22[0-3]丨2[0-1][0-9]|[0-1][0-9][0-9]|0[1 -9][0-9]|([0-9])]{1,2})([.](25[0-5]|2[0-4][0-9]|[0-1][0-9][0-9]|0[1 -9][0-9]|([0-9])]{1,2})){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(:[0-9A-Fa-f]{1,4}{1,3}|:((22[0-3]丨2[0-1][0-9]|[0-1][0-9][0-9]|0[1 -9][0-9]|([0-9])]{1,2})([.](25[0-5]|2[0-4][0-9]|[0-1][0-9][0-9]|0[1 -9][0-9]|([0-9])]{1,2})){3})|:))|(([0-9A-Fa-f]{1,4}:){3}(:[0-9A-Fa-f]{1,4}{1,4}|:((22[0-3]丨2[0-1][0-9]|[0-1][0-9][0-9]|0[1 -9][0-9]|([0-9])]{1,2})([.](25[0-5]|2[0-4][0-9]|[0-1][0-9][0-9]|0[1 -9][0-9]|([0-9])]{1,2})){3})|:))|(([0-9A-Fa-f]{1,4}:){2}(:[0-9A-Fa-f]{1,4}{1,5}|:((22[0-3]丨2[0-1][0-9]|[0-1][0-9][0-9]|0[1 -9][0-9]|([0-9])]{1,2})([.](25[0-5]|2[0-4][0-9]|[0-1][0-9][0-9]|0[1 -9][0-9]|([0-9])]{1,2})){3})|:))|(([0-9A-Fa-f]{1,4}:){1}(:[0-9A-Fa-f]{1,4}{1,6}|:((22[0-3]丨2[0-1][0-9]|[0-1][0-9][0-9]|0[1 -9][0-9]|([0-9])]{1,2})([.](25[0-5]|2[0-4][0-9]|[0-1][0-9][0-9]|0[1 -9][0-9]|([0-9])]{1,2})){3})|:))|(:(:[0-9A-Fa-f]{1,4}{1,7}|:((22[0-3]丨2[0-1][0-9]|[0-1][0-9][0-9]|0[1 -9][0-9]|([0-9])]{1,2})([.](25[0-5]|2[0-4][0-9]|[0-1][0-9][0-9]|0[1 -9][0-9]|([0-9])]{1,2})){3})|:))$`,
-  mask: ``,
+  IPV6: `^([\\da-fA-F]{1,4}:){7}[\\da-fA-F]{1,4}$`,
+  maskIPV4: ``,
+  maskIPV6: ``,
   phone: ``,
   mail: ``
+};
+
+/** 默认图标 */
+const defaultIconUrl = {
+  IPV4: '/assets/img/unm/change_ipv4.png',
+  IPV6: '/assets/img/unm/change_ipv6.png',
 };
 
 @Component({
@@ -50,21 +58,44 @@ const regExps = {
 })
 
 
-export class WafInputComponent implements OnInit, AfterViewInit, ControlValueAccessor{
+export class WafInputComponent implements OnInit, AfterViewInit, ControlValueAccessor {
 
   /** 输入框类型 */
   @Input('type')
   inputType: string;
 
+  /** 自定义icon */
   @Input()
-  set regExp(reg: RegExp){
-    if (reg) {
+  set iconUrl(url: string | string[]) {
+    this._iconUrl = url;
+  }
+
+  @Input()
+  set regExp(reg: string | string[]) {
+    if (typeof (reg) === 'string') {
       this._regExp = new RegExp(reg);
     }
+    if (Array.isArray(reg) && reg.length === 2) {
+      //默认使用第一项作为验证
+      this._regExp = new RegExp(reg[0]);
+      this._regArray = reg;
+    }
   }
-  
+
+  /** 图标背景 */
+  _iconBackground: Object = {};
+
+  /** 自定义图标路径 */
+  _iconUrl: string | string[];
+
+  /** 正则 */
+  private regExps: RegExp;
+
   /** 输入正则 */
   private _regExp: RegExp;
+
+  /** 输入正则数组 */
+  private _regArray: string[];
 
   /** 校验结果 */
   private vertifiedResult: boolean = false;
@@ -75,17 +106,11 @@ export class WafInputComponent implements OnInit, AfterViewInit, ControlValueAcc
   /** 是否显示tooltip */
   private showTooltip: boolean;
 
-  /** 是否显示前置内容 */
-  private showPrefixTemp: boolean;
-
-  /** 是否显示后置内容 */
-  private showSuffixTemp: boolean;
-
   /** input输入值 */
   private _inputValue: string;
 
   /** 输入默认为IPV4 */
-  private showIpv4:boolean = true;
+  private showIpv4: boolean = true;
 
   /** 输入框placeholder */
   private placeHolder: string;
@@ -123,33 +148,64 @@ export class WafInputComponent implements OnInit, AfterViewInit, ControlValueAcc
 
   initData(): void {
 
-    // 初始化默认placeholder和_regExp
-    switch(this.inputType) {
+    // 初始化placeholder、_regExp和_iconBackground
+    switch (this.inputType) {
       case 'ipaddress':
         this.placeHolder = '0.0.0.0';
-        this._regExp = new RegExp(regExps.IPV4);
-      break;
+        this.regExps = this._regExp ? this._regExp : new RegExp(regExps.IPV4);
+        if ( this._iconUrl && this._iconUrl.length === 2 ) {
+          this._iconBackground = {
+            IPV4: `url(${this._iconUrl[0]}) no-repeat`,
+            IPV6: `url(${this._iconUrl[1]}) no-repeat`,
+          };
+        }
+        break;
       case 'mask':
         this.placeHolder = '255.255.255.0';
-        this._regExp = new RegExp(regExps.mask);
-      break;
+        this.regExps = this._regExp ? this._regExp : new RegExp(regExps.maskIPV4);
+        if ( this._iconUrl && this._iconUrl.length === 2 ) {
+          this._iconBackground = {
+            IPV4: `url(${this._iconUrl[0]}) no-repeat`,
+            IPV6: `url(${this._iconUrl[1]}) no-repeat`,
+          };
+        }
+        break;
       case 'phone':
         this.placeHolder = '';
-        this._regExp = new RegExp(regExps.phone);
-      break;
+        this.regExps = this._regExp ? this._regExp : new RegExp(regExps.phone);
+        if ( this._iconUrl ) {
+          this._iconBackground = {
+            phone: `url(${this._iconUrl}) no-repeat`
+          };
+        }
+        break;
       case 'mail':
         this.placeHolder = '';
-        this._regExp = new RegExp(regExps.mail);
-        console.log(this.placeHolder);
-      break;
+        this.regExps = this._regExp ? this._regExp : new RegExp(regExps.mail);
+        if ( this._iconUrl ) {
+          this._iconBackground = {
+            mail: `url(${this._iconUrl}) no-repeat`
+          };
+        }
+        break;
       default:
-        this.placeHolder = '';
+        //默认使用ipv4-ipv6切换输入框
+        this.placeHolder = '0.0.0.0';
+        this.regExps = this._regExp ? this._regExp : new RegExp(regExps.IPV4);
+        if ( this._iconUrl && this._iconUrl.length === 2 ) {
+          this._iconBackground = {
+            IPV4: `url(${this._iconUrl[0]}) no-repeat`,
+            IPV6: `url(${this._iconUrl[1]}) no-repeat`,
+          };
+        }
+        break;
     }
 
     // 初始化邮箱后缀
     this.mailSuffix = [
-      '@fhrd.com','@fiberhome.com'
+      '@fhrd.com', '@fiberhome.com'
     ]
+
   }
 
   /**
@@ -157,24 +213,19 @@ export class WafInputComponent implements OnInit, AfterViewInit, ControlValueAcc
    * @memberof WafInputComponent
    */
   checkInputValue(): void {
+
     // input输入流
-    let input$ = 
-    fromEvent(this.inputEle.nativeElement, 'input')
-    .pipe(
-      debounceTime(1000)
-    )
-    .subscribe((inputEvent:any)=>{
-      let inputVal = inputEvent.target.value;
-      switch (this.inputType) {
-        case 'ipaddress':
-          this._regExp =this.showIpv4 ? new RegExp(regExps.IPV4) : new RegExp(regExps.IPV6);
-        break;
-        case 'mask':
-          this._regExp =this.showIpv4 ? new RegExp(regExps.IPV4) : new RegExp(regExps.IPV6);
-        break;
-      }
-      this.vertifiedResult = this._regExp.test(this._inputValue);
-    });
+    let input$ =
+      fromEvent(this.inputEle.nativeElement, 'input')
+        .pipe(
+          debounceTime(1000)
+        )
+        .subscribe((inputEvent: any) => {
+          let inputVal = inputEvent.target.value;
+          this.vertifiedResult = this.regExps.test(this._inputValue);
+          console.log('regExps', this.regExps);
+          console.log('vertifiedResult', this.vertifiedResult);
+        });
   }
 
   getVertifiedResult(): boolean {
@@ -182,27 +233,103 @@ export class WafInputComponent implements OnInit, AfterViewInit, ControlValueAcc
   }
 
   /**
-   * IPV4、IPV6切换
+   * IPV4、IPV6切换,IPV4Mask、IPV6Mask切换
    * @memberof WafIpswitchComponent
    */
   private switchIp(): void {
     this.showIpv4 = !this.showIpv4;
     this.clearInput();
-    setTimeout(()=>{
+    switch (this.inputType) {
+      case 'ipaddress':
+        this.switchIpContent();
+        break;
+      case 'mask':
+        this.switchMaskContent();
+        break;
+      default:
+        this.switchIpContent();
+        break;
+    }
+    setTimeout(() => {
       this.inputEle.nativeElement.focus();
-      switch(this.inputType) {
-        case 'ipaddress':
-          this.placeHolder = this.placeHolder ? '': '0.0.0.0';
-        break;
-        case 'mask':
-          this.placeHolder = this.placeHolder ? '': '255.255.255.0';
-        break;
-        default:
-          this.placeHolder = '';
-      }
     });
   }
-  
+
+
+  /**
+   * IP输入框内容切换
+   * @memberof WafInputComponent
+   */
+  switchIpContent(): void {
+
+    //placeholder切换
+    this.placeHolder = this.showIpv4 ? '0.0.0.0' : '';
+    // 正则切换,当前为ipv4时
+    if (this.showIpv4) {
+      // 判断是否使用默认正则
+      if (this._regExp) {
+        // 判断传入的是否为数组
+        if (this._regArray && this._regArray.length) {
+          this.regExps = new RegExp(this._regArray[0]);
+        } else {
+          this.regExps = new RegExp(this._regExp);
+        }
+      } else {
+        this.regExps = new RegExp(regExps.IPV4);
+      }
+    } else {
+      // 判断是否使用默认正则
+      if (this._regExp) {
+        // 判断传入的是否为数组
+        if (this._regArray && this._regArray.length) {
+          this.regExps = new RegExp(this._regArray[1]);
+        } else {
+          this.regExps = new RegExp(this._regExp);
+        }
+      } else {
+        this.regExps = new RegExp(regExps.IPV6);
+      }
+    }
+  }
+
+
+  /**
+   * mask输入框内容切换
+   * @memberof WafInputComponent
+   */
+  switchMaskContent(): void {
+
+    //placeholder切换
+    this.placeHolder = this.showIpv4 ? '255.255.255.0' : '';
+    // 正则切换,当前为ipv4Mask时
+    if (this.showIpv4) {
+      // 判断是否使用默认正则
+      if (this._regExp) {
+        // 判断传入的是否为数组
+        if (this._regArray && this._regArray.length) {
+          this.regExps = new RegExp(this._regArray[0]);
+        } else {
+          this.regExps = new RegExp(this._regExp);
+        }
+      } else {
+        this.regExps = new RegExp(regExps.maskIPV4);
+      }
+    } else {
+      // 判断是否使用默认正则
+      if (this._regExp) {
+        // 判断传入的是否为数组
+        if (this._regArray && this._regArray.length) {
+          this.regExps = new RegExp(this._regArray[1]);
+        } else {
+          this.regExps = new RegExp(this._regExp);
+        }
+      } else {
+        this.regExps = new RegExp(regExps.maskIPV6);
+      }
+    }
+  }
+
+
   /**
    * 清除输入框内容
    * @memberof WafIpswitchComponent
