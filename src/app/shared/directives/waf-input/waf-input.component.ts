@@ -6,19 +6,36 @@ import { switchMap, take, debounceTime } from 'rxjs/operators';
 
 /** 默认正则 */
 const regExps = {
-  IPV4: `^((25[0-5]|2[0-4]\\d|[01]?\\d\\d?)\.){3}(25[0-5]|2[0-4]\\d|[01]?\\d\\d?)$`,
-  IPV6: `^([\\da-fA-F]{1,4}:){7}[\\da-fA-F]{1,4}$`,
-  maskIPV4: ``,
+  IPV4: `^([0-9]|[1-9]\\d|1\\d{2}|2[0-4]\\d|25[0-5])(\\.(25[0-5]|2[0-4]\\d|1\\d{2}|[1-9]\\d|\\d)){3}$`,
+  IPV6: "^([\\da-fA-F]{1,4}:){6}((25[0-5]|2[0-4]\\d|[01]?\\d\\d?)\\.){3}"
+  + "(25[0-5]|2[0-4]\\d|[01]?\\d\\d?)$|^::([\\da-fA-F]{1,4}:){0,4}"
+  + "((25[0-5]|2[0-4]\\d|[01]?\\d\\d?)\\.){3}"
+  + "(25[0-5]|2[0-4]\\d|[01]?\\d\\d?)$|^([\\da-fA-F]{1,4}:):([\\da-fA-F]{1,4}:){0,3}"
+  + "((25[0-5]|2[0-4]\\d|[01]?\\d\\d?)\\.){3}"
+  + "(25[0-5]|2[0-4]\\d|[01]?\\d\\d?)$|^([\\da-fA-F]{1,4}:){2}:([\\da-fA-F]{1,4}:){0,2}"
+  + "((25[0-5]|2[0-4]\\d|[01]?\\d\\d?)\\.){3}"
+  + "(25[0-5]|2[0-4]\\d|[01]?\\d\\d?)$|^([\\da-fA-F]{1,4}:){3}:([\\da-fA-F]{1,4}:){0,1}"
+  + "((25[0-5]|2[0-4]\\d|[01]?\\d\\d?)\\.){3}"
+  + "(25[0-5]|2[0-4]\\d|[01]?\\d\\d?)$|^([\\da-fA-F]{1,4}:){4}:((25[0-5]|2[0-4]\\d|[01]?\\d\\d?)\\.){3}"
+  + "(25[0-5]|2[0-4]\\d|[01]?\\d\\d?)$|^([\\da-fA-F]{1,4}:){7}"
+  + "[\\da-fA-F]{1,4}$|^:((:[\\da-fA-F]{1,4}){1,6}|:)$|^[\\da-fA-F]{1,4}:((:[\\da-fA-F]{1,4}){1,5}|:)"
+  + "$|^([\\da-fA-F]{1,4}:){2}((:[\\da-fA-F]{1,4}){1,4}|:)$|^([\\da-fA-F]{1,4}:){3}((:[\\da-fA-F]{1,4})"
+  + "{1,3}|:)$|^([\\da-fA-F]{1,4}:){4}((:[\\da-fA-F]{1,4}){1,2}|:)"
+  + "$|^([\\da-fA-F]{1,4}:){5}:([\\da-fA-F]{1,4})?$|^([\\da-fA-F]{1,4}:){6}:$ ",
+  maskIPV4: "((255|254|252|248|240|224|192|128)(\\.0){3})"
+  + "|((255\\.){1}(255|254|252|248|240|224|192|128|0)(\\.0){2})"
+  + "|((255\\.){2}(255|254|252|248|240|224|192|128|0)(\\.0){1})"
+  + "|((255\\.){3}(255|254|252|248|240|224|192|128|0))",
+  // TODO
   maskIPV6: ``,
-  phone: ``,
-  mail: ``
+  phone: `^1[34578]\\d{9}$`,
+  mail: `^[A-Za-z\\d]+([-_.][A-Za-z\\d]+)*$`
 };
 
-/** 默认图标 */
-const defaultIconUrl = {
-  IPV4: '/assets/img/unm/change_ipv4.png',
-  IPV6: '/assets/img/unm/change_ipv6.png',
-};
+/** 邮箱后缀 */
+const mailSuffixs = [
+  '@fhrd.com', '@fiberhome.com'
+]
 
 @Component({
   selector: 'waf-input',
@@ -66,10 +83,11 @@ export class WafInputComponent implements OnInit, AfterViewInit, ControlValueAcc
 
   /** 自定义icon */
   @Input()
-  set iconUrl(url: string | string[]) {
-    this._iconUrl = url;
+  set iconClass(_class: string | string[]) {
+    this._iconClass = _class;
   }
 
+  /** 自定义正则 */
   @Input()
   set regExp(reg: string | string[]) {
     if (typeof (reg) === 'string') {
@@ -82,11 +100,11 @@ export class WafInputComponent implements OnInit, AfterViewInit, ControlValueAcc
     }
   }
 
-  /** 图标背景 */
-  _iconBackground: Object = {};
+  /** 自定义图标 */
+  _iconClass: any;
 
-  /** 自定义图标路径 */
-  _iconUrl: string | string[];
+  /** 图标类名 */
+  iconClassName: any;
 
   /** 正则 */
   private regExps: RegExp;
@@ -101,7 +119,7 @@ export class WafInputComponent implements OnInit, AfterViewInit, ControlValueAcc
   private vertifiedResult: boolean = false;
 
   /** 提示信息 */
-  private toolTip: string;
+  private toolTip: string = '';
 
   /** 是否显示tooltip */
   private showTooltip: boolean;
@@ -127,6 +145,7 @@ export class WafInputComponent implements OnInit, AfterViewInit, ControlValueAcc
   @ViewChild('wafInput')
   inputEle: ElementRef;
 
+  /** 输入、输出双向绑定 */
   set inputValue(v: any) {
     if (v !== this._inputValue) {
       this._inputValue = v;
@@ -146,66 +165,76 @@ export class WafInputComponent implements OnInit, AfterViewInit, ControlValueAcc
     this.checkInputValue();
   }
 
+
+  /**
+   * 初始化输入框内容
+   * @memberof WafInputComponent
+   */
   initData(): void {
 
-    // 初始化placeholder、_regExp和_iconBackground
+    // 初始化placeholder、_regExp、图标类名
     switch (this.inputType) {
       case 'ipaddress':
         this.placeHolder = '0.0.0.0';
         this.regExps = this._regExp ? this._regExp : new RegExp(regExps.IPV4);
-        if ( this._iconUrl && this._iconUrl.length === 2 ) {
-          this._iconBackground = {
-            IPV4: `url(${this._iconUrl[0]}) no-repeat`,
-            IPV6: `url(${this._iconUrl[1]}) no-repeat`,
-          };
+        if ( this._iconClass && this._iconClass.length === 2 ) {
+          this.iconClassName = [];
+          this._iconClass.map((v)=>{
+            let obj = {};
+            obj['ip-icon'] = true;
+            obj['fhfont'] = true;
+            obj[v] = true;
+            this.iconClassName.push(obj);
+          });
         }
         break;
       case 'mask':
         this.placeHolder = '255.255.255.0';
         this.regExps = this._regExp ? this._regExp : new RegExp(regExps.maskIPV4);
-        if ( this._iconUrl && this._iconUrl.length === 2 ) {
-          this._iconBackground = {
-            IPV4: `url(${this._iconUrl[0]}) no-repeat`,
-            IPV6: `url(${this._iconUrl[1]}) no-repeat`,
-          };
+        if ( this._iconClass && this._iconClass.length === 2 ) {
+          this.iconClassName = [];
+          this._iconClass.map((v)=>{
+            let obj = {};
+            obj['ip-icon'] = true;
+            obj['fhfont'] = true;
+            obj[v] = true;
+            this.iconClassName.push(obj);
+          });
         }
         break;
       case 'phone':
         this.placeHolder = '';
         this.regExps = this._regExp ? this._regExp : new RegExp(regExps.phone);
-        if ( this._iconUrl ) {
-          this._iconBackground = {
-            phone: `url(${this._iconUrl}) no-repeat`
-          };
+        if ( this._iconClass && typeof this._iconClass === 'string' ) {
+          this.iconClassName = this._iconClass;
         }
         break;
       case 'mail':
         this.placeHolder = '';
         this.regExps = this._regExp ? this._regExp : new RegExp(regExps.mail);
-        if ( this._iconUrl ) {
-          this._iconBackground = {
-            mail: `url(${this._iconUrl}) no-repeat`
-          };
+        if ( this._iconClass && typeof this._iconClass === 'string' ) {
+          this.iconClassName = this._iconClass;
         }
         break;
       default:
         //默认使用ipv4-ipv6切换输入框
         this.placeHolder = '0.0.0.0';
         this.regExps = this._regExp ? this._regExp : new RegExp(regExps.IPV4);
-        if ( this._iconUrl && this._iconUrl.length === 2 ) {
-          this._iconBackground = {
-            IPV4: `url(${this._iconUrl[0]}) no-repeat`,
-            IPV6: `url(${this._iconUrl[1]}) no-repeat`,
-          };
+        if ( this._iconClass && this._iconClass.length === 2 ) {
+          this.iconClassName = [];
+          this._iconClass.map((v)=>{
+            let obj = {};
+            obj['ip-icon'] = true;
+            obj['fhfont'] = true;
+            obj[v] = true;
+            this.iconClassName.push(obj);
+          });
         }
         break;
     }
 
     // 初始化邮箱后缀
-    this.mailSuffix = [
-      '@fhrd.com', '@fiberhome.com'
-    ]
-
+    this.mailSuffix = mailSuffixs;
   }
 
   /**
@@ -221,13 +250,25 @@ export class WafInputComponent implements OnInit, AfterViewInit, ControlValueAcc
           debounceTime(1000)
         )
         .subscribe((inputEvent: any) => {
-          let inputVal = inputEvent.target.value;
           this.vertifiedResult = this.regExps.test(this._inputValue);
-          console.log('regExps', this.regExps);
-          console.log('vertifiedResult', this.vertifiedResult);
+          if ( this.vertifiedResult ) {
+            setTimeout(()=>{
+              this.toolTip = '';
+              this.showTooltip = false;
+            });
+          } else {
+            this.toolTip = '格式不正确';
+            this.showTooltip = true;
+          }
         });
   }
 
+
+  /**
+   * 获取校验结果
+   * @returns {boolean}
+   * @memberof WafInputComponent
+   */
   getVertifiedResult(): boolean {
     return this.vertifiedResult;
   }

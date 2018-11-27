@@ -2,17 +2,27 @@
   <!-- ip、mask输入框 -->
   <ng-container *ngSwitchCase="'ipaddress'">
     <nz-input-group [nzSuffix]="suffixTemplate" [nzPrefix]="prefixTemplate">
-      <input #wafInput nz-input class="ip-input" [(ngModel)]="inputValue" [placeholder]="placeHolder">
+      <input 
+        class="ip-input"
+        #wafInput
+        nz-tooltip
+        nz-input
+        nzPlacement="right"
+        [nzTitle]="toolTip"
+        [nzVisible]="showTooltip"
+        [(ngModel)]="inputValue"
+        [placeholder]="placeHolder"
+      >
     </nz-input-group>
     <!-- 前置内嵌图标 -->
     <ng-template #prefixTemplate>
-      <span class="ip-icon-container" (click)='switchIp()' *ngIf="!_iconUrl">
+      <span class="ip-icon-container" (click)='switchIp()' *ngIf="!iconClassName">
         <i class="ip-icon ip-v4" [@v4ShowToV4Hide]="showIpv4 ? 'v4Show' : 'V4Hide'"></i>
         <i class="ip-icon ip-v6" [@v6HideToV6Show]="showIpv4 ? 'v6Hide' : 'V6Show'"></i>
       </span>
-      <span class="ip-icon-container" (click)='switchIp()' *ngIf="_iconUrl && _iconUrl.length === 2">
-        <i class="ip-icon" [@v4ShowToV4Hide]="showIpv4 ? 'v4Show' : 'V4Hide'"></i>
-        <i class="ip-icon ip-v6" [@v6HideToV6Show]="showIpv4 ? 'v6Hide' : 'V6Show'"></i>
+      <span class="ip-icon-container" (click)='switchIp()' *ngIf="iconClassName && iconClassName.length === 2">
+        <i [ngClass]="iconClassName[0]" [@v4ShowToV4Hide]="showIpv4 ? 'v4Show' : 'V4Hide'"></i>
+        <i [ngClass]="iconClassName[1]" [@v6HideToV6Show]="showIpv4 ? 'v6Hide' : 'V6Show'"></i>
       </span>
     </ng-template>
     <!-- 删除按钮 -->
@@ -21,11 +31,22 @@
   <!-- mail输入框 -->
   <ng-container *ngSwitchCase="'mail'">
     <nz-input-group [nzSuffix]="suffixTemplate" [nzPrefix]="prefixTemplate" [nzAddOnAfter]="addOnAfterTemplate">
-      <input #wafInput nz-input [(ngModel)]="inputValue" [placeholder]="placeHolder">
+      <input 
+        class="ip-input"
+        #wafInput
+        nz-tooltip
+        nz-input
+        nzPlacement="right"
+        [nzTitle]="toolTip"
+        [nzVisible]="showTooltip"
+        [(ngModel)]="inputValue"
+        [placeholder]="placeHolder"
+      >
     </nz-input-group>
     <!-- 前置内嵌图标 -->
     <ng-template #prefixTemplate>
-      <i nz-icon type="mail" *ngIf="!_iconUrl"></i>
+      <i nz-icon type="mail" *ngIf="!iconClassName"></i>
+      <i class="fhfont {{iconClassName}}" *ngIf="iconClassName"></i>
     </ng-template>
     <!-- 删除按钮 -->
     <ng-template #suffixTemplate><i nz-icon type="close-circle" (click)="clearInput()" *ngIf="inputValue"></i></ng-template>
@@ -39,11 +60,22 @@
   <!-- phone输入框 -->
   <ng-container *ngSwitchCase="'phone'">
     <nz-input-group [nzSuffix]="suffixTemplate" [nzPrefix]="prefixTemplate">
-      <input #wafInput nz-input [(ngModel)]="inputValue" [placeholder]="placeHolder">
+      <input 
+        class="ip-input"
+        #wafInput
+        nz-tooltip
+        nz-input
+        nzPlacement="right"
+        [nzTitle]="toolTip"
+        [nzVisible]="showTooltip"
+        [(ngModel)]="inputValue"
+        [placeholder]="placeHolder"
+      >
     </nz-input-group>
     <!-- 前置内嵌图标 -->
     <ng-template #prefixTemplate>
-      <i nz-icon type="phone" *ngIf="!_iconUrl"></i>
+      <i nz-icon type="phone" *ngIf="!iconClassName"></i>
+      <i class="fhfont {{iconClassName}}" *ngIf="iconClassName"></i>
     </ng-template>
     <!-- 删除按钮 -->
     <ng-template #suffixTemplate><i nz-icon type="close-circle" (click)="clearInput()" *ngIf="inputValue"></i></ng-template>
@@ -51,13 +83,27 @@
   <!-- 默认为ip、mask输入框 -->
   <ng-container *ngSwitchDefault>
     <nz-input-group [nzSuffix]="suffixTemplate" [nzPrefix]="prefixTemplate">
-      <input #wafInput nz-input class="ip-input" [(ngModel)]="inputValue" [placeholder]="placeHolder">
+      <input 
+        class="ip-input"
+        #wafInput
+        nz-tooltip
+        nz-input
+        nzPlacement="right"
+        [nzTitle]="toolTip"
+        [nzVisible]="showTooltip"
+        [(ngModel)]="inputValue"
+        [placeholder]="placeHolder"
+      >
     </nz-input-group>
     <!-- 前置内嵌图标 -->
     <ng-template #prefixTemplate>
-      <span class="ip-icon-container" (click)='switchIp()' *ngIf="!_iconUrl">
+      <span class="ip-icon-container" (click)='switchIp()' *ngIf="!iconClassName">
         <i class="ip-icon ip-v4" [@v4ShowToV4Hide]="showIpv4 ? 'v4Show' : 'V4Hide'"></i>
         <i class="ip-icon ip-v6" [@v6HideToV6Show]="showIpv4 ? 'v6Hide' : 'V6Show'"></i>
+      </span>
+      <span class="ip-icon-container" (click)='switchIp()' *ngIf="iconClassName && iconClassName.length === 2">
+        <i [ngClass]="iconClassName[0]" [@v4ShowToV4Hide]="showIpv4 ? 'v4Show' : 'V4Hide'"></i>
+        <i [ngClass]="iconClassName[1]" [@v6HideToV6Show]="showIpv4 ? 'v6Hide' : 'V6Show'"></i>
       </span>
     </ng-template>
     <!-- 删除按钮 -->

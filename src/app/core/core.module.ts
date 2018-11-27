@@ -9,8 +9,9 @@ import { SharedModule } from '@shared';
 import { constant } from './service/i18n/i18n.constant';
 import { HeaderComponent, FooterComponent, SidebarComponent } from './layout';
 import { HttpService, LoggerService, CacheService, StorageService, TpiGlobalService, I18nService, I18nPipe } from './service';
-import { loadSvgResources } from '@utils';
+import { loadSvgResources, loadIconFontResource } from '@utils';
 import { MenuModule } from '../templet/menu/menu.module';
+import { NzIconService } from 'ng-zorro-antd';
 
 // components
 const components = [
@@ -85,6 +86,7 @@ export class CoreModule {
    */
   constructor(
     private logger: LoggerService,
+    private $iconService: NzIconService,
     @Optional() @SkipSelf() parentModule: CoreModule,
     ir: MatIconRegistry,
     ds: DomSanitizer
@@ -95,8 +97,13 @@ export class CoreModule {
       throw new Error(
         'CoreModule is already loaded. Import it in the AppModule only');
     }
-    // 加载svg图标
+
+    // 加载material svg图标
     loadSvgResources(ir, ds);
+
+    // 加载iconfont svg图标
+    //loadIconFontResource($iconService);
+
     this.logger.info('core', 'Initialize core module.');
   }
 }
