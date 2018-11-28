@@ -1,18 +1,20 @@
-<div class="select-container">
+<div class="select-container" tabindex="0" (click)="searchFocus($event)" #seletcContainer>
     <div class="select-content">
       <!-- <div class="select-placeholder">123123</div> -->
-      <ul>
-        <li *ngFor="let item of listOfOptions">
-          <div class="select-label">{{item.label}}</div>
-          <span class="select-icon">
-            <i class="action" nz-icon type="close"></i>
-          </span>
-        </li>
-        <li class="select-edit">
-          <div class="select-label">已选择100项</div>
-          <span class="select-icon">
-            <i nz-icon type="edit"></i>
-          </span>
+      <ul id="selectedContent">
+        <ng-container *ngFor="let item of listOfOptions; let i = index;">
+          <li *ngIf = "item.showLabel">
+            <div class="select-label">{{item.label}}</div>
+            <span class="select-icon" (click)="choseItem(i, 'selected', $event)">
+              <i class="action" nz-icon type="close"></i>
+            </span>
+          </li>
+        </ng-container>
+        <!-- <li class="search-input">
+          <input #searchInput type="text">
+        </li> -->
+        <li class="select-edit" *ngIf = "showSummary">
+          <button nz-button nzType="primary" nzSize="small" (click)="editSelected($event)">已选择{{listOfOptions?.length}}项<i nz-icon type="edit"></i></button>
         </li>
       </ul>
     </div>
@@ -20,15 +22,32 @@
       <i nz-icon type="down"></i>
     </span>
   </div>
-  <div class="select-dropdown-panel">
+  <div class="select-dropdown-panel" [@dropDownAnimation]="showDropdown ? 'bottom' : 'hidden' ">
     <div class="select-dropdown-container">
       <ul>
-          <li *ngFor="let item of selectOptions">
-            <div class="select-label">{{item.label}}</div>
-            <span class="select-icon">
-              <i class="action" nz-icon type="close"></i>
-            </span>
-          </li>
+        <li 
+          *ngFor="let item of selectOptions; let i = index;"
+          (click)="choseItem(i, 'all', $event)"
+          [class.itemSelected] = "item.selected"
+        >
+          {{item.label}}
+          <i class="action" nz-icon type="check"></i>
+        </li>
       </ul>
     </div>
   </div>
+  <div class="select-dropdown-panel" [@dropDownAnimation]="showSelectedDropdown ? 'bottom' : 'hidden' ">
+    <div class="select-dropdown-container">
+      <ul>
+        <li 
+          *ngFor="let item of listOfOptions; let i = index;"
+          (click)="choseItem(i, 'selected', $event)"
+          class = "itemSelected"
+        >
+          {{item.label}}
+          <i class="action" nz-icon type="check"></i>
+        </li>
+      </ul>
+    </div>
+  </div>
+ 

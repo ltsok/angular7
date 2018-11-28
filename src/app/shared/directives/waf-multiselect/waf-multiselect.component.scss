@@ -15,6 +15,9 @@
     border-radius: 4px;
     border: 1px solid #d9d9d9;
     border-top-width: 1.02px;
+    &:hover {
+        border-color: #40a9ff;
+    }
     transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
     .select-content {
         margin-left: 5px;
@@ -50,6 +53,8 @@
             li {
                 margin-top: 3px;
                 height: 24px;
+                min-width: 50px;
+                max-width: 150px;
                 line-height: 22px;
                 float: left;
                 color: rgba(0, 0, 0, 0.65);
@@ -59,7 +64,6 @@
                 cursor: default;
                 float: left;
                 margin-right: 4px;
-                max-width: 99%;
                 position: relative;
                 overflow: hidden;
                 transition: padding 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
@@ -93,6 +97,9 @@
                     transform: scale(0.83333333) rotate(0deg);
                     position: absolute;
                     right: 4px;
+                    &:hover {
+                        color: #404040;
+                    }
                     i {
                         display: inline-block;
                         font-style: normal;
@@ -102,10 +109,37 @@
                     }
                 }                
             }
+            .search-input {
+                width:300px;
+                margin-top: 3px;
+                height: 24px;
+                line-height: 22px;
+                float: left;
+                padding: 0;
+                border: none;
+                input {
+                    width: 100%;
+                    border-width: 0;
+                    font-size: 100%;
+                    height: 100%;
+                    // TODO
+                    background: transparent;
+                    outline: 0;
+                    border-radius: 4px;
+                    line-height: 1;
+                }
+            }
             .select-edit {
-                background-color: #1890ff;
+                background: transparent;
+                border: none;
+                position: absolute;
+                right: 15px;
                 cursor: pointer;
                 color: white;
+                padding: 0;
+                button {
+                    border-radius: 0 !important;
+                }
                 i {
                     color: white;
                 }
@@ -135,6 +169,13 @@
     }
 }
 
+.select-border-color {
+    border-color: #40a9ff;
+    outline: 0;
+    box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+    border-right-width: 1px !important;
+};
+
 // 下拉框
 .select-dropdown-panel {
     width: 565px;
@@ -159,93 +200,132 @@
             list-style: none;
             width: 100%;
             height: 100%;
-            padding: 5px 6px 5px 6px;
             overflow: auto;
+            li {
+                user-select: none;
+                position: relative;
+                display: block;
+                padding: 5px 12px;
+                line-height: 22px;
+                font-weight: normal;
+                color: rgba(0, 0, 0, 0.65);
+                white-space: nowrap;
+                cursor: pointer;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                transition: background 0.3s ease;
+                &:hover {
+                    background-color: #e6f7ff;
+                    cursor: pointer;
+                }
+                .action {
+                    font-size: 12px;
+                    color: transparent;
+                    display: inline-block;
+                    -webkit-transform: scale(0.83333333) rotate(0deg);
+                    transform: scale(0.83333333) rotate(0deg);
+                    transition: all 0.2s ease;
+                    position: absolute;
+                    top: 50%;
+                    -webkit-transform: translateY(-50%);
+                    transform: translateY(-50%);
+                    right: 12px;
+                    font-weight: bold;
+                    text-shadow: 0 0.1px 0, 0.1px 0 0, 0 -0.1px 0, -0.1px 0;
+                }
+            }
+            .itemSelected {
+                background-color: #fafafa;
+                font-weight: 600;
+                i {
+                    color: #1890ff;
+                }
+            }
         }
     }
 }
 
 // 已选择的选项面板
-.select-dropdown-panel {
-    width: 565px;
-    height: 200px;
-    margin-top: 5px;
-    position: absolute;
-    .select-dropdown-container {
-        width: 100%;
-        height: 100%;
-        color: rgba(0, 0, 0, 0.65);
-        margin: 0;
-        padding: 0;
-        list-style: none;
-        font-variant: initial;
-        background-color: #fff;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-        border-radius: 4px;
-        ul {
-            outline: none;
-            margin: 0;
-            padding: 0;
-            list-style: none;
-            width: 100%;
-            height: 100%;
-            padding: 5px 6px 5px 6px;
-            overflow: auto;
-            li {
-                margin-top: 3px;
-                height: 24px;
-                line-height: 22px;
-                float: left;
-                color: rgba(0, 0, 0, 0.65);
-                background-color: #fafafa;
-                border: 1px solid #e8e8e8;
-                border-radius: 2px;
-                cursor: default;
-                float: left;
-                margin-right: 4px;
-                max-width: 99%;
-                position: relative;
-                overflow: hidden;
-                transition: padding 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
-                padding: 0 20px 0 10px;
-                .select-label {
-                    display: inline-block;
-                    white-space: nowrap;
-                    overflow: hidden;
-                    text-overflow: ellipsis;
-                    max-width: 100%;
-                    transition: margin 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
-                }
-                .select-icon {
-                    font-style: normal;
-                    vertical-align: -0.125em;
-                    text-align: center;
-                    text-transform: none;
-                    line-height: 0;
-                    text-rendering: optimizeLegibility;
-                    -webkit-font-smoothing: antialiased;
-                    -moz-osx-font-smoothing: grayscale;
-                    color: rgba(0, 0, 0, 0.45);
-                    line-height: inherit;
-                    cursor: pointer;
-                    font-weight: bold;
-                    transition: all .3s;
-                    display: inline-block;
-                    font-size: 12px;
-                    font-size: 10px \9;
-                    -webkit-transform: scale(0.83333333) rotate(0deg);
-                    transform: scale(0.83333333) rotate(0deg);
-                    position: absolute;
-                    right: 4px;
-                    i {
-                        display: inline-block;
-                        font-style: normal;
-                        vertical-align: -0.125em;
-                        text-align: center;
-                        text-transform: none;
-                    }
-                }                
-            }
-        }
-    }
-}
+// .select-dropdown-panel {
+//     width: 565px;
+//     height: 200px;
+//     margin-top: 5px;
+//     position: absolute;
+//     .select-dropdown-container {
+//         width: 100%;
+//         height: 100%;
+//         color: rgba(0, 0, 0, 0.65);
+//         margin: 0;
+//         padding: 0;
+//         list-style: none;
+//         font-variant: initial;
+//         background-color: #fff;
+//         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+//         border-radius: 4px;
+//         ul {
+//             outline: none;
+//             margin: 0;
+//             padding: 0;
+//             list-style: none;
+//             width: 100%;
+//             height: 100%;
+//             padding: 5px 6px 5px 6px;
+//             overflow: auto;
+//             li {
+//                 margin-top: 3px;
+//                 height: 24px;
+//                 line-height: 22px;
+//                 float: left;
+//                 color: rgba(0, 0, 0, 0.65);
+//                 background-color: #fafafa;
+//                 border: 1px solid #e8e8e8;
+//                 border-radius: 2px;
+//                 cursor: default;
+//                 float: left;
+//                 margin-right: 4px;
+//                 max-width: 99%;
+//                 position: relative;
+//                 overflow: hidden;
+//                 transition: padding 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+//                 padding: 0 20px 0 10px;
+//                 .select-label {
+//                     display: inline-block;
+//                     white-space: nowrap;
+//                     overflow: hidden;
+//                     text-overflow: ellipsis;
+//                     max-width: 100%;
+//                     transition: margin 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+//                 }
+//                 .select-icon {
+//                     font-style: normal;
+//                     vertical-align: -0.125em;
+//                     text-align: center;
+//                     text-transform: none;
+//                     line-height: 0;
+//                     text-rendering: optimizeLegibility;
+//                     -webkit-font-smoothing: antialiased;
+//                     -moz-osx-font-smoothing: grayscale;
+//                     color: rgba(0, 0, 0, 0.45);
+//                     line-height: inherit;
+//                     cursor: pointer;
+//                     font-weight: bold;
+//                     transition: all .3s;
+//                     display: inline-block;
+//                     font-size: 12px;
+//                     font-size: 10px \9;
+//                     -webkit-transform: scale(0.83333333) rotate(0deg);
+//                     transform: scale(0.83333333) rotate(0deg);
+//                     position: absolute;
+//                     right: 4px;
+//                     i {
+//                         display: inline-block;
+//                         font-style: normal;
+//                         vertical-align: -0.125em;
+//                         text-align: center;
+//                         text-transform: none;
+//                     }
+//                 }                
+//             }
+//         }
+//     }
+// }
