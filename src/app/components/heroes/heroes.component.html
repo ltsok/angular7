@@ -1,15 +1,81 @@
 <!-- <div style="height: 150px;">
   <app-c-adds [ads]="ads"></app-c-adds>
 </div> -->
-<div style="width:500px; padding: 100px">
+
+
+<div style="width:500px;height: 100%; padding: 100px; float: left" (click)="show()">
+  <i class="fhfont"></i>
   <!-- <nz-select style="width: 100%" [(ngModel)]="tagValue" [nzSize]="size" nzMode="multiple" nzPlaceHolder="Please select">
     <nz-option *ngFor="let option of listOfOption" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
   </nz-select> -->
-  <h3 style="margin-bottom: 30px;">waf-input</h3>
-  <waf-input [(ngModel)]="xxx" type="ipaddress" ></waf-input>
-  <p>{{xxx}}</p>
+  
+  <waf-input [(ngModel)]="ip" type="ipaddress" (checkResult)="check($event)"></waf-input>
+  <h3>ip: {{ip}}</h3>
+  <waf-input [(ngModel)]="mask" type="mask" (checkResult)="check($event)"></waf-input>
+  <h3>mask: {{mask}}</h3>
+  <waf-input [(ngModel)]="phone" type="phone" placeholder="phone" (checkResult)="check($event)"></waf-input>
+  <h3>phone: {{phone}}</h3>
+  <waf-input [(ngModel)]="mail" type="mail" placeholder="mail" [regExp]="['^123$']" (checkResult)="check($event)"></waf-input>
+  <h3>mail: {{mail}}</h3>
+  <waf-input [(ngModel)]="normal" type="text" (checkResult)="check($event)" [regExp]="['^123$']" [iconClass]="['fh-voice1']"></waf-input>
+  <h3>普通输入框: {{normal}}</h3>
+  <h3>checkResult: {{result}}</h3>
+</div>
+<div style="width: 600px;height: 100%; border:1px solid #ddd; float: left;padding: 50px;">
+  <!-- <h1>-</h1>
+  <h1>-</h1>
+  <h1>-</h1>
+  <h1>-</h1>
+  <h1>-</h1>
+  <h1>-</h1>
+  <h1>-</h1>
+  <h1>-</h1>
+  <h1>-</h1>
+  <h1>-</h1>
+  <h1>-</h1>
+  <h1>-</h1>
+  <h1>-</h1>
+  <h1>-</h1>
+  <h1>-</h1>
+  <h1>-</h1>
+  <h1>-</h1>
+  <h1>-</h1> -->
+  <waf-multiselect [data]=selectData [(ngModel)]="selected"></waf-multiselect>
+  <!-- <h1>-</h1>
+  <h1>-</h1>
+  <h1>-</h1>
+  <h1>-</h1>
+  <h1>-</h1>
+  <h1>-</h1>
+  <h1>-</h1>
+  <h1>-</h1>
+  <h1>-</h1>
+  <h1>-</h1>
+  <h1>-</h1>
+  <h1>-</h1>
+  <h1>-</h1>
+  <h1>-</h1>
+  <h1>-</h1>
+  <h1>-</h1>
+  <h1>-</h1>
+  <h1>-</h1> -->
+  <!-- <button nz-button nzType="primary" (click)="getSelected()">getSelected</button> -->
+  <!-- <waf-multiselect [data]=selectData></waf-multiselect> -->
+</div>
+<div class="father">
+  <!-- <div class="son">
+  </div>
+  <lts-model></lts-model> -->
 
-  <h3 style="margin: 30px 0 30px 0;">multi-slect</h3>
-  <waf-multiselect></waf-multiselect>
-
+  <!-- <nz-radio-group [(ngModel)]="size">
+    <label nz-radio-button nzValue="large">large</label>
+    <label nz-radio-button nzValue="default">default</label>
+    <label nz-radio-button nzValue="small">small</label>
+  </nz-radio-group>
+  <nz-range-picker [nzSize]="size" nzShowTime="true"></nz-range-picker>
+  <br>
+  <nz-time-picker [(ngModel)]="time"></nz-time-picker> -->
+  <nz-carousel [nzEffect]="'fade'">
+    <div nz-carousel-content *ngFor="let index of array"><h3>{{index}}</h3></div>
+  </nz-carousel>
 </div>

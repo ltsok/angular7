@@ -1,0 +1,35 @@
+.father {
+    float: left;height: 100%; width: 500px; border: 1px solid #ddd; position: relative;
+    padding-top: 100px;
+}
+.son {
+    width: 100px;
+    height: 100px;
+    border: 1px solid #ccc;
+    background-color:plum;
+    position: absolute;
+    transform-origin: bottom;
+    top: 20px;
+    bottom: 20px;
+    left: 20px;
+    transition: all 300ms ease-in-out;
+    &:hover {
+        transform: scale(0)
+    }
+}
+
+nz-date-picker, nz-month-picker, nz-range-picker, nz-week-picker {
+    margin: 0 8px 12px 0;
+}
+[nz-carousel-content] {
+    text-align: center;
+    height: 160px;
+    line-height: 160px;
+    background: #364d79;
+    color: #fff;
+    overflow: hidden;
+  }
+
+  h3 {
+    color: #fff;
+  }

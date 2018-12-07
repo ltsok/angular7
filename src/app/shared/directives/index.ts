@@ -8,6 +8,7 @@ import { WafMultiselectComponent } from './waf-multiselect/waf-multiselect.compo
 
 
 export * from './c-ads';
+export * from './lts-model/lts-model.component';
 
 export const directives = [
     AdDirective,

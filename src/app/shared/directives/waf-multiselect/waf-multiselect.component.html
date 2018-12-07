@@ -1,53 +1,90 @@
-<div class="select-container" tabindex="0" (click)="searchFocus($event)" #seletcContainer>
-    <div class="select-content">
-      <!-- <div class="select-placeholder">123123</div> -->
-      <ul id="selectedContent">
-        <ng-container *ngFor="let item of listOfOptions; let i = index;">
-          <li *ngIf = "item.showLabel">
-            <div class="select-label">{{item.label}}</div>
-            <span class="select-icon" (click)="choseItem(i, 'selected', $event)">
-              <i class="action" nz-icon type="close"></i>
-            </span>
+<div class="select-container" tabindex="0" (click)="inputFocus($event)" #seletcContainer>
+  <div class="select-content">
+    <!-- <div class="select-placeholder">123123</div> -->
+    <ul id="selectedContent">
+      <ng-container *ngFor="let item of listOfOptions; let i = index;">
+        <li *ngIf="item.showOptions">
+          <div class="select-label" [title]="item.label">{{item.label}}</div>
+          <span class="select-icon" (click)="choseItem(i, $event, 'inputOptions')">
+            <i class="action" nz-icon type="close"></i>
+          </span>
+        </li>
+      </ng-container>
+      <li class="select-edit" *ngIf="showSummary">
+        <button nz-button nzType="primary" nzSize="small" (click)="editSelected($event)">已选择{{listOfOptions?.length}}项<i
+            nz-icon type="edit"></i></button>
+      </li>
+    </ul>
+  </div>
+  <span class="select-arrow" [@arrowAnimation]="arrowDirection() === 'down' ? 'down' : 'up'">
+    <i nz-icon type="down"></i>
+  </span>
+  <div class="select-dropdown-panel" [@dropDownAnimation]="showDropdown ? 'bottom' : 'hidden' " #dropdownAll [ngStyle]="dropdownStyle">
+    <div class="select-dropdown-container">
+      <div class="search-input" *ngIf="selectOptions.length && dropdownPosition === 'bottom'">
+        <nz-input-group [nzSuffix]="suffixIconSearch">
+          <input placeholder="所有项搜索" type="text" nz-input [(ngModel)]="searchAll" (click)="searchFocus($event, 'all')"
+            (input)="search('all')">
+        </nz-input-group>
+        <ng-template #suffixIconSearch>
+          <i nz-icon type="search"></i>
+        </ng-template>
+      </div>
+      <ul>
+        <ng-container *ngFor="let item of selectOptions; let i = index;">
+          <li *ngIf="item.showSearch" (click)="choseItem(i, $event, 'select')" [class.itemSelected]="item.selected" [title]="item.label">
+            {{item.label}}
+            <i class="action" nz-icon type="check"></i>
           </li>
         </ng-container>
-        <!-- <li class="search-input">
-          <input #searchInput type="text">
-        </li> -->
-        <li class="select-edit" *ngIf = "showSummary">
-          <button nz-button nzType="primary" nzSize="small" (click)="editSelected($event)">已选择{{listOfOptions?.length}}项<i nz-icon type="edit"></i></button>
-        </li>
       </ul>
+      <div class="message" *ngIf="!selectOptions.length || showAllMismatch">
+        <span *ngIf="!selectOptions.length">内容为空</span>
+        <span *ngIf="showAllMismatch">无匹配结果</span>
+      </div>
+      <div class="search-input" *ngIf="selectOptions.length && dropdownPosition === 'top'">
+        <nz-input-group [nzSuffix]="suffixIconSearch">
+          <input placeholder="所有项搜索" type="text" nz-input [(ngModel)]="searchAll" (click)="searchFocus($event, 'all')"
+            (input)="search('all')">
+        </nz-input-group>
+        <ng-template #suffixIconSearch>
+          <i nz-icon type="search"></i>
+        </ng-template>
+      </div>
     </div>
-    <span class="select-arrow">
-      <i nz-icon type="down"></i>
-    </span>
   </div>
-  <div class="select-dropdown-panel" [@dropDownAnimation]="showDropdown ? 'bottom' : 'hidden' ">
+  <div class="select-dropdown-panel" [@dropDownAnimation]="showSelectedDropdown ? 'bottom' : 'hidden' " #dropdownSelected [ngStyle]="dropdownStyle">
     <div class="select-dropdown-container">
+      <div class="search-input" *ngIf="selectOptions.length && dropdownPosition === 'bottom'">
+        <nz-input-group [nzSuffix]="suffixIconSearch">
+          <input placeholder="已选项搜索" type="text" nz-input [(ngModel)]="searchSelected" (click)="searchFocus($event, 'selected')"
+            (input)="search('selected')">
+        </nz-input-group>
+        <ng-template #suffixIconSearch>
+          <i nz-icon type="search"></i>
+        </ng-template>
+      </div>
       <ul>
-        <li 
-          *ngFor="let item of selectOptions; let i = index;"
-          (click)="choseItem(i, 'all', $event)"
-          [class.itemSelected] = "item.selected"
-        >
-          {{item.label}}
-          <i class="action" nz-icon type="check"></i>
-        </li>
+        <ng-container *ngFor="let item of listOfOptions; let i = index;">
+          <li *ngIf="item.showSearch" (click)="choseItem(i, $event, 'select')" class="itemSelected" [title]="item.label">
+            {{item.label}}
+            <i class="action" nz-icon type="check"></i>
+          </li>
+        </ng-container>
       </ul>
+      <div class="message" *ngIf="!selectOptions.length || showSelectedMismatch">
+        <span *ngIf="!selectOptions.length">内容为空</span>
+        <span *ngIf="showSelectedMismatch">无匹配结果</span>
+      </div>
+      <div class="search-input" *ngIf="selectOptions.length && dropdownPosition === 'top'">
+        <nz-input-group [nzSuffix]="suffixIconSearch">
+          <input placeholder="已选项搜索" type="text" nz-input [(ngModel)]="searchSelected" (click)="searchFocus($event, 'selected')"
+            (input)="search('selected')">
+        </nz-input-group>
+        <ng-template #suffixIconSearch>
+          <i nz-icon type="search"></i>
+        </ng-template>
+      </div>
     </div>
   </div>
-  <div class="select-dropdown-panel" [@dropDownAnimation]="showSelectedDropdown ? 'bottom' : 'hidden' ">
-    <div class="select-dropdown-container">
-      <ul>
-        <li 
-          *ngFor="let item of listOfOptions; let i = index;"
-          (click)="choseItem(i, 'selected', $event)"
-          class = "itemSelected"
-        >
-          {{item.label}}
-          <i class="action" nz-icon type="check"></i>
-        </li>
-      </ul>
-    </div>
-  </div>
- 
+</div>

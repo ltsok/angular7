@@ -1,5 +1,5 @@
 <ng-container [ngSwitch]="inputType">
-  <!-- ip、mask输入框 -->
+  <!-- ip输入框 -->
   <ng-container *ngSwitchCase="'ipaddress'">
     <nz-input-group [nzSuffix]="suffixTemplate" [nzPrefix]="prefixTemplate">
       <input 
@@ -7,11 +7,42 @@
         #wafInput
         nz-tooltip
         nz-input
+        nzTrigger = "focus"
         nzPlacement="right"
         [nzTitle]="toolTip"
         [nzVisible]="showTooltip"
         [(ngModel)]="inputValue"
-        [placeholder]="placeHolder"
+        [placeholder]="placeHolders"
+      >
+    </nz-input-group>
+    <!-- 前置内嵌图标 -->
+    <ng-template #prefixTemplate>
+      <span class="ip-icon-container" (click)='switchIp()' *ngIf="!iconClassName">
+        <i class="ip-icon ip-v4" [@v4ShowToV4Hide]="showIpv4 ? 'v4Show' : 'V4Hide'"></i>
+        <i class="ip-icon ip-v6" [@v6HideToV6Show]="showIpv4 ? 'v6Hide' : 'V6Show'"></i>
+      </span>
+      <span class="ip-icon-container" (click)='switchIp()' *ngIf="iconClassName && iconClassName.length === 2">
+        <i [ngClass]="iconClassName[0]" [@v4ShowToV4Hide]="showIpv4 ? 'v4Show' : 'V4Hide'"></i>
+        <i [ngClass]="iconClassName[1]" [@v6HideToV6Show]="showIpv4 ? 'v6Hide' : 'V6Show'"></i>
+      </span>
+    </ng-template>
+    <!-- 删除按钮 -->
+    <ng-template #suffixTemplate><i nz-icon type="close-circle" (click)="clearInput()" *ngIf="inputValue"></i></ng-template>
+  </ng-container>
+  <!-- mask输入框 -->
+  <ng-container *ngSwitchCase="'mask'">
+    <nz-input-group [nzSuffix]="suffixTemplate" [nzPrefix]="prefixTemplate">
+      <input 
+        class="ip-input"
+        #wafInput
+        nz-tooltip
+        nz-input
+        nzTrigger = "focus"
+        nzPlacement="right"
+        [nzTitle]="toolTip"
+        [nzVisible]="showTooltip"
+        [(ngModel)]="inputValue"
+        [placeholder]="placeHolders"
       >
     </nz-input-group>
     <!-- 前置内嵌图标 -->
@@ -31,16 +62,16 @@
   <!-- mail输入框 -->
   <ng-container *ngSwitchCase="'mail'">
     <nz-input-group [nzSuffix]="suffixTemplate" [nzPrefix]="prefixTemplate" [nzAddOnAfter]="addOnAfterTemplate">
-      <input 
-        class="ip-input"
+      <input
         #wafInput
         nz-tooltip
         nz-input
+        nzTrigger = "focus"
         nzPlacement="right"
         [nzTitle]="toolTip"
         [nzVisible]="showTooltip"
         [(ngModel)]="inputValue"
-        [placeholder]="placeHolder"
+        [placeholder]="placeHolders"
       >
     </nz-input-group>
     <!-- 前置内嵌图标 -->
@@ -53,15 +84,14 @@
     <!-- 后置下拉框 -->
     <ng-template #addOnAfterTemplate>
       <nz-select [ngModel]="'@fhrd.com'">
-        <nz-option *ngFor="let item of mailSuffix" [nzLabel]='item' [nzValue]='item'></nz-option>
+        <nz-option *ngFor="let item of _mailSuffix" [nzLabel]='item' [nzValue]='item'></nz-option>
       </nz-select>
     </ng-template>
   </ng-container>
   <!-- phone输入框 -->
   <ng-container *ngSwitchCase="'phone'">
     <nz-input-group [nzSuffix]="suffixTemplate" [nzPrefix]="prefixTemplate">
-      <input 
-        class="ip-input"
+      <input
         #wafInput
         nz-tooltip
         nz-input
@@ -69,7 +99,7 @@
         [nzTitle]="toolTip"
         [nzVisible]="showTooltip"
         [(ngModel)]="inputValue"
-        [placeholder]="placeHolder"
+        [placeholder]="placeHolders"
       >
     </nz-input-group>
     <!-- 前置内嵌图标 -->
@@ -80,11 +110,11 @@
     <!-- 删除按钮 -->
     <ng-template #suffixTemplate><i nz-icon type="close-circle" (click)="clearInput()" *ngIf="inputValue"></i></ng-template>
   </ng-container>
-  <!-- 默认为ip、mask输入框 -->
+  <!-- 默认为普通输入框 -->
   <ng-container *ngSwitchDefault>
     <nz-input-group [nzSuffix]="suffixTemplate" [nzPrefix]="prefixTemplate">
-      <input 
-        class="ip-input"
+      <input
+        [class.icon-padding]="!iconClassName"
         #wafInput
         nz-tooltip
         nz-input
@@ -92,19 +122,12 @@
         [nzTitle]="toolTip"
         [nzVisible]="showTooltip"
         [(ngModel)]="inputValue"
-        [placeholder]="placeHolder"
+        [placeholder]="placeHolders"
       >
     </nz-input-group>
     <!-- 前置内嵌图标 -->
     <ng-template #prefixTemplate>
-      <span class="ip-icon-container" (click)='switchIp()' *ngIf="!iconClassName">
-        <i class="ip-icon ip-v4" [@v4ShowToV4Hide]="showIpv4 ? 'v4Show' : 'V4Hide'"></i>
-        <i class="ip-icon ip-v6" [@v6HideToV6Show]="showIpv4 ? 'v6Hide' : 'V6Show'"></i>
-      </span>
-      <span class="ip-icon-container" (click)='switchIp()' *ngIf="iconClassName && iconClassName.length === 2">
-        <i [ngClass]="iconClassName[0]" [@v4ShowToV4Hide]="showIpv4 ? 'v4Show' : 'V4Hide'"></i>
-        <i [ngClass]="iconClassName[1]" [@v6HideToV6Show]="showIpv4 ? 'v6Hide' : 'V6Show'"></i>
-      </span>
+      <i class="fhfont {{iconClassName}}" *ngIf="iconClassName"></i>
     </ng-template>
     <!-- 删除按钮 -->
     <ng-template #suffixTemplate><i nz-icon type="close-circle" (click)="clearInput()" *ngIf="inputValue"></i></ng-template>

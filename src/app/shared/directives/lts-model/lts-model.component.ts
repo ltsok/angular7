@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
-  selector: 'app-lts-model',
+  selector: 'lts-model',
   templateUrl: './lts-model.component.html',
   styleUrls: ['./lts-model.component.scss']
 })
@@ -9,6 +9,9 @@ export class LtsModelComponent implements OnInit {
 
   /** 自定义model变量 */
   private _ltsModel;
+
+  /** test */
+  test: number;
 
   @Output()
   ltsModelChange: EventEmitter<any> = new EventEmitter();
@@ -33,6 +36,7 @@ export class LtsModelComponent implements OnInit {
     // setInterval(()=>{
     //   console.log('from lts-model---',this._ltsModel);
     // },1000);
+    this.test = 10;
   }
 
 }

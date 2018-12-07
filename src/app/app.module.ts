@@ -12,6 +12,9 @@ import { AppComponent } from './app.component';
 import { LoginModule } from './components/login/login.module';
 import { GlobalModule } from './templet/global/global.module';
 
+import { registerLocaleData } from '@angular/common';
+import zh from '@angular/common/locales/zh';
+
 @NgModule({
   declarations: [
     AppComponent
@@ -30,4 +33,8 @@ import { GlobalModule } from './templet/global/global.module';
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule { 
+  constructor() {
+    registerLocaleData(zh);
+  }
+}

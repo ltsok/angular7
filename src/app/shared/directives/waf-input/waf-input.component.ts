@@ -1,8 +1,8 @@
 import { trigger, state, style, transition, animate } from '@angular/animations';
-import { Component, Input, Output, EventEmitter, forwardRef, OnInit, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, Input, forwardRef, OnInit, AfterViewInit, ViewChild, ElementRef, Output, EventEmitter } from '@angular/core';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
-import { fromEvent, interval } from 'rxjs';
-import { switchMap, take, debounceTime } from 'rxjs/operators';
+import { fromEvent } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 
 /** 默认正则 */
 const regExps = {
@@ -36,6 +36,16 @@ const regExps = {
 const mailSuffixs = [
   '@fhrd.com', '@fiberhome.com'
 ]
+
+/** 默认placeholder */
+const placeHolders = {
+  IPV4: '0.0.0.0',
+  IPV6: '',
+  maskIPV4: '255.255.255.0',
+  maskIPV6: '',
+  phone: '',
+  mail: ''
+}
 
 @Component({
   selector: 'waf-input',
@@ -81,6 +91,19 @@ export class WafInputComponent implements OnInit, AfterViewInit, ControlValueAcc
   @Input('type')
   inputType: string;
 
+  /** 自定义_placeHolder */
+  @Input()
+  set placeholder(holder: string | string[]) {
+    if (typeof (holder) === 'string') {
+      this._placeHolder = holder;
+    }
+    if (Array.isArray(holder) && holder.length ) {
+      //默认使用第一项
+      this._placeHolder = holder[0];
+      this._placeHolderArr = holder;
+    }
+  }
+
   /** 自定义icon */
   @Input()
   set iconClass(_class: string | string[]) {
@@ -93,18 +116,41 @@ export class WafInputComponent implements OnInit, AfterViewInit, ControlValueAcc
     if (typeof (reg) === 'string') {
       this._regExp = new RegExp(reg);
     }
-    if (Array.isArray(reg) && reg.length === 2) {
-      //默认使用第一项作为验证
+    if (Array.isArray(reg) && reg.length) {
+      // 默认使用第一项作为验证
       this._regExp = new RegExp(reg[0]);
       this._regArray = reg;
     }
   }
+
+  /** 自定义邮箱后缀 */
+  @Input()
+  set mailSuffix(mailsuf: string[]) {
+    if ( mailsuf && mailsuf.length ) {
+      this._mailSuffix = mailsuf;
+    } else {
+      this._mailSuffix = mailSuffixs;
+    }
+  }
+
+  /** 输出校验结果 */
+  @Output()
+  checkResult: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   /** 自定义图标 */
   _iconClass: any;
 
   /** 图标类名 */
   iconClassName: any;
+
+  /** placeHolder */
+  private placeHolders: string;
+
+  /** 输入placeHolder */
+  private _placeHolder: string;
+
+  /** 输入placeholder数组 */
+  private _placeHolderArr: string[];
 
   /** 正则 */
   private regExps: RegExp;
@@ -130,11 +176,8 @@ export class WafInputComponent implements OnInit, AfterViewInit, ControlValueAcc
   /** 输入默认为IPV4 */
   private showIpv4: boolean = true;
 
-  /** 输入框placeholder */
-  private placeHolder: string;
-
   /** 邮箱后缀 */
-  private mailSuffix: string[];
+  private _mailSuffix: string[];
 
   /** 定义空函数,在view => model变化时被赋值 */
   private onChange: (value: string | string[]) => void = () => null;
@@ -172,10 +215,10 @@ export class WafInputComponent implements OnInit, AfterViewInit, ControlValueAcc
    */
   initData(): void {
 
-    // 初始化placeholder、_regExp、图标类名
+    // 初始化_placeHolder、_regExp、图标类名
     switch (this.inputType) {
       case 'ipaddress':
-        this.placeHolder = '0.0.0.0';
+        this.placeHolders = this._placeHolder ? this._placeHolder : placeHolders.IPV4;
         this.regExps = this._regExp ? this._regExp : new RegExp(regExps.IPV4);
         if ( this._iconClass && this._iconClass.length === 2 ) {
           this.iconClassName = [];
@@ -189,12 +232,12 @@ export class WafInputComponent implements OnInit, AfterViewInit, ControlValueAcc
         }
         break;
       case 'mask':
-        this.placeHolder = '255.255.255.0';
+        this.placeHolders = this._placeHolder ? this._placeHolder : placeHolders.maskIPV4;
         this.regExps = this._regExp ? this._regExp : new RegExp(regExps.maskIPV4);
         if ( this._iconClass && this._iconClass.length === 2 ) {
           this.iconClassName = [];
-          this._iconClass.map((v)=>{
-            let obj = {};
+          this._iconClass.map((v) => {
+            const obj: any = {};
             obj['ip-icon'] = true;
             obj['fhfont'] = true;
             obj[v] = true;
@@ -203,32 +246,34 @@ export class WafInputComponent implements OnInit, AfterViewInit, ControlValueAcc
         }
         break;
       case 'phone':
-        this.placeHolder = '';
+        this.placeHolders = this._placeHolder ? this._placeHolder : placeHolders.phone;
         this.regExps = this._regExp ? this._regExp : new RegExp(regExps.phone);
         if ( this._iconClass && typeof this._iconClass === 'string' ) {
           this.iconClassName = this._iconClass;
         }
+        if (Array.isArray(this._iconClass) && this._iconClass.length) {
+          this.iconClassName = this._iconClass[0];
+        }
         break;
       case 'mail':
-        this.placeHolder = '';
+        this.placeHolders = this._placeHolder ? this._placeHolder : placeHolders.mail;
         this.regExps = this._regExp ? this._regExp : new RegExp(regExps.mail);
         if ( this._iconClass && typeof this._iconClass === 'string' ) {
           this.iconClassName = this._iconClass;
         }
+        if (Array.isArray(this._iconClass) && this._iconClass.length) {
+          this.iconClassName = this._iconClass[0];
+        }
         break;
       default:
-        //默认使用ipv4-ipv6切换输入框
-        this.placeHolder = '0.0.0.0';
-        this.regExps = this._regExp ? this._regExp : new RegExp(regExps.IPV4);
-        if ( this._iconClass && this._iconClass.length === 2 ) {
-          this.iconClassName = [];
-          this._iconClass.map((v)=>{
-            let obj = {};
-            obj['ip-icon'] = true;
-            obj['fhfont'] = true;
-            obj[v] = true;
-            this.iconClassName.push(obj);
-          });
+        //默认使用普通输入框
+        this.placeHolders = this._placeHolder ? this._placeHolder : '';
+        this.regExps = this._regExp ? this._regExp : new RegExp('');
+        if ( this._iconClass && typeof this._iconClass === 'string' ) {
+          this.iconClassName = this._iconClass;
+        }
+        if (Array.isArray(this._iconClass) && this._iconClass.length) {
+          this.iconClassName = this._iconClass[0];
         }
         break;
     }
@@ -242,9 +287,14 @@ export class WafInputComponent implements OnInit, AfterViewInit, ControlValueAcc
    * @memberof WafInputComponent
    */
   checkInputValue(): void {
-
+    let inputRightnow$ =
+      fromEvent(this.inputEle.nativeElement, 'input')
+      .subscribe((event: any) =>{
+        this.checkResult.emit(this.regExps.test(this._inputValue));
+      });
+    // 显示层优化
     // input输入流
-    let input$ =
+    let inputDelay$ =
       fromEvent(this.inputEle.nativeElement, 'input')
         .pipe(
           debounceTime(1000)
@@ -303,10 +353,19 @@ export class WafInputComponent implements OnInit, AfterViewInit, ControlValueAcc
    */
   switchIpContent(): void {
 
-    //placeholder切换
-    this.placeHolder = this.showIpv4 ? '0.0.0.0' : '';
-    // 正则切换,当前为ipv4时
+    // placeholer、正则切换,当前为ipv4时
     if (this.showIpv4) {
+
+      // 判断是否使用默认placeholder
+      if (this._placeHolder) {
+        // 判断传入的是否为数组
+        if (this._placeHolderArr && this._placeHolderArr.length) {
+          this.placeHolders = this._placeHolderArr[0];
+        }
+      } else {
+        this.placeHolders = placeHolders.IPV4;
+      }
+
       // 判断是否使用默认正则
       if (this._regExp) {
         // 判断传入的是否为数组
@@ -319,6 +378,17 @@ export class WafInputComponent implements OnInit, AfterViewInit, ControlValueAcc
         this.regExps = new RegExp(regExps.IPV4);
       }
     } else {
+
+      // 判断是否使用默认placeholder
+      if (this._placeHolder) {
+        // 判断传入的是否为数组
+        if (this._placeHolderArr && this._placeHolderArr.length) {
+          this.placeHolders = this._placeHolderArr[1];
+        }
+      } else {
+        this.placeHolders = placeHolders.IPV6;
+      }
+
       // 判断是否使用默认正则
       if (this._regExp) {
         // 判断传入的是否为数组
@@ -340,10 +410,19 @@ export class WafInputComponent implements OnInit, AfterViewInit, ControlValueAcc
    */
   switchMaskContent(): void {
 
-    //placeholder切换
-    this.placeHolder = this.showIpv4 ? '255.255.255.0' : '';
-    // 正则切换,当前为ipv4Mask时
+    // placeholer、正则切换,当前为ipv4mask时
     if (this.showIpv4) {
+
+      // 判断是否使用默认placeholder
+      if (this._placeHolder) {
+        // 判断传入的是否为数组
+        if (this._placeHolderArr && this._placeHolderArr.length) {
+          this.placeHolders = this._placeHolderArr[0];
+        }
+      } else {
+        this.placeHolders = placeHolders.maskIPV4;
+      }
+
       // 判断是否使用默认正则
       if (this._regExp) {
         // 判断传入的是否为数组
@@ -356,6 +435,17 @@ export class WafInputComponent implements OnInit, AfterViewInit, ControlValueAcc
         this.regExps = new RegExp(regExps.maskIPV4);
       }
     } else {
+
+      // 判断是否使用默认placeholder
+      if (this._placeHolder) {
+        // 判断传入的是否为数组
+        if (this._placeHolderArr && this._placeHolderArr.length) {
+          this.placeHolders = this._placeHolderArr[0];
+        }
+      } else {
+        this.placeHolders = placeHolders.maskIPV6;
+      }
+
       // 判断是否使用默认正则
       if (this._regExp) {
         // 判断传入的是否为数组
