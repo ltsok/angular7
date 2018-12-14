@@ -154,3 +154,7 @@ a:hover {
     background: -ms-linear-gradient(to right, rgba(255, 255, 255, 0), white 40%, white);
     background: linear-gradient(to right, rgba(255, 255, 255, 0), white 40%, white);
 }
+
+.menu-item:hover .sub-menu{
+    display: block;
+}

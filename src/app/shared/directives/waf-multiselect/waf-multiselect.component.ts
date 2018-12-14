@@ -220,10 +220,16 @@ export class WafMultiselectComponent implements OnInit {
           
           // 选中、取消取反
           this.selectOptions[index].selected = !this.selectOptions[index].selected;
-          let copyArr = this.selectOptions.filter((v: any)=>{
-            return v.selected === true;
-          });
-          this.listOfOptions = this.objDeepCopy(copyArr);
+          if (this.selectOptions[index].selected) {
+            this.listOfOptions.push(this.selectOptions[index]);
+          } else {
+            for (let i = 0;i < this.listOfOptions.length; i ++) {
+              if ( this.listOfOptions[i].value === this.selectOptions[index].value ) {
+                this.listOfOptions.splice(i,1);
+                break;
+              }
+            }
+          }
         
         }
 

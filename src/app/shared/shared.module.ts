@@ -1,3 +1,4 @@
+import { WafMenuService } from './directives/waf-menu/waf-menu.service';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -49,18 +50,22 @@ const zorroModules = [
   NgZorroAntdModule
 ];
 
+
 @NgModule({
   imports: [
     ...matModules,
     ...zorroModules
   ],
   declarations: [
-    ...directives
+    ...directives,
   ],
   exports: [
     ...matModules,
     ...zorroModules,
     ...directives
+  ],
+  providers: [
+    WafMenuService
   ]
 })
 export class SharedModule {

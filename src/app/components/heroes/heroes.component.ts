@@ -24,8 +24,60 @@ export class HeroesComponent implements OnInit, AfterViewInit {
   size = "default";
   time = new Date();
   array = [ 1, 2, 3, 4 ];
+  testSelected = [];
+  menuData =  [
+    {
+      id: 1,
+      name: '用户',
+      children: [
+        {
+          name: '用户管理二级菜单',
+          children: [
+            { name: '用户管理三级菜单' },
+            { name: '用户管理三级菜单' },
+            { name: '用户管理三级菜单' },
+            { name: '用户管理三级菜单' }
+          ]
+        },
+        {
+          name: '用户管理二级菜单',
+          children: [
+            { name: '用户管理三级菜单' },
+            { name: '用户管理三级菜单' },
+            { name: '用户管理三级菜单' },
+            { name: '用户管理三级菜单' }
+          ]
+        }
+      ]
+    },
+    {
+      name: '策略',
+      id: 2,
+      children: [
+        {
+          name: '策略管理二级菜单',
+          children: [
+            { name: '策略管理三级菜单' },
+            { name: '策略管理三级菜单' },
+            { name: '策略管理三级菜单' },
+            { name: '策略管理三级菜单' }
+          ]
+        },
+        {
+          name: '策略管理二级菜单',
+          children: [
+            { name: '策略管理三级菜单' },
+            { name: '策略管理三级菜单' },
+            { name: '策略管理三级菜单' },
+            { name: '策略管理三级菜单' }
+          ]
+        },
+      ]
+    }
+  ]
 
   @ViewChild(LtsModelComponent) ltsModel: LtsModelComponent;
+
   constructor(
     private heroservice: HeroService,
     private _iconService: NzIconService,
@@ -39,6 +91,17 @@ export class HeroesComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.ads = this.heroservice.getAds();
+    this.selected = [
+      {label: "l21", value: "l21"},
+      {label: "v31", value: "v31"},
+      {label: "w32", value: "w32"},
+      {label: "g16", value: "g16"},
+      {label: "h17", value: "h17"},
+      {label: "c12", value: "c12"},
+      {label: "a10", value: "a10"},
+      {label: "b11", value: "b11"},
+      {label: "f15", value: "f15"}
+    ];
     // $.ajax({
     //   url: "http://10.5.43.9:9999/users/all",
     //   type: "GET",

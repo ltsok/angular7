@@ -21,8 +21,7 @@
   <h3>普通输入框: {{normal}}</h3>
   <h3>checkResult: {{result}}</h3>
 </div>
-<div style="width: 600px;height: 100%; border:1px solid #ddd; float: left;padding: 50px;">
-  <!-- <h1>-</h1>
+<!-- <div style="width: 600px;height: 100%; border:1px solid #ddd; float: left;padding: 50px;">
   <h1>-</h1>
   <h1>-</h1>
   <h1>-</h1>
@@ -39,9 +38,9 @@
   <h1>-</h1>
   <h1>-</h1>
   <h1>-</h1>
-  <h1>-</h1> -->
+  <h1>-</h1>
+  <h1>-</h1>
   <waf-multiselect [data]=selectData [(ngModel)]="selected"></waf-multiselect>
-  <!-- <h1>-</h1>
   <h1>-</h1>
   <h1>-</h1>
   <h1>-</h1>
@@ -58,10 +57,10 @@
   <h1>-</h1>
   <h1>-</h1>
   <h1>-</h1>
-  <h1>-</h1> -->
-  <!-- <button nz-button nzType="primary" (click)="getSelected()">getSelected</button> -->
-  <!-- <waf-multiselect [data]=selectData></waf-multiselect> -->
-</div>
+  <h1>-</h1>
+  <h1>-</h1>
+  <button nz-button nzType="primary" (click)="getSelected()">getSelected</button>
+</div> -->
 <div class="father">
   <!-- <div class="son">
   </div>
@@ -75,7 +74,15 @@
   <nz-range-picker [nzSize]="size" nzShowTime="true"></nz-range-picker>
   <br>
   <nz-time-picker [(ngModel)]="time"></nz-time-picker> -->
-  <nz-carousel [nzEffect]="'fade'">
+  <!-- <nz-carousel [nzEffect]="'fade'">
     <div nz-carousel-content *ngFor="let index of array"><h3>{{index}}</h3></div>
-  </nz-carousel>
+  </nz-carousel> -->
+  <waf-menu>
+    <fat-menu-item *ngFor="let rootItem of menuData" [title]="rootItem.name" [rootId] = "rootItem.id">
+      <fat-menu-group  *ngFor="let subItem of rootItem.children" [title]="subItem.name" [rootId] = "rootItem.id">
+        <fat-menu-group-item *ngFor="let thirdItem of subItem.children" [title]="thirdItem.name" [rootId] = "rootItem.id">
+        </fat-menu-group-item>
+      </fat-menu-group>
+    </fat-menu-item>
+  </waf-menu>
 </div>
