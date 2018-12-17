@@ -4,8 +4,10 @@ import { Subject } from "rxjs";
 @Injectable()
 export class WafMenuService {
 
+    /** 一级菜单选中广播 */
     public $selectSubject: Subject<any> = new Subject();
 
+    /** 三级菜单选中广播 */
     public $selectGroupSubject: Subject<any> = new Subject();
 
     /**

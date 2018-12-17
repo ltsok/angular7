@@ -25,56 +25,8 @@ export class HeroesComponent implements OnInit, AfterViewInit {
   time = new Date();
   array = [ 1, 2, 3, 4 ];
   testSelected = [];
-  menuData =  [
-    {
-      id: 1,
-      name: '用户',
-      children: [
-        {
-          name: '用户管理二级菜单',
-          children: [
-            { name: '用户管理三级菜单' },
-            { name: '用户管理三级菜单' },
-            { name: '用户管理三级菜单' },
-            { name: '用户管理三级菜单' }
-          ]
-        },
-        {
-          name: '用户管理二级菜单',
-          children: [
-            { name: '用户管理三级菜单' },
-            { name: '用户管理三级菜单' },
-            { name: '用户管理三级菜单' },
-            { name: '用户管理三级菜单' }
-          ]
-        }
-      ]
-    },
-    {
-      name: '策略',
-      id: 2,
-      children: [
-        {
-          name: '策略管理二级菜单',
-          children: [
-            { name: '策略管理三级菜单' },
-            { name: '策略管理三级菜单' },
-            { name: '策略管理三级菜单' },
-            { name: '策略管理三级菜单' }
-          ]
-        },
-        {
-          name: '策略管理二级菜单',
-          children: [
-            { name: '策略管理三级菜单' },
-            { name: '策略管理三级菜单' },
-            { name: '策略管理三级菜单' },
-            { name: '策略管理三级菜单' }
-          ]
-        },
-      ]
-    }
-  ]
+  menuData =  [];
+  test;
 
   @ViewChild(LtsModelComponent) ltsModel: LtsModelComponent;
 
@@ -121,11 +73,31 @@ export class HeroesComponent implements OnInit, AfterViewInit {
 
     // this.selected = [{label: "a10", value: "a10"},{label: "b11", value: "b11"},{label: "c12", value: "c12"},{label: "d13", value: "d13"}]
     // this.selected = this.selectData;
-
+    for (let i = 0;i < 10; i ++) {
+      let array = [];
+      for (let i = 0;i < 6; i ++) {
+        array.push({
+          name: '用户管理二级菜单',
+          children: [
+            {name: '用户管理三级菜单'},
+            {name: '用户管理三级菜单'},
+            {name: '用户管理三级菜单'},
+            {name: '用户管理三级菜单'}
+          ]
+        });
+      }
+      this.menuData.push(
+        { name: '用户', children: array }
+      );
+    }
   }
 
   ngAfterViewInit(): void {
     // this.ltsModel.test = 12;
+  }
+
+  choseItem(event: Event): void {
+    console.log(event);
   }
 
   getSelected(): void {

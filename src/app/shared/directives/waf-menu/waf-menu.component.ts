@@ -9,10 +9,5 @@ import { Component, OnInit } from '@angular/core';
   `,
   styleUrls: ['./waf-menu.component.scss']
 })
-export class WafMenuComponent implements OnInit {
-  constructor() { }
-
-  ngOnInit() {
-  }
-
+export class WafMenuComponent {
 }

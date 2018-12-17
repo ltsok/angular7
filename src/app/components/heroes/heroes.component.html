@@ -78,9 +78,9 @@
     <div nz-carousel-content *ngFor="let index of array"><h3>{{index}}</h3></div>
   </nz-carousel> -->
   <waf-menu>
-    <fat-menu-item *ngFor="let rootItem of menuData" [title]="rootItem.name" [rootId] = "rootItem.id">
-      <fat-menu-group  *ngFor="let subItem of rootItem.children" [title]="subItem.name" [rootId] = "rootItem.id">
-        <fat-menu-group-item *ngFor="let thirdItem of subItem.children" [title]="thirdItem.name" [rootId] = "rootItem.id">
+    <fat-menu-item *ngFor="let rootItem of menuData" [title]="rootItem.name" (select)="choseItem($event)">
+      <fat-menu-group  *ngFor="let subItem of rootItem.children" [title]="subItem.name">
+        <fat-menu-group-item *ngFor="let thirdItem of subItem.children" [title]="thirdItem.name" (select)="choseItem($event)">
         </fat-menu-group-item>
       </fat-menu-group>
     </fat-menu-item>
