@@ -9,6 +9,7 @@ import { LtsModelComponent } from './lts-model/lts-model.component';
 import { WafInputComponent } from './waf-input/waf-input.component';
 import { WafMultiselectComponent } from './waf-multiselect/waf-multiselect.component';
 import { WafMenuComponent } from './waf-menu/waf-menu.component';
+import { WafIconComponent } from './waf-icon/waf-icon.component';
 
 
 export * from './c-ads';
@@ -26,5 +27,6 @@ export const directives = [
     WafMenuComponent,
     FatMenuItemComponent,
     FatMenuGroupComponent,
-    FatMenuGroupItemComponent
+    FatMenuGroupItemComponent,
+    WafIconComponent
 ];

@@ -11,7 +11,13 @@
       "schematics": {
         "@schematics/angular:component": {
           "styleext": "scss",
-          "spec": false
+          "spec": false,
+          "flat": true
+        },
+        "@schematics/angular:module": {
+          "routing": true,
+          "spec": false,
+          "flat": true
         }
       },
       "architect": {

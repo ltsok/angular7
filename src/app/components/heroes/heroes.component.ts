@@ -27,6 +27,9 @@ export class HeroesComponent implements OnInit, AfterViewInit {
   testSelected = [];
   menuData =  [];
   test;
+  iconArray;
+  iconSize;
+  zoom:boolean = false;
 
   @ViewChild(LtsModelComponent) ltsModel: LtsModelComponent;
 
@@ -42,6 +45,9 @@ export class HeroesComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
+    setTimeout(()=>{
+      this.zoom = true;
+    },2000);
     this.ads = this.heroservice.getAds();
     this.selected = [
       {label: "l21", value: "l21"},
@@ -53,6 +59,11 @@ export class HeroesComponent implements OnInit, AfterViewInit {
       {label: "a10", value: "a10"},
       {label: "b11", value: "b11"},
       {label: "f15", value: "f15"}
+    ];
+    this.iconSize = '100px';
+    this.iconArray = [
+      {class: 'fh-qidong', style: {color: 'red'}},
+      {class: 'fh-tingzhi', style: {color: 'yellow'}},
     ];
     // $.ajax({
     //   url: "http://10.5.43.9:9999/users/all",

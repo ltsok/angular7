@@ -1,0 +1,11 @@
+<div class="animated" [ngClass]="{ blink: _animate === 'blink', zoomIn: _animate === 'zoomIn' }" [style.width]="_size" [style.height]="_size">
+  <i 
+    *ngFor="let item of iconArray; let i = index;"
+    [style.z-index]="i"
+    [style.line-height]="_size"
+    [style.font-size]="_size"
+    [ngStyle]="item.style"
+    class="fhfont {{item.class}}"
+  >
+  </i>
+</div>
