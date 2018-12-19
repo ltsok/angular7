@@ -1,162 +1,26 @@
 /* You can add global styles to this file, and also import other style files */
-/* You can add global styles to this file, and also import other style files */
 
 // @import 'assets/themes/theme-material.scss';
+
+// 项目主题
 @import 'assets/themes/theme-ng-zorro-antd.scss';
+
 // 项目自定义图标
 @import 'assets/fonts/fonts-lts/iconfont.css';
-@import 'assets/fonts/fonts-unm/iconfont.css';
-// animate.css
-@import 'assets/animate/animate.css';
+// @import 'assets/fonts/fonts-unm/iconfont.css';
 
-html,body,app-root,mat-sidenav-container,mat-sidenav-content,.side{
-    width:100%;
-    height:100%;
-    margin:0;
-}
+// animate动画
+@import './style/animate.css';
 
-body, h1, h2, h3, h4, h5, h6, p, figure, pre, dl, dd, blockquote, button, input {
-    margin: 0;
-}
+// 自定义变量
+@import './style/const.scss';
 
-.side{
-    display: flex;
-    flex-direction: column;
-}
+// 公共样式
+@import './style/common.scss';
 
-main{
-    flex:1;
-}
+// 响应式样式
+@import './style/responsive.scss';
 
-.fill-remaining-space{
-    flex:1 1 auto;
-}
+// header 样式
+@import './style/header.scss';
 
-.full-width{
-    width:100%;
-}
-
-// 自定义滚动条
-::-webkit-scrollbar {
-    -webkit-appearance: none;
-    width: 8px;
-    height: 8px;
-}
-::-webkit-scrollbar-thumb {
-    background-color: #b6b6b6;
-    border: 1px solid #fff;
-    border-radius: 10px;
-}
-::-webkit-scrollbar-track {
-    background-color: inherit;
-}
-::selection {
-    background: #d7dbf0;
-}
-
-// 自定义全局a链接
-.post-title-link::after {
-    content: "";
-    position: absolute;
-    width: 100%;
-    height: 2px;
-    bottom: 0;
-    left: 0;
-    background-color: #3f51b5;
-    visibility: hidden;
-    -webkit-transform: scaleX(0);
-    transform: scaleX(0);
-    -webkit-transition: .4s ease-in-out;
-    transition: .4s ease-in-out;
-}
-.post-title-link:hover::after, .post-title-link:active::after {
-    visibility: visible;
-    -webkit-transform: scaleX(1);
-    transform: scaleX(1);
-}
-a {
-    background-color: transparent;
-    background-image: none;
-    color: #3f51b5;
-    text-decoration: none;
-    outline: 0;
-}
-.post-title-link {
-    color: #3f51b5;
-    position: relative;
-    display: inline-block;
-}
-a:hover {
-    color: #303f9f;
-    text-decoration: underline;
-}
-.post-title-link:hover {
-    text-decoration: none;
-}
-
-// 内容超出部分截断
-// 单行内容截断
-.single_cut {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-// 定位元素实现多行文本截断(文本必须超出)
-.multi_cut {
-    position: relative;
-    line-height: 18px;
-    height: 36px;
-    overflow: hidden;
-}
-.multi_cut::after {
-    content: "...";
-    font-weight: bold;
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    padding: 0 20px 1px 45px;
-    background: -webkit-gradient(linea from(rgba(255,255,255,0)), to(white), color-stop(50%, white));
-}
-// float特性实现多行文本截断(最佳实现)
-.wrap {
-    height: 40px;
-    line-height: 20px;
-    overflow: hidden;
-}
-.wrap .text {
-    float: right;
-    margin-left: -5px;
-    width: 100%;
-    word-break: break-all;
-}
-.wrap::before {
-    float: left;
-    width: 5px;
-    content: '';
-    height: 40px;
-}
-.wrap::after {
-    float: right;
-    content: "...";
-    height: 20px;
-    line-height: 20px;
-    /* 为三个省略号设置宽度 */
-    width: 3em;
-    /* 使盒子不占宽度 */
-    margin-left: -3em;
-    /* 移动省略号的位置 */
-    position: relative;
-    left: 100%;
-    top: -20px;
-    text-align: center;
-    padding-left: 5px;
-    background: -webkit-linear-gradient(left top, right top, from(rgba(255,255,255,0)), to(white), color-stop(40%, white));
-    background: -moz-linear-gradient(to right, rgba(255, 255, 255, 0), white 40%, white);
-    background: -o-linear-gradient(to right, rgba(255, 255, 255, 0), white 40%, white);
-    background: -ms-linear-gradient(to right, rgba(255, 255, 255, 0), white 40%, white);
-    background: linear-gradient(to right, rgba(255, 255, 255, 0), white 40%, white);
-}
-
-.menu-item:hover .sub-menu{
-    display: block;
-}
