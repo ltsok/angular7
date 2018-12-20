@@ -1,27 +1,111 @@
-<nz-dropdown>
-  <a nz-dropdown>
-   系统安全<i nz-icon type="down"></i>
-  </a>
-  <ul nz-menu>
-    <li nz-menu-item style="padding: 5px 200px 5px 20px;">
-      <b style="margin-right: 15px;">Portal</b>
-      <span>登录门户、可定制化网页</span>
-    </li>
-    <li nz-menu-item style="padding: 5px 200px 5px 20px;">
-      <b style="margin-right: 15px;">Portal</b>
-      <span>登录门户、可定制化网页</span>
-    </li>
-    <li nz-menu-item style="padding: 5px 200px 5px 20px;">
-      <b style="margin-right: 15px;">Portal</b>
-      <span>登录门户、可定制化网页</span>
-    </li>
-    <li nz-menu-item style="padding: 5px 200px 5px 20px;">
-      <b style="margin-right: 15px;">Portal</b>
-      <span>登录门户、可定制化网页</span>
-    </li>
-    <li nz-menu-item style="padding: 5px 200px 5px 20px;">
-      <b style="margin-right: 15px;">Portal</b>
-      <span>登录门户、可定制化网页</span>
-    </li>
-  </ul>
-</nz-dropdown>
+<!-- carousel -->
+<div class="carousel-container">
+  <nz-carousel nzAutoPlay>
+    <div nz-carousel-content *ngFor="let index of array">
+      <h3>{{index}}</h3>
+    </div>
+  </nz-carousel>
+</div>
+<!-- shotcut menu -->
+<div class="shotcut-menu" nz-row>
+  <div nz-col [nzXs]="12" [nzSm]="12" [nzMd]="12" [nzLg]="12" [nzXl]="6" [nzXXl]="6">
+    <div class="shotcut-menu-item">
+      <span class="shotcut-menu-container">
+        <img class="shotcut-menu-img shotcut-menu-primary" src="assets/img/qingmu/course_primary.png">
+        <img class="shotcut-menu-img shotcut-menu-active" src="assets/img/qingmu/course_active.png">
+      </span>
+    </div>
+  </div>
+  <div nz-col [nzXs]="12" [nzSm]="12" [nzMd]="12" [nzLg]="12" [nzXl]="6" [nzXXl]="6">
+    <div class="shotcut-menu-item">
+        <span class="shotcut-menu-container">
+          <img class="shotcut-menu-img shotcut-menu-primary" src="assets/img/qingmu/team_primary.png" alt="">
+          <img class="shotcut-menu-img shotcut-menu-active" src="assets/img/qingmu/team_active.png" alt="">
+        </span>
+    </div>
+  </div>
+  <div nz-col [nzXs]="12" [nzSm]="12" [nzMd]="12" [nzLg]="12" [nzXl]="6" [nzXXl]="6">
+    <div class="shotcut-menu-item">
+        <span class="shotcut-menu-container">
+          <img class="shotcut-menu-img shotcut-menu-primary" src="assets/img/qingmu/news_primary.png" alt="">
+          <img class="shotcut-menu-img shotcut-menu-active" src="assets/img/qingmu/news_active.png" alt="">
+        </span>
+    </div>
+  </div>
+  <div nz-col [nzXs]="12" [nzSm]="12" [nzMd]="12" [nzLg]="12" [nzXl]="6" [nzXXl]="6">
+    <div class="shotcut-menu-item">
+        <span class="shotcut-menu-container">
+          <img class="shotcut-menu-img shotcut-menu-primary" src="assets/img/qingmu/booking_primary.png" alt="">
+          <img class="shotcut-menu-img shotcut-menu-active" src="assets/img/qingmu/booking_active.png" alt="">
+        </span>
+    </div>
+  </div>
+</div>
+<!-- hot course -->
+<div class="hot-class">
+  <div class="hot-class-container">
+    <div nz-row>
+      <div nz-col [nzXs]="24" [nzSm]="24" [nzMd]="24" [nzLg]="24" [nzXl]="24" [nzXXl]="24">
+        <div class="hot-class-name">
+          热门课程
+        </div>
+        <div class="hot-class-name-en">
+          POPULAR COURSE
+        </div>
+      </div>
+      <div nz-col [nzXs]="12" [nzSm]="12" [nzMd]="12" [nzLg]="12" [nzXl]="8" [nzXXl]="8">
+        <nz-card class="hot-class-item" nzHoverable [nzCover]="coverTemplate">
+          <nz-card-meta nzTitle="Europe Street beat" nzDescription="www.instagram.com"></nz-card-meta>
+        </nz-card>
+        <ng-template #coverTemplate>
+          <img alt="example" src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png"/>
+        </ng-template>
+      </div>
+      <div nz-col [nzXs]="12" [nzSm]="12" [nzMd]="12" [nzLg]="12" [nzXl]="8" [nzXXl]="8">
+        <nz-card class="hot-class-item" nzHoverable [nzCover]="coverTemplate">
+          <nz-card-meta nzTitle="Europe Street beat" nzDescription="www.instagram.com"></nz-card-meta>
+        </nz-card>
+        <ng-template #coverTemplate>
+          <img alt="example" src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png"/>
+        </ng-template>
+      </div>
+      <div nz-col [nzXs]="12" [nzSm]="12" [nzMd]="12" [nzLg]="12" [nzXl]="8" [nzXXl]="8">
+        <nz-card class="hot-class-item" nzHoverable [nzCover]="coverTemplate">
+          <nz-card-meta nzTitle="Europe Street beat" nzDescription="www.instagram.com"></nz-card-meta>
+        </nz-card>
+        <ng-template #coverTemplate>
+          <img alt="example" src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png"/>
+        </ng-template>
+      </div>
+      <div nz-col [nzXs]="12" [nzSm]="12" [nzMd]="12" [nzLg]="12" [nzXl]="8" [nzXXl]="8">
+        <nz-card class="hot-class-item" nzHoverable [nzCover]="coverTemplate">
+          <nz-card-meta nzTitle="Europe Street beat" nzDescription="www.instagram.com"></nz-card-meta>
+        </nz-card>
+        <ng-template #coverTemplate>
+          <img alt="example" src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png"/>
+        </ng-template>
+      </div>
+      <div nz-col [nzXs]="12" [nzSm]="12" [nzMd]="12" [nzLg]="12" [nzXl]="8" [nzXXl]="8">
+        <nz-card class="hot-class-item" nzHoverable [nzCover]="coverTemplate">
+          <nz-card-meta nzTitle="Europe Street beat" nzDescription="www.instagram.com"></nz-card-meta>
+        </nz-card>
+        <ng-template #coverTemplate>
+          <img alt="example" src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png"/>
+        </ng-template>
+      </div>
+      <div nz-col [nzXs]="12" [nzSm]="12" [nzMd]="12" [nzLg]="12" [nzXl]="8" [nzXXl]="8">
+        <nz-card class="hot-class-item" nzHoverable [nzCover]="coverTemplate">
+          <nz-card-meta nzTitle="Europe Street beat" nzDescription="www.instagram.com"></nz-card-meta>
+        </nz-card>
+        <ng-template #coverTemplate>
+          <img alt="example" src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png"/>
+        </ng-template>
+      </div>
+      <div nz-col [nzXs]="24" [nzSm]="24" [nzMd]="24" [nzLg]="24" [nzXl]="24" [nzXXl]="24">
+        <div class="view-more">
+          <button nz-button nzType="primary">查看更多<i nz-icon type="plus"></i></button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -67,20 +67,28 @@
     position: absolute;
   }
 
-  .aside-container {
-    float: none;
-    width: auto;
-    padding-bottom: 30px;
-    border-right: 0;
+  // carousel
+  .carousel-container {
+    height: 280px !important;
   }
-  
-  .main-container {
-    padding-left: 16px;
-    padding-right: 16px;
-    margin-right: 0;
-    > .markdown > * {
-      width: 100% !important;
-    }
+
+  [nz-carousel-content] {
+    line-height: 280px !important;
+  }
+
+  // shotcut-menu
+  .shotcut-menu-img {
+    width: 150px !important;
+  }
+
+  // hot-class
+  .hot-class-name {
+    padding-top: 30px !important;
+    font-size: 20px !important;
+  }
+
+  .hot-class-item {
+    width: 150px !important;
   }
 
   #footer {

@@ -1,0 +1,78 @@
+// 走马灯
+[nz-carousel-content] {
+    text-align: center;
+    line-height: 700px;
+    background: #364d79;
+    color: #fff;
+    overflow: hidden;
+}
+
+h3 {
+    color: #fff;
+}
+
+.carousel-container {
+    width: 100%;
+    height: 700px;
+}
+
+// 快捷菜单
+.shotcut-menu {
+    margin: 0 auto;
+    max-width: 1200px;
+    padding-top: 30px;
+    .shotcut-menu-item {
+        width: 100%;
+        height: 100%;
+        text-align: center;
+        .shotcut-menu-container {
+            cursor: pointer;
+            .shotcut-menu-img {
+                width: 260px;
+                margin: 0 auto;
+                margin-bottom: 15px;
+            }
+            .shotcut-menu-active{
+                display: none;
+            }
+            &:hover .shotcut-menu-active{
+                display: block;
+            }
+            &:hover .shotcut-menu-primary{
+                display: none;
+            }
+        }
+    }
+}
+
+// 热门课程
+.hot-class {
+    width: 100%;
+    margin-top: 15px;
+    background-color: #fff;
+    .hot-class-container {
+        margin: 0 auto;
+        max-width: 1200px;
+        .hot-class-name {
+            padding-top: 50px;
+            text-align: center;
+            font-size: 28px;
+        }
+        .hot-class-name-en {
+            padding: 20px 0 50px 0;
+            text-align: center;
+            font-weight: bold;
+            color: #87827d;
+        }
+        .hot-class-item {
+            width:260px;
+            margin: 0 auto;
+            margin-bottom: 30px;
+        }
+        .view-more {
+            width: 100%;
+            text-align: center;
+            margin: 35px 0 30px 0;
+        }
+    }
+}

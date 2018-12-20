@@ -39,7 +39,7 @@ body {
     line-height: 1.5;
     color: $site-text-color;
     font-size: 14px;
-    background: #fff;
+    background: rgb(242, 242, 242);
     transition: background 1s cubic-bezier(0.075, 0.82, 0.165, 1);
     overflow-x: hidden;
 }
@@ -71,6 +71,12 @@ a {
 // 内容区
 #main-wrapper {
     flex: 1;
+    .row-container {
+        height: 100%;
+        .main-container {
+            height: 100%;
+        }
+    }
 }
 
 // 清除浮动
