@@ -238,3 +238,41 @@ a {
 .menu-site .ant-menu-item > a:hover {
     color: $primary-color;
 }
+
+// 自定义按钮
+.btnarea {
+    width: 150px;
+    left: 0px;
+    top: 0px;
+    height: 38px;
+    line-height: 38px;
+    border-radius: 45px 45px 45px 45px;
+    border-width: 1px;
+    border-color: rgba(60,120,216,1);
+    box-shadow: none;
+    background-color: rgba(255,255,255,1);
+}
+
+.button_btndefault-link {
+    cursor: pointer;
+    display: inline-block;
+    text-align: center;
+    transition: border-color 0.4s ease 0s,background-color 0.4s ease 0s;
+    border: 1px solid rgb(255,87,0);
+    border-color: rgba(60,120,216,1);
+}
+
+.button_btndefault-label {
+    color: rgba(61,133,198,1);
+    font-family: Microsoft YaHei;
+    font-weight: bold;
+    transition: color 0.4s ease 0s;
+}
+
+.btnarea:hover {
+    background-color: rgba(60,120,216,1);
+}
+
+.btnarea:hover .button_btndefault-label {
+    color: white;
+}
