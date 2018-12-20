@@ -4,7 +4,7 @@ import { OverlayContainer } from '@angular/cdk/overlay';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
 
@@ -13,6 +13,14 @@ export class AppComponent {
 
   /** 导航栏 */
   routerList = [
+    {name: 'xxxx', path: '/home'},
+    {name: 'xxxx', path: '/introduction'},
+    {name: 'xxxx', path: '/information'},
+    {name: 'xxxx', path: '/achievements'},
+    {name: 'xxxx', path: '/demonstration'},
+    {name: 'xxxx', path: '/contact'}
+  ];
+  routerList2 = [
     {name: '官网首页', path: '/home'},
     {name: '画室简介', path: '/introduction'},
     {name: '最新资讯', path: '/information'},
