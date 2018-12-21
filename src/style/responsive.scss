@@ -12,25 +12,28 @@
 .hide-menu {
   display: none;
 }
-  
+
 @media only screen and (max-width: $screen-xl) {
   #logo {
     padding: 0 40px;
   }
+
   .banner-wrapper .banner-title-wrapper {
     h1 {
       font-size: 36px;
     }
+
     p {
       font-size: 16px;
     }
   }
 }
-  
-@media only screen and (max-width: 767.99px) {
+
+@media only screen and (max-width: 768px) {
 
   #header {
     text-align: center;
+
     #logo {
       float: initial;
     }
@@ -47,6 +50,7 @@
     height: 40px;
     padding: 0 !important;
     border: 0;
+
     a {
       color: #333;
     }
@@ -81,8 +85,8 @@
     width: 150px !important;
   }
 
-  // hot-class
-  .hot-class-name {
+  // hot-course
+  .section-name {
     padding-top: 30px !important;
     font-size: 20px !important;
   }
@@ -91,9 +95,58 @@
     width: 150px !important;
   }
 
+  .section-item-left {
+    float: none !important;
+  }
+
+  .section-item-right {
+    float: none !important;
+  }
+
+  .hot-course-more {
+    margin-top: 15px !important;
+  }
+
+  // course-feature
+  .feature-profile {
+    font-size: 14px !important;
+  }
+
+  .feature-img {
+    img {
+      height: 165px !important;
+    }
+  }
+
   #footer {
     text-align: center;
   }
 
 }
-  
+
+@media only screen and (max-width: 1200px) {
+  .section-item-left {
+    float: none !important;
+  }
+
+  .section-item-right {
+    float: none !important;
+  }
+
+  .feature-profile {
+    text-align: center;
+    padding-top: 15px !important;
+  }
+
+  .feature-content {
+
+    p {
+      margin: 0 auto !important;
+    }
+  }
+
+  .feature-img {
+    text-align: center !important;
+    padding-top: 15px !important;
+  }
+}
