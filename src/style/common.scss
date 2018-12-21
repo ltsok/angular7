@@ -29,8 +29,9 @@
 html,
 body {
     height: 100%;
-    width:100%;
-    margin:0;
+    width: 100%;
+    margin: 0;
+    padding: 0;
 }
 
 body {
@@ -262,11 +263,16 @@ a {
     border-color: rgba(60,120,216,1);
 }
 
+.button_border_none {
+    border: none;
+}
+
 .button_btndefault-label {
     color: rgba(61,133,198,1);
     font-family: Microsoft YaHei;
     font-weight: bold;
     transition: color 0.4s ease 0s;
+    font-size: 14px;
 }
 
 .btnarea:hover {

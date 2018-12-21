@@ -99,10 +99,10 @@ export class CoreModule {
     }
 
     // 加载material svg图标
-    loadSvgResources(ir, ds);
+    // loadSvgResources(ir, ds);
 
     // 加载iconfont svg图标
-    //loadIconFontResource($iconService);
+    loadIconFontResource($iconService);
 
     this.logger.info('core', 'Initialize core module.');
   }

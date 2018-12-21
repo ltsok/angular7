@@ -1,20 +1,60 @@
 
 
 footer {
-    clear: both;
-    font-size: 14px;
-    background-color: #282828;
-    position: relative;
-    z-index: 100;
-    color: #868585;
-    box-shadow: 0 1000px 0 1000px #fff;
+    .footer-contact {
+        text-align: center;
+        line-height: 120px;
+        white-space: nowrap;
+        background: url('/assets/img/qingmu/footer.jpg');
+        .contact-col {
+            text-align: right;
+        }
+        .btn-col {
+            text-align: left;
+        }
+        .contact-content {
+            color: #fff;
+            font-size: 20px;
+        }
+    }
     .footer-wrap {
+        font-size: 14px;
+        background-color: #282828;
+        color: #868585;
+        box-shadow: 0 1000px 0 1000px #fff;
         position: relative;
         padding: 15px 50px;
         border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+        text-align: center;
         .footer-center {
-            display: inline-block;
-            text-align: left;
+            // display: inline-block;
+            // text-align: left;
+            ul {
+                display: flex;
+                width: 50%;
+                margin: 0 auto;
+                li {
+                    flex: 1;
+                    padding: 10px;
+                }
+            }
+        }
+        .footer-logo {
+            display: flex;
+            padding: 20px 0;
+            a {
+                display: inline-block;
+                margin: 0 auto;
+                img {
+                    width: 50px;
+                }
+            }
+        }
+        .copyright {
+            display: flex;
+            span {
+                flex: 1;
+            }
         }
     }
     a {
