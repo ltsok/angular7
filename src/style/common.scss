@@ -72,12 +72,6 @@ a {
 // 内容区
 #main-wrapper {
     flex: 1;
-    .row-container {
-        height: 100%;
-        .main-container {
-            height: 100%;
-        }
-    }
 }
 
 // 清除浮动
@@ -220,19 +214,17 @@ a {
 }
 
 // 下拉菜单
-.aside-container {
-    padding-bottom: 50px;
-}
   
 .aside-container {
     font-size: 12px;
-    margin-left: 6px;
     font-weight: normal;
     opacity: .67;
+    margin-top: 64px;
 }
 
 .menu-site .ant-menu-item > a {
     color: $site-text-color;
+    cursor: pointer;
 }
   
 .menu-site .ant-menu-item-selected > a,

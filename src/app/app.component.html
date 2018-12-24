@@ -2,6 +2,8 @@
 <div id="global">
   <classic-global></classic-global>
 </div>
+<!-- 回到顶部 -->
+<nz-back-top></nz-back-top>
 <!-- mat -->
 <!-- <mat-sidenav-container [class.myapp-dark-theme]="darkTheme">
   <mat-sidenav #sidenav mode="side" opened="false" position="start">
@@ -55,7 +57,7 @@
   </header>
   <div id="main-wrapper">
     <div nz-row class="row-container">
-      <div nz-col [class.hide-menu]="hideMenu" [nzXs]="24" [nzSm]="24" [nzMd]="24" [nzLg]="24" [nzXl]="24" [nzXXl]="24" class="main-menu">
+      <div nz-col *ngIf="hideMenu" [nzXs]="24" [nzSm]="24" [nzMd]="24" [nzLg]="24" [nzXl]="24" [nzXXl]="24" class="main-menu">
         <ul nz-menu [nzMode]="'inline'" class="aside-container menu-site">
           <li *ngFor="let item of routerList" nz-menu-item >
             <a routerLink="{{item.path}}">{{item.name}}</a>

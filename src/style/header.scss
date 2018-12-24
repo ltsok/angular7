@@ -4,9 +4,10 @@ $menu-item-border: 2px;
 #header {
   background: #fff;
 //   box-shadow: 0 2px 8px rgba(240, 241, 242, 65);
-  position: relative;
+  position: fixed;
   z-index: 10;
-  max-width: 100%;
+  width: 100%;
+  box-shadow: 0 4px 8px 0 rgba(7, 17, 27, 0.1);
 }
 
 #logo {
@@ -43,7 +44,7 @@ ul.nav {
         height: 100%;
         cursor: pointer;
         &:hover {
-            background-color: #333;
+            background-color: #3C78D8;
         }
         &:hover a{
             color: white;

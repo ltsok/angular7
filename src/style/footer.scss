@@ -5,7 +5,10 @@ footer {
         text-align: center;
         line-height: 120px;
         white-space: nowrap;
-        background: url('/assets/img/qingmu/footer.jpg');
+        background: -webkit-linear-gradient(left,#38B9B5,#27ADC8,#16A1DA); /* Safari 5.1 - 6.0 */
+        background: -o-linear-gradient(right,#38B9B5,#27ADC8,#16A1DA); /* Opera 11.1 - 12.0 */
+        background: -moz-linear-gradient(right,#38B9B5,#27ADC8,#16A1DA); /* Firefox 3.6 - 15 */
+        background: linear-gradient(to right,#38B9B5,#27ADC8,#16A1DA); /* 标准的语法 */
         .contact-col {
             text-align: right;
         }

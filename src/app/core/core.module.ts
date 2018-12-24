@@ -2,7 +2,7 @@ import { NgModule, Optional, SkipSelf, ModuleWithProviders } from '@angular/core
 import { MatIconRegistry } from '@angular/material';
 import { DomSanitizer } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
-import { HttpClientModule, HttpClientJsonpModule, HttpClient } from '@angular/common/http';
+import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { SharedModule } from '@shared';
@@ -50,7 +50,6 @@ export function createTranslateHttpLoader(http: HttpClient) {
 @NgModule({
   imports: [
     HttpClientModule,
-    // HttpClientJsonpModule,//jsonp跨域
     SharedModule,
     BrowserAnimationsModule,
     MenuModule,

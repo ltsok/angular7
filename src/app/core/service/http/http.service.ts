@@ -276,14 +276,6 @@ export class HttpService {
     return this.local.getJsonObj(this.cache.getCache('server.selected'), true);
   }
 
-  /**
-   * JsonP跨域,后台需要修改相关配置
-   * @param url 
-   * @param callback 
-   */
-  public jsonP(url: string, callback?: string) {
-    return this.http.jsonp(url, callback ? callback : "callback");
-  }
 
   private handleSucc(response: ResponseMsg, request: RequestMsg): ResponseMsg | any {
     this.logger.debug(constant.identifier, response, request.id);

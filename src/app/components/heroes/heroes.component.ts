@@ -65,16 +65,6 @@ export class HeroesComponent implements OnInit, AfterViewInit {
       {class: 'fh-qidong', style: {color: 'red'}},
       {class: 'fh-tingzhi', style: {color: 'yellow'}},
     ];
-    // $.ajax({
-    //   url: "http://10.5.43.9:9999/users/all",
-    //   type: "GET",
-    //   // dataType: "jsonp",
-    //   // jsonp: "callback",
-    //   // cache: true,
-    //   success: function (res) {
-    //     console.log(res);
-    //   }
-    // });
 
     for (let i = 10; i < 110; i++) {
       this.selectData.push(

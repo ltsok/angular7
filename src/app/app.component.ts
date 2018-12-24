@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { OverlayContainer } from '@angular/cdk/overlay';
+import * as $ from "jquery";
 
 @Component({
   selector: 'app-root',
@@ -30,7 +31,7 @@ export class AppComponent {
   ];
 
   /** 是否隐藏下拉导航栏 */
-  hideMenu: boolean = true;
+  hideMenu: boolean = false;
 
   /**
    * 构造函数
@@ -40,6 +41,11 @@ export class AppComponent {
   constructor(
     private oc: OverlayContainer
   ){
+    $(window).resize(()=>{
+      if ( window.innerWidth > 768 ) {
+        this.hideMenu = false;
+      }
+    });
   }
 
   /**
