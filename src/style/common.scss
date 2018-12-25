@@ -72,6 +72,7 @@ a {
 // 内容区
 #main-wrapper {
     flex: 1;
+    padding-top: 64px;
 }
 
 // 清除浮动
@@ -214,21 +215,27 @@ a {
 }
 
 // 下拉菜单
-  
+.main-menu {
+    position: relative;
+    width: 50%;
+}
+
 .aside-container {
     font-size: 12px;
     font-weight: normal;
     opacity: .67;
-    margin-top: 64px;
+    // margin-top: 64px;
+    position: absolute;
+    z-index: 1000;
 }
 
-.menu-site .ant-menu-item > a {
+.aside-container .ant-menu-item > a {
     color: $site-text-color;
     cursor: pointer;
 }
   
-.menu-site .ant-menu-item-selected > a,
-.menu-site .ant-menu-item > a:hover {
+.aside-container .ant-menu-item-selected > a,
+.aside-container .ant-menu-item > a:hover {
     color: $primary-color;
 }
 

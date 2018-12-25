@@ -54,16 +54,16 @@
         </div>
       </div>
     </div>
+    <div nz-col *ngIf="hideMenu" [nzXs]="24" [nzSm]="24" [nzMd]="24" [nzLg]="24" [nzXl]="24" [nzXXl]="24" class="main-menu">
+      <ul nz-menu [nzMode]="'inline'" class="aside-container">
+        <li *ngFor="let item of routerList" nz-menu-item >
+          <a routerLink="{{item.path}}">{{item.name}}</a>
+        </li>
+      </ul>
+    </div>
   </header>
   <div id="main-wrapper">
     <div nz-row class="row-container">
-      <div nz-col *ngIf="hideMenu" [nzXs]="24" [nzSm]="24" [nzMd]="24" [nzLg]="24" [nzXl]="24" [nzXXl]="24" class="main-menu">
-        <ul nz-menu [nzMode]="'inline'" class="aside-container menu-site">
-          <li *ngFor="let item of routerList" nz-menu-item >
-            <a routerLink="{{item.path}}">{{item.name}}</a>
-          </li>
-        </ul>
-      </div>
       <div nz-col class="main-container" [nzXs]="24" [nzSm]="24" [nzMd]="24" [nzLg]="24" [nzXl]="24" [nzXXl]="24">
         <router-outlet></router-outlet>
       </div>
