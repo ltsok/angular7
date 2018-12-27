@@ -1,0 +1,19 @@
+<waf-select
+  (clickItem)="chosedItem($event)"
+  (onSearch)="searchItem($event);"
+  [selectedItems]="selectedOptions"
+  [allItems]="dataSource"
+  selectType="tree"
+  >
+  <div class="tree-panel">
+    <waf-tree
+      [(dataSource)]="dataSource"
+      [isShowCheckBox]="true"
+      [(checkedIds)]="checkedItems"
+      (onCheckChange)="checkedChange()"
+      [searchName]="searchStr"
+      [isSearchName]="true"
+      >
+    </waf-tree>
+  </div>
+</waf-select>

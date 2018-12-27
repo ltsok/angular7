@@ -95,24 +95,12 @@
     <div class="footer-wrap clearfix">
       <div class="footer-center">
         <ul>
-          <li><a href="">首页</a></li>
-          <li><a href="">课程介绍</a></li>
-          <li><a href="">团队介绍</a></li>
-          <li><a href="">新闻资讯</a></li>
-          <li><a href="">联系我们</a></li>
-          <li><a href="">关于我们</a></li>
-          <li><a href="">在线报名</a></li>
+          <li *ngFor = "let item of routerList"><a routerLink="{{item.path}}">{{item.name}}</a></li>
         </ul>
       </div>
       <div class="footer-center footer-center-phone">
         <ul>
-          <li><a href="">首页</a></li>
-          <li><a href="">课程</a></li>
-          <li><a href="">团队</a></li>
-          <li><a href="">新闻</a></li>
-          <li><a href="">联系</a></li>
-          <li><a href="">关于</a></li>
-          <li><a href="">在线</a></li>
+          <li *ngFor = "let item of routerList"><a routerLink="{{item.path}}">{{item.name}}</a></li>
         </ul>
       </div>
       <div class="footer-logo">

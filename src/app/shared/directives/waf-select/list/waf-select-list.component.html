@@ -1,0 +1,10 @@
+<waf-select (clickItem)="chosedItem($event)" [allItems]="allOptions" [selectedItems]="selectedOptions" selectType="list">
+  <ul class="select-list">
+    <ng-container *ngFor="let item of allOptions; let i = index;">
+      <li *ngIf="item.showSearch" (click)="clickItem(i, $event, 'select')" [class.itemSelected]="item.selected" [title]="item.label">
+        {{item.label}}
+        <i class="action" nz-icon type="check"></i>
+      </li>
+    </ng-container>
+  </ul>
+</waf-select>

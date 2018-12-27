@@ -1,9 +1,10 @@
 
 import { Component, OnInit, Inject, HostBinding, AfterViewInit, ViewChild } from '@angular/core';
 import { HeroService } from './heroes.service';
-import { AdItem, slideToRight, LtsModelComponent } from '@shared';
+import { AdItem, slideToRight, LtsModelComponent, WafTreeNode } from '@shared';
 import { apiUrl } from '@core';
-import { NzIconService } from 'ng-zorro-antd';
+import { NzIconService, NzModalService } from 'ng-zorro-antd';
+import { NzMessageService } from 'ng-zorro-antd';
 
 @Component({
   selector: 'app-heroes',
@@ -30,12 +31,21 @@ export class HeroesComponent implements OnInit, AfterViewInit {
   iconArray;
   iconSize;
   zoom:boolean = false;
+  expandKeys = [ '100', '1001' ];
+  value: string;
+  nodes: WafTreeNode[] = [];
+  ids = [];
+  checkedZorro:any;
+  ngZorroNodes = [];
+  selectedNodes = ['0-2','0-1','0-3','0-4','0-6'];
 
   @ViewChild(LtsModelComponent) ltsModel: LtsModelComponent;
 
   constructor(
     private heroservice: HeroService,
     private _iconService: NzIconService,
+    private message: NzMessageService,
+    private modalService: NzModalService,
     @Inject(apiUrl) private url
   ) {
     console.log(url);
@@ -45,6 +55,17 @@ export class HeroesComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
+
+    for (let i = 0; i < 10; i++) {
+      let node = null;
+      if (i == 5) {
+        node = new WafTreeNode('0-' + i, '测试' + i, [new WafTreeNode('1-0', '测试5-0'), new WafTreeNode('1-1', '测试5-1'), new WafTreeNode('1-2', '测试5-2')]);
+      } else {
+        node = new WafTreeNode('0-' + i, '测试' + i);
+      }
+      // this.nodes.push(node);
+    }
+
     setTimeout(()=>{
       this.zoom = true;
     },2000);
@@ -66,11 +87,13 @@ export class HeroesComponent implements OnInit, AfterViewInit {
       {class: 'fh-tingzhi', style: {color: 'yellow'}},
     ];
 
-    for (let i = 10; i < 110; i++) {
+    console.time();
+    for (let i = 10; i < 100; i++) {
       this.selectData.push(
         { label: i.toString(36) + i, value: i.toString(36) + i }
       );
     }
+    console.timeEnd();
 
     // this.selected = [{label: "a10", value: "a10"},{label: "b11", value: "b11"},{label: "c12", value: "c12"},{label: "d13", value: "d13"}]
     // this.selected = this.selectData;
@@ -93,6 +116,18 @@ export class HeroesComponent implements OnInit, AfterViewInit {
     }
   }
 
+  showConfirm(): void {
+    this.modalService.success({
+      nzTitle  : '确认删除模板?',
+      nzContent: '此模板已设为常用模板，模板删除后，用户无法获取默认删除条件。',
+      nzOnOk   : () => console.log('OK')
+    });
+  }
+
+  createBasicMessage(): void {
+    this.message.success('修改成功');
+  }
+
   ngAfterViewInit(): void {
     // this.ltsModel.test = 12;
   }
@@ -102,7 +137,9 @@ export class HeroesComponent implements OnInit, AfterViewInit {
   }
 
   getSelected(): void {
-    console.log(this.selected);
+    console.log(this.selectedNodes);
+    // console.log(this.ids);
+    // console.log('select zorro', this.checkedZorro);
   }
 
   check(e) {

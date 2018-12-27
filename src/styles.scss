@@ -27,3 +27,50 @@
 // footer 样式
 @import './style/footer.scss';
 
+// zorro公共样式
+// tooltip
+.ant-tooltip-arrow {
+    border-top-color: #fff !important;
+}
+.ant-tooltip-inner {
+    background-color: #fff !important;
+    color: #848B93 !important;
+}
+
+// message
+.ant-message .anticon {
+    font-size: 32px !important;
+    display: block !important;
+    margin: 10px 0 !important;
+}
+
+// modal-confirm
+.ant-modal-confirm {
+    .ant-modal-confirm-body {
+        .anticon {
+            font-size: 56px !important;
+            margin-right: 0 !important;
+            float: none !important;
+            display: block !important;
+            margin-bottom: 15px !important;
+        }
+        .ant-modal-confirm-title {
+            text-align: center !important;
+            font-weight: bold;
+        }
+        .ant-modal-confirm-content {
+            text-align: center !important;
+            color: #A7ACB4 !important;
+            margin-left: 0 !important;
+        }
+    }
+    // 底部按钮
+    .ant-modal-confirm-btns {
+        float: none !important;
+        text-align: center !important;
+        button {
+            padding: 0 65px !important;
+            height: 40px !important;
+        }
+    }
+}

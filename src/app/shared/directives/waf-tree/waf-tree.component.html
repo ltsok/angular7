@@ -1,0 +1,72 @@
+<div [style.width.px]="width">
+  <nz-tree #nzTree *ngIf="!isCanDraggable && !isSearchName; else default" 
+  [nzData]="_dataSource" 
+  [nzCheckable]="isShowCheckBox" 
+  [nzShowExpand]="isShowExpandIcon"
+  [nzAsyncData]="isAyncData" 
+  [nzDraggable]="isCanDraggable" 
+  [nzMultiple]="isMutiple" 
+  [nzCheckStrictly]="isCheckStrictly"
+  [nzShowLine]="isShowLine"
+  [(nzSelectedKeys)]="selectedIds" 
+  [nzExpandAll]="isExpandAll" 
+  [(nzExpandedKeys)]="expandIds" 
+  [(nzCheckedKeys)]="checkedIds"
+  [nzSearchValue]="searchName"
+  (nzClick)="click($event)" 
+  (nzDblClick)="dbClick($event)" 
+  (nzContextMenu)="contextClick($event)"
+  (nzCheckBoxChange)="checkChange($event)" 
+  (nzExpandChange)="expandChange($event)" 
+  (nzOnDragStart)="dragStart($event)"
+  (nzOnDragEnter)="dragEnter($event)" 
+  (nzOnDragOver)="dragOver($event)" 
+  (nzOnDragLeave)="dragLeave($event)"
+  (nzOnDragEnd)="dragEnd($event)" 
+  (nzOnDrop)="drop($event)">
+    <ng-template #nzTreeTemplate let-node>
+      <span *hide="node.origin.isHide" class="center" [class.selected]="node.isSelected">
+        <ng-container [ngSwitch]="isUseDefault">
+          <!-- 用户自定义模板 -->
+          <ng-container *ngSwitchCase="false">
+            <ng-template [ngTemplateOutlet]="wafTreeTemplate" [ngTemplateOutletContext]="{ $implicit: getNeedWafTreeNode(node) }"></ng-template>
+          </ng-container>
+          <!-- 使用默认模板 -->
+          <ng-container *ngSwitchDefault>
+            <i *ngIf="isShowFrontIcon" class="waffont {{node.origin.frontIcon||'waf-houtai4'}}" (click)="_frontIconClick($event,node)"></i>
+            {{node.title}}
+            <i *ngIf="isShowBehindIcon" class="waffont {{node.origin.behindIcon||'waf-houtai7'}}" (click)="_behindIconClick($event,node)"></i>
+          </ng-container>
+        </ng-container>
+      </span>
+    </ng-template>
+  </nz-tree>
+  <ng-template #default>
+    <nz-tree 
+    [nzData]="_dataSource" 
+    [nzCheckable]="isShowCheckBox" 
+    [nzShowExpand]="isShowExpandIcon" 
+    [nzAsyncData]="isAyncData"
+    [nzDraggable]="isCanDraggable" 
+    [nzMultiple]="isMutiple" 
+    [nzCheckStrictly]="isCheckStrictly" 
+    [nzExpandAll]="isExpandAll"
+    [nzShowLine]="isShowLine"
+    [(nzSelectedKeys)]="selectedIds" 
+    [(nzExpandedKeys)]="expandIds" 
+    [(nzCheckedKeys)]="checkedIds" 
+    [nzSearchValue]="searchName"
+    (nzClick)="click($event)" 
+    (nzDblClick)="dbClick($event)" 
+    (nzContextMenu)="contextClick($event)"
+    (nzCheckBoxChange)="checkChange($event)" 
+    (nzExpandChange)="expandChange($event)" 
+    (nzOnDragStart)="dragStart($event)"
+    (nzOnDragEnter)="dragEnter($event)" 
+    (nzOnDragOver)="dragOver($event)" 
+    (nzOnDragLeave)="dragLeave($event)"
+    (nzOnDragEnd)="dragEnd($event)" 
+    (nzOnDrop)="drop($event)">
+    </nz-tree>
+  </ng-template>
+</div>

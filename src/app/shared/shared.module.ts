@@ -23,6 +23,7 @@ import {
   MatSidenavModule,
   MatProgressSpinnerModule,
 } from '@angular/material';
+import { WafTreeService } from './directives/waf-tree/waf-tree.service';
 
 
 const matModules = [
@@ -65,7 +66,8 @@ const zorroModules = [
     ...directives
   ],
   providers: [
-    WafMenuService
+    WafMenuService,
+    WafTreeService
   ]
 })
 export class SharedModule {

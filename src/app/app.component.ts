@@ -13,21 +13,19 @@ export class AppComponent {
   darkTheme = false;
 
   /** 导航栏 */
-  routerList = [
+  routerList2 = [
     {name: 'xxxx', path: '/home'},
     {name: 'xxxx', path: '/introduction'},
     {name: 'xxxx', path: '/information'},
     {name: 'xxxx', path: '/achievements'},
-    {name: 'xxxx', path: '/demonstration'},
-    {name: 'xxxx', path: '/contact'}
+    {name: 'xxxx', path: '/demonstration'}
   ];
-  routerList2 = [
-    {name: '官网首页', path: '/home'},
-    {name: '画室简介', path: '/introduction'},
+  routerList = [
+    {name: '首页', path: '/home'},
+    {name: '关于我们', path: '/introduction'},
     {name: '最新资讯', path: '/information'},
-    {name: '历届成绩', path: '/achievements'},
-    {name: '画室公开课', path: '/demonstration'},
-    {name: '联系我们', path: '/contact'}
+    {name: '画室公开课', path: '/achievements'},
+    {name: '预约报名', path: '/demonstration'},
   ];
 
   /** 是否隐藏下拉导航栏 */
