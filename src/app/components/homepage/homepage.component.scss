@@ -87,7 +87,10 @@ h3 {
 .course-feature {
     margin: 0;
     padding-bottom: 30px;
-    background-color: rgb(116, 190, 225);
+    background: -webkit-linear-gradient(left,#38B9B5,#27ADC8,#16A1DA); /* Safari 5.1 - 6.0 */
+    background: -o-linear-gradient(right,#38B9B5,#27ADC8,#16A1DA); /* Opera 11.1 - 12.0 */
+    background: -moz-linear-gradient(right,#38B9B5,#27ADC8,#16A1DA); /* Firefox 3.6 - 15 */
+    background: linear-gradient(to right,#38B9B5,#27ADC8,#16A1DA); /* 标准的语法 */
     .course-feature-name {
         padding-top: 30px !important;
     }
@@ -130,7 +133,8 @@ h3 {
 
 // 团队优势
 .team-advantages {
-    background-color: #54cd98;
+    // background-color: #54cd98;
+    background-color: rgb(116, 190, 225);
     .team-group {
         display: flex;
         width: 80%;
@@ -141,12 +145,12 @@ h3 {
             .symble-container {
                 width: 100px;
                 height: 100px;
-                border: 3px solid #368462;
+                border: 3px solid #ffffff;
                 border-radius: 50%;
                 text-align: center;
                 line-height: 100px;
                 font-size: 50px;
-                color:#368462
+                color:#ffffff
             }
         }
         .group-description {
