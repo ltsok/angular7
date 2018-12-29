@@ -64,16 +64,25 @@ h3 {
             font-weight: bold;
             color: #87827d;
         }
-        .section-item {
-            width:260px;
-            margin: 0 auto;
-            margin-bottom: 30px;
-        }
-        .section-item-left {
-            float: left;
-        }
-        .section-item-right {
-            float: right;
+        .card-container {
+            position: relative;
+            &:hover {
+                opacity: .67;
+            }
+            .card-play {
+                position: absolute;
+            }
+            .section-item {
+                width: 90%;
+                margin: 0 auto;
+                margin-bottom: 30px;
+            }
+            .section-item-left {
+                float: left;
+            }
+            .section-item-right {
+                float: right;
+            }
         }
         .view-more {
             width: 100%;
@@ -137,7 +146,7 @@ h3 {
     background-color: rgb(116, 190, 225);
     .team-group {
         display: flex;
-        width: 80%;
+        width: 85%;
         padding-top: 30px;
         margin: 0 auto;
         .team-symble {

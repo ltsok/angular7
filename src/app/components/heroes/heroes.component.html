@@ -1,104 +1,15 @@
-<!-- <div style="height: 150px;">
-  <app-c-adds [ads]="ads"></app-c-adds>
-</div> -->
-
-
-<div style="width:500px;height: 100%; padding: 100px; float: left" (click)="show()">
-  <i class="fhfont"></i>
-  <!-- <nz-select style="width: 100%" [(ngModel)]="tagValue" [nzSize]="size" nzMode="multiple" nzPlaceHolder="Please select">
-    <nz-option *ngFor="let option of listOfOption" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
-  </nz-select> -->
-  
-  <!-- <waf-input [(ngModel)]="ip" type="ipaddress" (checkResult)="check($event)"></waf-input>
-  <h3>ip: {{ip}}</h3>
-  <waf-input [(ngModel)]="mask" type="mask" (checkResult)="check($event)"></waf-input>
-  <h3>mask: {{mask}}</h3>
-  <waf-input [(ngModel)]="phone" type="phone" placeholder="phone" (checkResult)="check($event)"></waf-input>
-  <h3>phone: {{phone}}</h3>
-  <waf-input [(ngModel)]="mail" type="mail" placeholder="mail" [regExp]="['^123$']" (checkResult)="check($event)"></waf-input>
-  <h3>mail: {{mail}}</h3>
-  <waf-input [(ngModel)]="normal" type="text" (checkResult)="check($event)" [regExp]="['^123$']" [iconClass]="['fh-voice1']"></waf-input>
-  <h3 nz-tooltip [nzTrigger]="'click'" nzTitle="prompt text" style="color: red">普通输入框: {{normal}}</h3>
-  <h3>checkResult: {{result}}</h3> -->
-  <span nz-tooltip [nzTrigger]="'click'" nzTitle="prompt textxxxxxxxxxxxxxx ">nz-tooltip</span>
-  <button nz-button [nzType]="'default'" (click)="createBasicMessage()">Customized display duration</button>
-  <button nz-button nzType="info" (click)="showConfirm()">Confirm</button>
-</div>
-<div style="width: 600px;height: 100%; border:1px solid #ddd; float: left;padding: 50px;">
-  <h1>-</h1>
-  <h1>-</h1>
-  <h1>-</h1>
-  <h1>-</h1>
-  <h1>-</h1>
-  <h1>-</h1>
-  <h1>-</h1>
-  <h1>-</h1>
-  <h1>-</h1>
-  <h1>-</h1>
-  <h1>-</h1>
-  <h1>-</h1>
-  <h1>-</h1>
-  <h1>-</h1>
-  <h1>-</h1>
-  <h1>-</h1>
-  <h1>-</h1>
-  <h1>waf-select-list</h1>
-  <waf-select-list [data]="selectData" [(ngModel)]="selected"></waf-select-list>
-  <h1>-</h1>
-  <h1>waf-select-tree</h1>
-  <waf-select-tree [data]="nodes" [(ngModel)]="selectedNodes"></waf-select-tree>
-  <h1>-</h1>
-  <h1>waf-tree</h1>
-  <!-- <waf-tree [(dataSource)]="nodes" [isShowCheckBox]="true" [(checkedIds)]="ids"></waf-tree> -->
-  <h1>-</h1>
-  <h1>nz-tree-select</h1>
-  <!-- <nz-tree-select
-      style="width: 250px"
-      [nzNodes]="ngZorroNodes"
-      nzShowSearch
-      nzCheckable
-      nzPlaceHolder="Please select"
-      [(ngModel)]="checkedZorro"
+<div style="display: flex;">
+  <!-- <div style="flex: 1; text-align: center;padding-top: 100px;">
+    <app-c-adds [ads]="ads"></app-c-adds>
+  </div> -->
+  <div style="flex: 1;">
+    <!-- <button nz-button>f</button> -->
+    <video 
+      style="width: 375px; height: 200px;"
+      src="assets/videos/movie.mp4"
+      controls
       >
-    </nz-tree-select> -->
-  <h1>-</h1>
-  <h1>-</h1>
-  <button nz-button nzType="primary" (click)="getSelected()">getSelected</button>
-  <h1>-</h1>
-  <h1>-</h1>
-  <h1>-</h1>
-  <h1>-</h1>
-  <h1>-</h1>
-  <h1>-</h1>
-  <h1>-</h1>
-  <h1>-</h1>
-  <h1>-</h1>
-  <h1>-</h1>
-</div>
-<div class="father">
-  <!-- <div class="son">
+      该浏览器不支持HTML5 video
+    </video>
   </div>
-  <lts-model></lts-model> -->
-
-  <!-- <nz-radio-group [(ngModel)]="size">
-    <label nz-radio-button nzValue="large">large</label>
-    <label nz-radio-button nzValue="default">default</label>
-    <label nz-radio-button nzValue="small">small</label>
-  </nz-radio-group>
-  <nz-range-picker [nzSize]="size" nzShowTime="true"></nz-range-picker>
-  <br>
-  <nz-time-picker [(ngModel)]="time"></nz-time-picker> -->
-  <!-- <nz-carousel [nzEffect]="'fade'">
-    <div nz-carousel-content *ngFor="let index of array"><h3>{{index}}</h3></div>
-  </nz-carousel> -->
-  <!-- <waf-menu>
-    <fat-menu-item *ngFor="let rootItem of menuData" [title]="rootItem.name" (select)="choseItem($event)">
-      <fat-menu-group  *ngFor="let subItem of rootItem.children" [title]="subItem.name">
-        <fat-menu-group-item *ngFor="let thirdItem of subItem.children" [title]="thirdItem.name" (select)="choseItem($event)">
-        </fat-menu-group-item>
-      </fat-menu-group>
-    </fat-menu-item>
-  </waf-menu> -->
-  <h2>waf-icon</h2>
-  <waf-icon [icons]="iconArray" size="50px" animate="blink"></waf-icon>
 </div>

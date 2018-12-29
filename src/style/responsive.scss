@@ -29,7 +29,7 @@
   }
 }
 
-@media only screen and (max-width: 768px) {
+@media only screen and (max-width: 576px) {
 
   #header {
     text-align: center;
@@ -89,10 +89,6 @@
   .section-name {
     padding-top: 30px !important;
     font-size: 20px !important;
-  }
-
-  .hot-class-item {
-    width: 150px !important;
   }
 
   .section-item-left {
@@ -202,6 +198,11 @@
   .feature-img {
     text-align: center !important;
     padding-top: 15px !important;
+  }
+
+  // hot-course
+  .hot-class-item {
+    width: 98% !important;
   }
 
   // footer contact
