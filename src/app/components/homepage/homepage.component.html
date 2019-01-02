@@ -42,7 +42,7 @@
   </div>
 </div> -->
 <!-- hot course -->
-<div class="section-wrap">
+<div class="section-wrap hot-course">
   <div class="section-container">
     <div nz-row>
       <div nz-col [nzXs]="24" [nzSm]="24" [nzMd]="24" [nzLg]="24" [nzXl]="24" [nzXXl]="24">
@@ -53,13 +53,15 @@
           OPEN COURSE
         </div>
       </div>
-      <div nz-col class="card-container" [nzXs]="12" [nzSm]="12" [nzMd]="12" [nzLg]="12" [nzXl]="8" [nzXXl]="8">
-        <div class="card-play">
-          <i nz-icon type="play-circle"></i>
+      <div nz-col [nzXs]="12" [nzSm]="12" [nzMd]="12" [nzLg]="12" [nzXl]="8" [nzXXl]="8">
+        <div class="card-container">
+          <div class="card-play">
+            <i nz-icon type="play-circle"></i>
+          </div>
+          <nz-card class="section-item section-item-left hot-class-item" nzHoverable [nzCover]="coverTemplate">
+            <nz-card-meta nzTitle="Europe Street beat" nzDescription="www.instagram.com"></nz-card-meta>
+          </nz-card>
         </div>
-        <nz-card class="section-item section-item-left hot-class-item" nzHoverable [nzCover]="coverTemplate">
-          <nz-card-meta nzTitle="Europe Street beat" nzDescription="www.instagram.com"></nz-card-meta>
-        </nz-card>
       </div>
       <div nz-col class="card-container" [nzXs]="12" [nzSm]="12" [nzMd]="12" [nzLg]="12" [nzXl]="8" [nzXXl]="8">
         <nz-card class="section-item hot-class-item" nzHoverable [nzCover]="coverTemplate">

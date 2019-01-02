@@ -45,7 +45,7 @@ h3 {
     }
 }
 
-// 热门课程
+// 公共样式
 .section-wrap {
     width: 100%;
     // margin-top: 15px;
@@ -64,25 +64,16 @@ h3 {
             font-weight: bold;
             color: #87827d;
         }
-        .card-container {
-            position: relative;
-            &:hover {
-                opacity: .67;
-            }
-            .card-play {
-                position: absolute;
-            }
-            .section-item {
-                width: 90%;
-                margin: 0 auto;
-                margin-bottom: 30px;
-            }
-            .section-item-left {
-                float: left;
-            }
-            .section-item-right {
-                float: right;
-            }
+        .section-item {
+            width: 85%;
+            margin: 0 auto;
+            margin-bottom: 30px;
+        }
+        .section-item-left {
+            float: left;
+        }
+        .section-item-right {
+            float: right;
         }
         .view-more {
             width: 100%;
@@ -91,6 +82,21 @@ h3 {
         }
     }
 }
+
+// 热门课程
+.hot-course {
+    .card-container {
+        position: relative;
+        &:hover {
+            opacity: .67;
+        }
+        .card-play {
+            position: absolute;
+        }
+        
+    }
+}
+
 
 // 课程特色
 .course-feature {
@@ -138,6 +144,10 @@ h3 {
 // 团队介绍
 .team-introduction {
     margin-top: 0 !important;
+    .section-item {
+        width: 85%;
+        margin: 0 auto;
+    }
 }
 
 // 团队优势
