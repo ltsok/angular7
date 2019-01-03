@@ -1,0 +1,22 @@
+<div class="carousel" #carousel>
+  <div class="carousel-container">
+    <ul class="list" #list>
+      <ng-content></ng-content>
+    </ul>
+    <span class="arrow left-arrow" (click)="previous()">
+      <i nz-icon type="left"></i>
+    </span>
+    <span class="arrow right-arrow" (click)="next()">
+      <i nz-icon type="right"></i>
+    </span>
+  </div>
+  <div class="carousel-footer">
+    <div class="btn-container">
+      <ul class="btns">
+        <li *ngFor="let item of contentList; let i = index;">
+          <span [class.active]="i === chosedIndex" (click)="choseItem(i)"></span>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

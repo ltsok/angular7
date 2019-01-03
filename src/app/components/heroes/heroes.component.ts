@@ -16,7 +16,7 @@ export class HeroesComponent implements OnInit {
 
   @HostBinding('@routerAnim') state;
   ads: AdItem[];
-
+  array = [1,2,3,4];
   constructor(
     private heroservice: HeroService,
     @Inject(apiUrl) private url

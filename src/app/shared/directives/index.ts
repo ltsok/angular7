@@ -1,3 +1,5 @@
+import { WafCarouselContentComponent } from './waf-carousel/waf-carousel-content.component';
+import { WafCarouselComponent } from './waf-carousel/waf-carousel.component';
 import { WafTreeComponent } from './waf-tree/waf-tree.component';
 import { FatMenuGroupItemComponent } from './waf-menu/fat-menu-group-item.component';
 import { FatMenuGroupComponent } from './waf-menu/fat-menu-group.component';
@@ -37,5 +39,7 @@ export const directives = [
     FatMenuGroupItemComponent,
     WafIconComponent,
     WafTreeComponent,
-    HideDirective
+    HideDirective,
+    WafCarouselComponent,
+    WafCarouselContentComponent
 ];
