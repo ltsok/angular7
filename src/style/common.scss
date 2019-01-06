@@ -281,3 +281,56 @@ a {
 .btnarea:hover .button_btndefault-label {
     color: white;
 }
+
+// 内容区公共样式
+.section-wrap {
+    width: 100%;
+    // margin-top: 15px;
+    background-color: #fff;
+    .section-container {
+        margin: 0 auto;
+        max-width: 1200px;
+        .section-name {
+            padding-top: 30px;
+            text-align: center;
+            font-size: 28px;
+        }
+        .section-name-en {
+            padding: 20px 0 30px 0;
+            text-align: center;
+            font-weight: bold;
+            color: #87827d;
+        }
+        .section-item {
+            width: 85%;
+            margin: 0 auto;
+            margin-bottom: 30px;
+        }
+        .section-item-left {
+            float: left;
+        }
+        .section-item-right {
+            float: right;
+        }
+        .view-more {
+            width: 100%;
+            text-align: center;
+            margin: 35px 0 30px 0;
+        }
+    }
+}
+
+// 面包屑
+.breadcrumb {
+    width: 100%;
+    background-color: #fff;
+    padding-top: 24px;
+    .breadcrumb-container {
+        margin: 0 auto;
+        max-width: 1200px;
+    }
+    // 覆盖ng-zorro默认margin
+    .ant-divider-horizontal {
+        margin: 10px 0 0 0;
+    }
+}

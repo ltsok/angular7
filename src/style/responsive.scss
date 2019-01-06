@@ -29,6 +29,46 @@
   }
 }
 
+@media only screen and (max-width: 1200px) {
+  .section-item-left {
+    float: none !important;
+  }
+
+  .section-item-right {
+    float: none !important;
+  }
+
+  .feature-profile {
+    text-align: center;
+    padding-top: 15px !important;
+  }
+
+  // footer contact
+  .contact-col {
+    text-align: center !important;
+    line-height: 50px !important;
+    .contact-content {
+      font-size: 15px !important;
+      .footer-arrow {
+        display: none !important;
+      }
+    }
+  }
+  .btn-col {
+    line-height: 50px;
+    padding: 10px;
+    text-align: center !important;
+  }
+
+  .footer-wrap {
+    .footer-center {
+      ul {
+        width: 100% !important;
+      }
+    }
+  }
+}
+
 @media only screen and (max-width: 576px) {
 
   #header {
@@ -115,30 +155,30 @@
   }
 
   // team
-  .team-group {
-    flex-direction: column;
-    align-items: center;
-    .symble-container {
-      width: 60px !important;
-      height: 60px !important;
-      line-height: 60px !important;
-      font-size: 30px !important;
-    }
-    .group-description {
-      padding-top: 15px;
-      .group-title {
-        width: 100% !important;
-        text-align: center;
-      }
-      .group-content {
-        display: none;
-      }
-    }
-  }
+  // .team-group {
+  //   flex-direction: column;
+  //   align-items: center;
+  //   .symble-container {
+  //     width: 60px !important;
+  //     height: 60px !important;
+  //     line-height: 60px !important;
+  //     font-size: 30px !important;
+  //   }
+  //   .group-description {
+  //     padding-top: 15px;
+  //     .group-title {
+  //       width: 100% !important;
+  //       text-align: center;
+  //     }
+  //     .group-content {
+  //       display: none;
+  //     }
+  //   }
+  // }
   // team-item
-  .team-item {
-    width: 100px !important;
-  }
+  // .team-item {
+  //   width: 100px !important;
+  // }
 
   // news-lisg
   .news-list {
@@ -172,61 +212,4 @@
     }
   }
 
-}
-
-@media only screen and (max-width: 1200px) {
-  .section-item-left {
-    float: none !important;
-  }
-
-  .section-item-right {
-    float: none !important;
-  }
-
-  .feature-profile {
-    text-align: center;
-    padding-top: 15px !important;
-  }
-
-  .feature-content {
-
-    p {
-      margin: 0 auto !important;
-    }
-  }
-
-  .feature-img {
-    text-align: center !important;
-    padding-top: 15px !important;
-  }
-
-  // hot-course
-  .hot-class-item {
-    width: 98% !important;
-  }
-
-  // footer contact
-  .contact-col {
-    text-align: center !important;
-    line-height: 50px !important;
-    .contact-content {
-      font-size: 15px !important;
-      .footer-arrow {
-        display: none !important;
-      }
-    }
-  }
-  .btn-col {
-    line-height: 50px;
-    padding: 10px;
-    text-align: center !important;
-  }
-
-  .footer-wrap {
-    .footer-center {
-      ul {
-        width: 100% !important;
-      }
-    }
-  }
 }
