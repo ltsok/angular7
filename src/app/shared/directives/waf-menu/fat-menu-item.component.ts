@@ -53,10 +53,10 @@ export class FatMenuItemComponent implements OnInit, AfterContentInit {
     private subMenu: ElementRef;
 
     /** 一级菜单对应的id */
-    private rootId: string;
+    public rootId: string;
     
     /** 当前选中的一级菜单id */
-    private selectedId: string;
+    public selectedId: string;
     
     /**
      * 构造函数

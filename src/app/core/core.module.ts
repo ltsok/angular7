@@ -7,18 +7,18 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { SharedModule } from '@shared';
 import { constant } from './service/i18n/i18n.constant';
-import { HeaderComponent, FooterComponent, SidebarComponent } from './layout';
+// import { HeaderComponent, FooterComponent, SidebarComponent } from './layout';
 import { HttpService, LoggerService, CacheService, StorageService, TpiGlobalService, I18nService, I18nPipe } from './service';
 import { loadSvgResources, loadIconFontResource } from '@utils';
 import { MenuModule } from '../templet/menu/menu.module';
 import { NzIconService } from 'ng-zorro-antd';
 
 // components
-const components = [
-  HeaderComponent,
-  FooterComponent,
-  SidebarComponent
-];
+// const components = [
+//   HeaderComponent,
+//   FooterComponent,
+//   SidebarComponent
+// ];
 
 // services
 const services = [
@@ -62,11 +62,11 @@ export function createTranslateHttpLoader(http: HttpClient) {
     })
   ],
   declarations: [
-    ...components,
+    // ...components,
     ...pipes
   ],
   exports: [
-    ...components,
+    // ...components,
     ...pipes
   ],
   providers: [

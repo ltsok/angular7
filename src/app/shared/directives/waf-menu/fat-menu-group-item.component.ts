@@ -35,7 +35,7 @@ export class FatMenuGroupItemComponent implements OnInit {
     public groupId: string;
 
     /** 当前选中的三级菜单id */
-    private selectId: string;
+    public selectId: string;
 
 
     /**

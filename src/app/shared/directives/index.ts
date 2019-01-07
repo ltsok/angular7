@@ -16,6 +16,7 @@ import { WafIconComponent } from './waf-icon/waf-icon.component';
 import { HideDirective } from './waf-tree/waf-tree.directive';
 import { WafSelectListComponent } from './waf-select/list/waf-select-list.component';
 import { WafSelectTreeComponent } from './waf-select/tree/waf-select-tree.component';
+import { WafMultiselectComponent } from './waf-multiselect/waf-multiselect.component';
 
 
 export * from './c-ads';
@@ -41,5 +42,6 @@ export const directives = [
     WafTreeComponent,
     HideDirective,
     WafCarouselComponent,
-    WafCarouselContentComponent
+    WafCarouselContentComponent,
+    WafMultiselectComponent
 ];
