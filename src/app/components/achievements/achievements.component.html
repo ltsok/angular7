@@ -8,47 +8,34 @@
   <div class="breadcrumb-container">
     <nz-breadcrumb>
       <nz-breadcrumb-item>
-        <a><span>首页</span></a>
+        <a [routerLink]="['/home']">首页</a>
       </nz-breadcrumb-item>
       <nz-breadcrumb-item>
-        <a><span>历届成绩</span></a>
+        历届成绩
       </nz-breadcrumb-item>
     </nz-breadcrumb>
     <nz-divider></nz-divider>
   </div>
 </div>
-<div class="section-wrap achive-container">
+<div class="section-wrap content-container">
   <div class="section-container">
     <div nz-row>
-      <div nz-col [nzXs]="12" [nzSm]="12" [nzMd]="6" [nzLg]="6" [nzXl]="6" [nzXXl]="6">
-        <nz-card class="section-item" nzHoverable [nzCover]="coverTemplate">
-          <nz-card-meta></nz-card-meta>
-        </nz-card>
-      </div>
-      <div nz-col [nzXs]="12" [nzSm]="12" [nzMd]="6" [nzLg]="6" [nzXl]="6" [nzXXl]="6">
-        <nz-card class="section-item" nzHoverable [nzCover]="coverTemplate">
-          <nz-card-meta></nz-card-meta>
-        </nz-card>
-      </div>
-      <div nz-col [nzXs]="12" [nzSm]="12" [nzMd]="6" [nzLg]="6" [nzXl]="6" [nzXXl]="6">
-        <nz-card class="section-item" nzHoverable [nzCover]="coverTemplate">
-          <nz-card-meta></nz-card-meta>
-        </nz-card>
-      </div>
-      <div nz-col [nzXs]="12" [nzSm]="12" [nzMd]="6" [nzLg]="6" [nzXl]="6" [nzXXl]="6">
-        <nz-card class="section-item" nzHoverable [nzCover]="coverTemplate">
-          <nz-card-meta></nz-card-meta>
-        </nz-card>
-      </div>
-      <ng-template #coverTemplate>
-        <img alt="example" src="assets/img/qingmu/kobi.jpg" />
-      </ng-template>
+      <ng-container *ngFor="let item of showImgList">
+        <div nz-col [nzXs]="12" [nzSm]="12" [nzMd]="6" [nzLg]="6" [nzXl]="6" [nzXXl]="6">
+          <nz-card class="section-item" nzHoverable [nzCover]="coverTemplate">
+            <nz-card-meta></nz-card-meta>
+          </nz-card>
+        </div>
+        <ng-template #coverTemplate>
+          <img [alt]="item.alt" [src]="item.src" />
+        </ng-template>
+      </ng-container>
     </div>
     <div class="pagination-container">
       <nz-pagination
       [(nzPageIndex)]="pageIndex"
-      [nzTotal]="500"
-      [nzPageSize]="10"
+      [nzTotal]="total"
+      [nzPageSize]="pageSize"
       nzShowQuickJumper
       (nzPageIndexChange)="jump()"
       ></nz-pagination>

@@ -13,21 +13,21 @@
   display: none;
 }
 
-@media only screen and (max-width: $screen-xl) {
-  #logo {
-    padding: 0 40px;
-  }
+// @media only screen and (max-width: $screen-xl) {
+//   #logo {
+//     padding: 0 40px;
+//   }
 
-  .banner-wrapper .banner-title-wrapper {
-    h1 {
-      font-size: 36px;
-    }
+//   .banner-wrapper .banner-title-wrapper {
+//     h1 {
+//       font-size: 36px;
+//     }
 
-    p {
-      font-size: 16px;
-    }
-  }
-}
+//     p {
+//       font-size: 16px;
+//     }
+//   }
+// }
 
 @media only screen and (max-width: 1200px) {
   .section-item-left {
@@ -47,13 +47,16 @@
   .contact-col {
     text-align: center !important;
     line-height: 50px !important;
+
     .contact-content {
       font-size: 15px !important;
+
       .footer-arrow {
         display: none !important;
       }
     }
   }
+
   .btn-col {
     line-height: 50px;
     padding: 10px;
@@ -71,6 +74,7 @@
 
 @media only screen and (max-width: 576px) {
 
+  // 首页
   #header {
     text-align: center;
 
@@ -154,32 +158,6 @@
     }
   }
 
-  // team
-  // .team-group {
-  //   flex-direction: column;
-  //   align-items: center;
-  //   .symble-container {
-  //     width: 60px !important;
-  //     height: 60px !important;
-  //     line-height: 60px !important;
-  //     font-size: 30px !important;
-  //   }
-  //   .group-description {
-  //     padding-top: 15px;
-  //     .group-title {
-  //       width: 100% !important;
-  //       text-align: center;
-  //     }
-  //     .group-content {
-  //       display: none;
-  //     }
-  //   }
-  // }
-  // team-item
-  // .team-item {
-  //   width: 100px !important;
-  // }
-
   // news-lisg
   .news-list {
     border-top-left-radius: 4px !important;
@@ -201,13 +179,27 @@
 
   .footer-wrap {
     padding: 15px 0 !important;
+
     .footer-center {
       display: none;
     }
+
     .footer-center-phone {
       display: block;
+
       ul>li {
         padding: 0 !important;
+      }
+    }
+  }
+
+  // 内容区
+  .content-header {
+    height: 280px;
+
+    .header-cotainer {
+      h1 {
+        font-size: 20px;
       }
     }
   }

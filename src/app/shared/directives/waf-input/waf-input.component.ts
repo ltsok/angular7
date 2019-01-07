@@ -1,5 +1,5 @@
 import { trigger, state, style, transition, animate } from '@angular/animations';
-import { Component, Input, forwardRef, OnInit, AfterViewInit, ViewChild, ElementRef, Output, EventEmitter } from '@angular/core';
+import { Component, Input, forwardRef, OnInit, AfterViewInit, ViewChild, ElementRef, Output, EventEmitter, OnChanges } from '@angular/core';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
 import { fromEvent } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
@@ -29,7 +29,8 @@ const regExps = {
   // TODO
   maskIPV6: ``,
   phone: `^1[34578]\\d{9}$`,
-  mail: `^[A-Za-z\\d]+([-_.][A-Za-z\\d]+)*$`
+  mail: `^[A-Za-z\\d]+([-_.][A-Za-z\\d]+)*$`,
+  password: ``
 };
 
 /** 邮箱后缀 */
@@ -44,7 +45,8 @@ const placeHolders = {
   maskIPV4: '255.255.255.0',
   maskIPV6: '',
   phone: '',
-  mail: ''
+  mail: '',
+  password: ''
 }
 
 @Component({
@@ -85,7 +87,7 @@ const placeHolders = {
 })
 
 
-export class WafInputComponent implements OnInit, AfterViewInit, ControlValueAccessor {
+export class WafInputComponent implements OnInit, AfterViewInit, ControlValueAccessor, OnChanges {
 
   /** 输入框类型 */
   @Input('type')
@@ -117,7 +119,7 @@ export class WafInputComponent implements OnInit, AfterViewInit, ControlValueAcc
       this._regExp = new RegExp(reg);
     }
     if (Array.isArray(reg) && reg.length) {
-      // 默认使用第一项作为验证
+      //默认使用第一项作为验证
       this._regExp = new RegExp(reg[0]);
       this._regArray = reg;
     }
@@ -133,9 +135,25 @@ export class WafInputComponent implements OnInit, AfterViewInit, ControlValueAcc
     }
   }
 
+  /** 自定义默认显示IP类型 */
+  @Input()
+  set showIPV4(value: boolean) {
+    this.showIpv4 = value;
+  }
+
+  /** 是否禁用输入框 */
+  @Input()
+  set disabled(value: boolean) {
+    this.isDisabled = value;
+  }
+
   /** 输出校验结果 */
   @Output()
   checkResult: EventEmitter<boolean> = new EventEmitter<boolean>();
+
+  /** 输出切换事件 */
+  @Output()
+  onSwitch: EventEmitter<string> = new EventEmitter<string>();
 
   /** 自定义图标 */
   _iconClass: any;
@@ -176,6 +194,9 @@ export class WafInputComponent implements OnInit, AfterViewInit, ControlValueAcc
   /** 输入默认为IPV4 */
   private showIpv4: boolean = true;
 
+  /** 是否禁用输入框 */
+  isDisabled: boolean = false;
+
   /** 邮箱后缀 */
   private _mailSuffix: string[];
 
@@ -208,6 +229,10 @@ export class WafInputComponent implements OnInit, AfterViewInit, ControlValueAcc
     this.checkInputValue();
   }
 
+  ngOnChanges(): void {
+    this.initData();
+  }
+
 
   /**
    * 初始化输入框内容
@@ -218,8 +243,22 @@ export class WafInputComponent implements OnInit, AfterViewInit, ControlValueAcc
     // 初始化_placeHolder、_regExp、图标类名
     switch (this.inputType) {
       case 'ipaddress':
-        this.placeHolders = this._placeHolder ? this._placeHolder : placeHolders.IPV4;
-        this.regExps = this._regExp ? this._regExp : new RegExp(regExps.IPV4);
+
+        // 初始化_placeHolder
+        if ( this._placeHolder ) {
+          this.placeHolders = this._placeHolder;
+        } else {
+          this.placeHolders = this.showIpv4 ? placeHolders.IPV4 : placeHolders.IPV6;
+        }
+
+        // 初始化_regExp
+        if ( this._regExp ) {
+          this.regExps = this._regExp;
+        } else {
+          this.regExps = this.showIpv4 ? new RegExp(regExps.IPV4) : new RegExp(regExps.IPV6);
+        }
+
+        // 初始化图标类名
         if ( this._iconClass && this._iconClass.length === 2 ) {
           this.iconClassName = [];
           this._iconClass.map((v)=>{
@@ -232,12 +271,26 @@ export class WafInputComponent implements OnInit, AfterViewInit, ControlValueAcc
         }
         break;
       case 'mask':
-        this.placeHolders = this._placeHolder ? this._placeHolder : placeHolders.maskIPV4;
-        this.regExps = this._regExp ? this._regExp : new RegExp(regExps.maskIPV4);
+
+        // 初始化_placeHolder
+        if ( this._placeHolder ) {
+          this.placeHolders = this._placeHolder;
+        } else {
+          this.placeHolders = this.showIpv4 ? placeHolders.maskIPV4 : placeHolders.maskIPV6;
+        }
+
+        // 初始化_regExp
+        if ( this._regExp ) {
+          this.regExps = this._regExp;
+        } else {
+          this.regExps = this.showIpv4 ? new RegExp(regExps.maskIPV4) : new RegExp(regExps.maskIPV6);
+        }
+
+        // 初始化图标类名
         if ( this._iconClass && this._iconClass.length === 2 ) {
           this.iconClassName = [];
-          this._iconClass.map((v) => {
-            const obj: any = {};
+          this._iconClass.map((v)=>{
+            let obj = {};
             obj['ip-icon'] = true;
             obj['fhfont'] = true;
             obj[v] = true;
@@ -327,23 +380,39 @@ export class WafInputComponent implements OnInit, AfterViewInit, ControlValueAcc
    * IPV4、IPV6切换,IPV4Mask、IPV6Mask切换
    * @memberof WafIpswitchComponent
    */
-  private switchIp(): void {
+  public switchIp(): void {
     this.showIpv4 = !this.showIpv4;
     this.clearInput();
     switch (this.inputType) {
       case 'ipaddress':
         this.switchIpContent();
+        if (this.showIpv4) {
+          this.onSwitch.emit('ipv4');
+        } else {
+          this.onSwitch.emit('ipv6');
+        }
         break;
       case 'mask':
         this.switchMaskContent();
+        if (this.showIpv4) {
+          this.onSwitch.emit('ipv4Mask');
+        } else {
+          this.onSwitch.emit('ipv6Mask');
+        }
         break;
       default:
         this.switchIpContent();
+        if (this.showIpv4) {
+          this.onSwitch.emit('ipv4');
+        } else {
+          this.onSwitch.emit('ipv6');
+        }
         break;
     }
     setTimeout(() => {
       this.inputEle.nativeElement.focus();
     });
+    
   }
 
 
@@ -479,9 +548,7 @@ export class WafInputComponent implements OnInit, AfterViewInit, ControlValueAcc
    * @memberof WafInputComponent
    */
   writeValue(value: any) {
-    if (value) {
-      this._inputValue = value;
-    }
+	this._inputValue = value;
   }
 
   /**

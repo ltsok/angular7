@@ -1,8 +1,7 @@
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
-import { Component, OnInit, Input, ViewChild, forwardRef } from '@angular/core';
-import { WafTreeNode } from '../../waf-tree/model/waf-tree.node';
+import { Component, Input, ViewChild, forwardRef, OnChanges } from '@angular/core';
 import { WafSelectComponent } from '../waf-select.component';
-import { WafTreeComponent } from '../../waf-tree/waf-tree.component';
+import { WafTreeNode } from '../../waf-tree/model/waf-tree.node';
 
 
 /**
@@ -22,7 +21,7 @@ import { WafTreeComponent } from '../../waf-tree/waf-tree.component';
     }
   ],
 })
-export class WafSelectTreeComponent implements OnInit {
+export class WafSelectTreeComponent implements OnChanges {
 
   /** 输入数据 */
   @Input()
@@ -35,9 +34,6 @@ export class WafSelectTreeComponent implements OnInit {
 
   @ViewChild(WafSelectComponent)
   wafSelectComponent: WafSelectComponent;
-
-  @ViewChild(WafTreeComponent)
-  wafTreeComponent: WafTreeComponent;
 
   /** 输入数据源 */
   dataSource: WafTreeNode[];
@@ -58,7 +54,7 @@ export class WafSelectTreeComponent implements OnInit {
 
   checkedItems = [];
 
-  ngOnInit() {
+  ngOnChanges() {
     this.dataFlat(this.dataSource);
   }
 

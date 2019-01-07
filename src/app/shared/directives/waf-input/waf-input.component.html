@@ -13,6 +13,7 @@
         [nzVisible]="showTooltip"
         [(ngModel)]="inputValue"
         [placeholder]="placeHolders"
+        [disabled]="isDisabled"
       >
     </nz-input-group>
     <!-- 前置内嵌图标 -->
@@ -43,6 +44,7 @@
         [nzVisible]="showTooltip"
         [(ngModel)]="inputValue"
         [placeholder]="placeHolders"
+        [disabled]="isDisabled"
       >
     </nz-input-group>
     <!-- 前置内嵌图标 -->
@@ -72,6 +74,7 @@
         [nzVisible]="showTooltip"
         [(ngModel)]="inputValue"
         [placeholder]="placeHolders"
+        [disabled]="isDisabled"
       >
     </nz-input-group>
     <!-- 前置内嵌图标 -->
@@ -100,6 +103,7 @@
         [nzVisible]="showTooltip"
         [(ngModel)]="inputValue"
         [placeholder]="placeHolders"
+        [disabled]="isDisabled"
       >
     </nz-input-group>
     <!-- 前置内嵌图标 -->
@@ -107,6 +111,25 @@
       <i nz-icon type="phone" *ngIf="!iconClassName"></i>
       <i class="fhfont {{iconClassName}}" *ngIf="iconClassName"></i>
     </ng-template>
+    <!-- 删除按钮 -->
+    <ng-template #suffixTemplate><i nz-icon type="close-circle" (click)="clearInput()" *ngIf="inputValue"></i></ng-template>
+  </ng-container>
+  <!-- password输入框 -->
+  <ng-container *ngSwitchCase="'password'">
+    <nz-input-group [nzSuffix]="suffixTemplate" [nzPrefix]="prefixTemplate">
+      <input
+        #wafInput
+        type="password"
+        nz-tooltip
+        nz-input
+        nzPlacement="right"
+        [nzTitle]="toolTip"
+        [nzVisible]="showTooltip"
+        [(ngModel)]="inputValue"
+        [placeholder]="placeHolders"
+        [disabled]="isDisabled"
+      >
+    </nz-input-group>
     <!-- 删除按钮 -->
     <ng-template #suffixTemplate><i nz-icon type="close-circle" (click)="clearInput()" *ngIf="inputValue"></i></ng-template>
   </ng-container>
@@ -123,6 +146,7 @@
         [nzVisible]="showTooltip"
         [(ngModel)]="inputValue"
         [placeholder]="placeHolders"
+        [disabled]="isDisabled"
       >
     </nz-input-group>
     <!-- 前置内嵌图标 -->

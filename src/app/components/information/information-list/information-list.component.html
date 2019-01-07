@@ -1,0 +1,49 @@
+<div class="breadcrumb">
+  <div class="breadcrumb-container">
+    <nz-breadcrumb>
+      <nz-breadcrumb-item>
+        <a [routerLink]="['/home']">首页</a>
+      </nz-breadcrumb-item>
+      <nz-breadcrumb-item>
+        最新资讯
+      </nz-breadcrumb-item>
+    </nz-breadcrumb>
+    <nz-divider></nz-divider>
+  </div>
+</div>
+<div class="section-wrap news content-container">
+  <div class="section-container">
+    <div nz-row>
+      <div nz-col [nzXs]="24" [nzSm]="24" [nzMd]="24" [nzLg]="24" [nzXl]="24" [nzXXl]="24">
+        <div nz-row>
+          <div nz-col [nzXs]="0" [nzSm]="0" [nzMd]="0" [nzLg]="4" [nzXl]="4" [nzXXl]="4">
+            <div class="news-img">
+              <p class="news-icon">
+                <i nz-icon iconfont="lts-news"></i>
+              </p>
+              <p class="news-title">
+                <span>NEWS</span>
+              </p>
+              <P class="news-time">
+                <span>2010/12</span>
+              </P>
+            </div>
+          </div>
+          <div nz-col [nzXs]="24" [nzSm]="24" [nzMd]="24" [nzLg]="20" [nzXl]="20" [nzXXl]="20">
+            <div class="news-content">
+              <nz-list class="news-list" [nzDataSource]="showNewsList" nzBordered [nzRenderItem]="item">
+                <ng-template #item let-item>
+                  <nz-list-item [nzContent]="item.content"></nz-list-item>
+                </ng-template>
+              </nz-list>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pagination-container">
+      <nz-pagination [(nzPageIndex)]="pageIndex" [nzTotal]="total" [nzPageSize]="pageSize" nzShowQuickJumper
+        (nzPageIndexChange)="jump()"></nz-pagination>
+    </div>
+  </div>
+</div>

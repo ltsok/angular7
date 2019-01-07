@@ -334,3 +334,29 @@ a {
         margin: 10px 0 0 0;
     }
 }
+
+// 详情页
+.content-header {
+    width: 100%;
+    height: 350px;
+    background: url('src/assets/img/qingmu/content_header.jpg') no-repeat;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .header-cotainer {
+        h1 {
+            color: white;
+            text-align: center;
+        }
+        h1 + h1 {
+            color: #76A5AF;
+        }
+    }
+}
+.content-container {
+    padding: 15px 10px 15px 0;
+    .pagination-container {
+        padding: 20px;
+        text-align: center;
+    }
+}

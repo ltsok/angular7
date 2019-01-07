@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, forwardRef, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, forwardRef, ViewChild, OnChanges } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { WafSelectComponent } from '../waf-select.component';
 
@@ -20,7 +20,7 @@ import { WafSelectComponent } from '../waf-select.component';
   ],
   styleUrls: ['./waf-select-list.component.scss']
 })
-export class WafSelectListComponent implements OnInit {
+export class WafSelectListComponent implements OnChanges {
 
   /** 输入数据 */
   @Input()
@@ -48,9 +48,10 @@ export class WafSelectListComponent implements OnInit {
 
   private onTouched: () => void = () => null;
 
-  ngOnInit() {
+  ngOnChanges(): void {
 
     // 格式化数据源
+    console.log(this.dataSource);
     this.formatData();
   }
 
@@ -62,6 +63,7 @@ export class WafSelectListComponent implements OnInit {
 
     // dataSource格式化
     if (this.dataSource.length) {
+      this.allOptions = [];
       this.dataSource.map((item) => {
         this.allOptions.push(
           { label: item.label, value: item.value, selected: false, showOptions: true, showSearch: true }

@@ -2,14 +2,16 @@ import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-information',
-  templateUrl: './information.component.html',
-  styleUrls: ['./information.component.scss']
+  template: `
+    <div class="content-header">
+      <div class="header-cotainer">
+        <h1>最新资讯</h1>
+        <h1>LATEST INFORMATION</h1>
+      </div>
+    </div>
+    <router-outlet></router-outlet>
+  `
 })
-export class InformationComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit() {
-  }
+export class InformationComponent {
 
 }

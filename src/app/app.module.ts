@@ -1,4 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
+import {HashLocationStrategy, LocationStrategy} from '@angular/common';
 import { NgModule } from '@angular/core';
 // import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { RouterModule } from '@angular/router';
@@ -21,7 +22,6 @@ import zh from '@angular/common/locales/zh';
   ],
   imports: [
     BrowserModule,
-    LoginModule,
     CoreModule,
     SharedModule,
     GlobalModule,
@@ -30,7 +30,9 @@ import zh from '@angular/common/locales/zh';
     // ),
     RouterModule.forRoot(ROUTER_CONFIG)
   ],
-  providers: [],
+  providers: [
+    {provide: LocationStrategy, useClass: HashLocationStrategy}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { 
