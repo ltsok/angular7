@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-homepage',
@@ -17,9 +18,16 @@ export class HomepageComponent implements OnInit {
     'Los Angeles battles huge wildfires.'
   ];
 
-  constructor() { }
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute
+  ) { }
 
   ngOnInit() {
+  }
+
+  navigate(url: string): void {
+    this.router.navigate([url], { relativeTo: this.route });
   }
 
 }

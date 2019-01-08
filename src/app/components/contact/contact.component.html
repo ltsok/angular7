@@ -1,24 +1,78 @@
 <div class="content-header">
-    <div class="header-cotainer">
-      <h1>预约报名</h1>
-      <h1>APPOINTMENT APPLICATION</h1>
+  <div class="header-cotainer">
+    <h1>预约报名</h1>
+    <h1>APPOINTMENT APPLICATION</h1>
+  </div>
+</div>
+<div class="breadcrumb">
+  <div class="breadcrumb-container">
+    <nz-breadcrumb>
+      <nz-breadcrumb-item>
+        <a [routerLink]="['/home']">首页</a>
+      </nz-breadcrumb-item>
+      <nz-breadcrumb-item>
+        预约报名
+      </nz-breadcrumb-item>
+    </nz-breadcrumb>
+    <nz-divider></nz-divider>
+  </div>
+</div>
+<div class="section-wrap content-container">
+  <div class="section-container">
+    <div nz-row>
+      <div nz-col [nzXs]="0" [nzSm]="0" [nzMd]="0" [nzLg]="6" [nzXl]="6" [nzXXl]="6">
+        <div class="contact-img">
+          <nz-card class="section-item" nzHoverable [nzCover]="coverTemplate">
+            <nz-card-meta></nz-card-meta>
+          </nz-card>
+          <ng-template #coverTemplate>
+            <img src="/assets/img/qingmu/contact.jpg" />
+          </ng-template>
+          <div class="contact-label"></div>
+        </div>
+      </div>
+      <div nz-col [nzXs]="24" [nzSm]="24" [nzMd]="24" [nzLg]="18" [nzXl]="18" [nzXXl]="18">
+        <form nz-form [nzLayout]="'vertical'" [formGroup]="validateForm" (ngSubmit)="submitForm()">
+          <nz-form-item>
+            <nz-form-label nzRequired>您的姓名</nz-form-label>
+            <nz-form-control>
+              <input nz-input formControlName="name">
+              <nz-form-explain *ngIf="validateForm.get('name').dirty && validateForm.get('name').errors">
+                请输入您的姓名！
+              </nz-form-explain>
+            </nz-form-control>
+          </nz-form-item>
+          <nz-form-item>
+            <nz-form-label nzRequired>联系方式</nz-form-label>
+            <nz-form-control>
+              <input nz-input formControlName="phone">
+              <nz-form-explain *ngIf="validateForm.get('phone').dirty && validateForm.get('phone').errors">
+                请输入您的联系方式！
+              </nz-form-explain>
+            </nz-form-control>
+          </nz-form-item>
+          <nz-form-item>
+            <nz-form-label nzRequired>报名课程</nz-form-label>
+            <nz-form-control>
+              <input nz-input formControlName="course">
+              <nz-form-explain *ngIf="validateForm.get('course').dirty && validateForm.get('course').errors">
+                请输入您报名的课程！
+              </nz-form-explain>
+            </nz-form-control>
+          </nz-form-item>
+          <nz-form-item>
+            <nz-form-label>内容</nz-form-label>
+            <nz-form-control>
+              <textarea nz-input nzAutosize></textarea>
+            </nz-form-control>
+          </nz-form-item>
+          <nz-form-item>
+            <nz-form-control>
+              <button nz-button nzType="primary">Submit</button>
+            </nz-form-control>
+          </nz-form-item>
+        </form>
+      </div>
     </div>
   </div>
-  <div class="breadcrumb">
-    <div class="breadcrumb-container">
-      <nz-breadcrumb>
-        <nz-breadcrumb-item>
-          <a [routerLink]="['/home']">首页</a>
-        </nz-breadcrumb-item>
-        <nz-breadcrumb-item>
-          预约报名
-        </nz-breadcrumb-item>
-      </nz-breadcrumb>
-      <nz-divider></nz-divider>
-    </div>
-  </div>
-  <div class="section-wrap content-container">
-    <div class="section-container">
-        123123
-    </div>
-  </div>
+</div>

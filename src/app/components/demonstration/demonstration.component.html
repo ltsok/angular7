@@ -1,24 +1,39 @@
 <div class="content-header">
-    <div class="header-cotainer">
-      <h1>画室公开课</h1>
-      <h1>OPEN STUDIO CLASSES</h1>
+  <div class="header-cotainer">
+    <h1>画室公开课</h1>
+    <h1>OPEN STUDIO CLASSES</h1>
+  </div>
+</div>
+<div class="breadcrumb">
+  <div class="breadcrumb-container">
+    <nz-breadcrumb>
+      <nz-breadcrumb-item>
+        <a [routerLink]="['/home']">首页</a>
+      </nz-breadcrumb-item>
+      <nz-breadcrumb-item>
+        画室公开课
+      </nz-breadcrumb-item>
+    </nz-breadcrumb>
+    <nz-divider></nz-divider>
+  </div>
+</div>
+<div class="section-wrap content-container">
+  <div class="section-container">
+    <div nz-row>
+      <ng-container *ngFor="let item of showImgList">
+        <div nz-col [nzXs]="12" [nzSm]="12" [nzMd]="6" [nzLg]="6" [nzXl]="6" [nzXXl]="6">
+          <nz-card class="section-item" nzHoverable [nzCover]="coverTemplate">
+            <nz-card-meta></nz-card-meta>
+          </nz-card>
+        </div>
+        <ng-template #coverTemplate>
+          <img [alt]="item.alt" [src]="item.src" />
+        </ng-template>
+      </ng-container>
+    </div>
+    <div class="pagination-container">
+      <nz-pagination [(nzPageIndex)]="pageIndex" [nzTotal]="total" [nzPageSize]="pageSize" nzShowQuickJumper
+        (nzPageIndexChange)="jump()"></nz-pagination>
     </div>
   </div>
-  <div class="breadcrumb">
-    <div class="breadcrumb-container">
-      <nz-breadcrumb>
-        <nz-breadcrumb-item>
-          <a [routerLink]="['/home']">首页</a>
-        </nz-breadcrumb-item>
-        <nz-breadcrumb-item>
-          画室公开课
-        </nz-breadcrumb-item>
-      </nz-breadcrumb>
-      <nz-divider></nz-divider>
-    </div>
-  </div>
-  <div class="section-wrap content-container">
-    <div class="section-container">
-      123123
-    </div>
-  </div>
+</div>

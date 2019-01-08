@@ -32,13 +32,8 @@
       </ng-container>
     </div>
     <div class="pagination-container">
-      <nz-pagination
-      [(nzPageIndex)]="pageIndex"
-      [nzTotal]="total"
-      [nzPageSize]="pageSize"
-      nzShowQuickJumper
-      (nzPageIndexChange)="jump()"
-      ></nz-pagination>
+      <nz-pagination [(nzPageIndex)]="pageIndex" [nzTotal]="total" [nzPageSize]="pageSize" nzShowQuickJumper
+        (nzPageIndexChange)="jump()"></nz-pagination>
     </div>
   </div>
 </div>
