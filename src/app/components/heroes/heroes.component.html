@@ -2,11 +2,19 @@
   <!-- <div style="flex: 1; text-align: center;padding-top: 100px;">
     <app-c-adds [ads]="ads"></app-c-adds>
   </div> -->
-  <div style="flex: 1; height: 600px">
-      <div style="width: 500px;height: 200px;padding: 50px;text-align:center">
+  <div style="flex: 1; width: 300px;height: 600px">
+      <!-- <div style="width: 500px;height: 200px;padding: 50px;text-align:center">
         <h3>waf-select-list</h3>
-        <waf-select-list [data]="selectData" [(ngModel)]="selectedList"></waf-select-list>
+        <waf-select-list [data]="selectData"></waf-select-list>
       </div>
-      <button nz-button (click)="changeData()">1231231</button>
+      <button nz-button (click)="getSelected()">getSeelcted</button>
+      <button nz-button (click)="changeData()">changeData</button>
+      <h1>waf-select-tree</h1>
+      <div style="width: 500px">
+        <waf-select-tree [data]="nodes" [(ngModel)]="selectedNodes"></waf-select-tree>
+      </div> -->
+      <h1>waf-tree</h1>
+      <waf-tree [dataSource]="nodes"></waf-tree>
+      <!-- <waf-input type="ipaddress"></waf-input> -->
   </div>
 </div>
