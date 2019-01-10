@@ -1,6 +1,45 @@
+div.waf-tree-content {
+  background-color: var(--waf-secondary-color-2);
+  overflow-x: auto;
+  overflow-y: hidden;
+  border-radius: 2px;
+  border: 1px solid var(--waf-secondary-color-3);
+  padding: 11px 7px;
+}
+
+div.hide {
+  display: none;
+}
+
+/*css主要部分的样式*/
+/*定义滚动条宽高及背景，宽高分别对应横竖滚动条的尺寸*/
+::-webkit-scrollbar {
+  width: 5px;
+  /*对垂直流动条有效*/
+  height: 5px;
+  /*对水平流动条有效*/
+}
+
+/*定义滚动条的轨道颜色、内阴影及圆角*/
+::-webkit-scrollbar-track {
+  border-radius: 5px;
+  background-color: white;
+}
+
+
+/*定义滑块颜色、内阴影及圆角*/
+::-webkit-scrollbar-thumb {
+  border-radius: 5px;
+  background-color: #B0B0B0;
+}
+
 span.center {
-  vertical-align: middle;
+  vertical-align: top;
   cursor: default;
+  height: 14px;
+  font-size: 12px;
+  line-height: 14px;
+  font-family: 'MicrosoftYaHei';
 }
 
 span.selected {
@@ -10,4 +49,41 @@ span.selected {
 i {
   cursor: pointer;
   font-size: 12px;
+}
+
+:host ::ng-deep .ant-tree li {
+  padding: 2px 0 3px 0;
+}
+
+:host ::ng-deep .ant-tree li span.ant-tree-switcher {
+  height: 14px;
+  width: 14px;
+  line-height: 14px;
+}
+
+:host ::ng-deep .ant-tree li span.ant-tree-checkbox {
+  margin: 1px 6px 0 8px;
+  vertical-align: top;
+}
+
+:host ::ng-deep .ant-tree-checkbox-inner {
+  height: 14px;
+  width: 14px;
+}
+
+:host ::ng-deep .ant-tree.ant-tree-show-line .ant-tree-child-tree>nz-tree-node:not(:last-child)>li:before,
+:host ::ng-deep .ant-tree.ant-tree-show-line>nz-tree-node:not(:last-child)>li:before {
+  left: 6px;
+  margin: 0;
+}
+
+:host ::ng-deep .ant-tree-checkbox-checked .ant-tree-checkbox-inner:after {
+  left: 3.57px;
+  top: 0.14px;
+}
+
+:host ::ng-deep .ant-tree-checkbox+span,
+:host ::ng-deep .ant-tree-checkbox-wrapper+span {
+  padding: 0;
+  line-height: 1;
 }

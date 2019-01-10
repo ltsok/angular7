@@ -3,8 +3,6 @@ import { Component, OnInit, Inject, HostBinding } from '@angular/core';
 import { HeroService } from './heroes.service';
 import { AdItem, slideToRight, WafTreeNode  } from '@shared';
 import { apiUrl } from '@core';
-import * as zTree from 'zTree';
-import * as $ from 'jquery';
 
 @Component({
   selector: 'app-heroes',
@@ -96,7 +94,7 @@ export class HeroesComponent implements OnInit {
   }
 
   getSelected(): void {
-    console.log(this.selectedList);
+    console.log(this.selectedNodes);
   }
 
 }

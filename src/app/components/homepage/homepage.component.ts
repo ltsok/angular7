@@ -27,7 +27,7 @@ export class HomepageComponent implements OnInit {
   }
 
   navigate(url: string): void {
-    this.router.navigate([url], { relativeTo: this.route });
+    this.router.navigate([url]);
   }
 
 }

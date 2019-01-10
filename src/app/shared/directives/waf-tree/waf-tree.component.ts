@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, ViewChild, TemplateRef, ContentChild } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild, TemplateRef, ContentChild, NgZone } from '@angular/core';
 import { NzTreeNode, NzTreeComponent, NzFormatEmitEvent } from "ng-zorro-antd";
 import { WafTreeNode, Status } from "./model/waf-tree.node";
 import { WafTreeService } from './waf-tree.service';
@@ -14,6 +14,12 @@ export class WafTreeComponent implements OnInit {
 
   ngOnInit() { }
 
+  ngAfterViewInit(): void {
+    //Called after every check of the component's view. Applies to components only.
+    //Add 'implements AfterViewChecked' to the class.
+    this.setDisabledIds();
+  }
+
   private wafTreeNodes: Array<WafTreeNode> = [];
 
 
@@ -26,6 +32,11 @@ export class WafTreeComponent implements OnInit {
    * 组件的宽度
    */
   @Input() width: number = 240;
+
+  /**
+   * 边框圆角值
+   */
+  @Input() borderRadius: string = '2px';
 
   private _wafTreeTemplate: TemplateRef<void>;
   @ContentChild('wafTreeNodeTemplet') set wafTreeTemplate(value: TemplateRef<void>) {
@@ -42,9 +53,13 @@ export class WafTreeComponent implements OnInit {
    * 组件的数据源
    */
   _dataSource: Array<NzTreeNode> = [];
+  isHideTree: boolean = true;
   @Output() dataSourceChange = new EventEmitter();
   @Input() set dataSource(value: Array<WafTreeNode>) {
-    if (!value || value == this.wafTreeNodes) return;
+    if (!Array.isArray(value) || value == this.wafTreeNodes) return;
+    if (Array.isArray(value) && value.length > 0) {
+      this.isHideTree = false;
+    }
     let wafNodes: WafTreeNode[] = value;
     if (!value.some(item => item instanceof WafTreeNode)) {//当传过来的数据结构是js对象数组
       wafNodes = this.getWafNodesForObject(value);
@@ -52,7 +67,7 @@ export class WafTreeComponent implements OnInit {
     this.wafTreeNodes = [];
     this.wafTreeNodes = wafNodes;
     this._dataSource = [];
-    packDatasForZorro(wafNodes, this._dataSource, null);
+    this._dataSource = packDatasForZorro(wafNodes, null);
     this.dataSourceChange.emit(this.wafTreeNodes);
     console.log(this._dataSource);
   }
@@ -110,9 +125,36 @@ export class WafTreeComponent implements OnInit {
   @Input() isCheckStrictly: boolean = false;
 
   /**
+ * Disabled模式下，父子节点勾选不再关联
+ */
+  @Input() isDisabledStrictly: boolean = false;
+  /**
    * 是否展开全部节点
    */
   @Input() isExpandAll: boolean = false;
+
+  /**
+   * 节点禁用
+   */
+  private _disabledIds: string[] = null;
+  @Input() set disabledIds(value: string[]) {
+    if (!Array.isArray(value) || value.length == 0) return;
+    this._disabledIds = value;
+    if (Array.isArray(this._dataSource) && this._dataSource.length > 0) {
+      this.setDisabledIds();
+    }
+  }
+  get disabledIds() {
+    return this._disabledIds;
+  }
+
+  private setDisabledIds() {
+    if (Array.isArray(this._disabledIds) && this._disabledIds.length > 0) {
+      this._disabledIds.forEach((id: string) => {
+        this.setDisabled(id, true, false);
+      });
+    }
+  }
 
   /**
    * 需要展开的节点id数组
@@ -151,7 +193,9 @@ export class WafTreeComponent implements OnInit {
             });
           }
         }
-        loop(wafNode.getChildren());
+        if (wafNode) {
+          loop(wafNode.getChildren());
+        }
       });
     }
     this._checkedIds = ids;
@@ -169,12 +213,12 @@ export class WafTreeComponent implements OnInit {
    */
   private _selectedIds: Array<string> = null;
   @Input() set selectedIds(value: Array<string>) {
-    if (!Array.isArray(value)) return;
-    if (!this.isMutiple) {
-      value.forEach((id: string) => {
-        this.searchExpand(id);
-      });
-    }
+    if (!Array.isArray(value) || this._selectedIds == value) return;
+    // if (!window.event || (window.event.type !== 'click' && window.event.srcElement.tagName !== 'span' && !window.event.srcElement.classList.contains('center'))) {
+    value.forEach((id: string) => {
+      this.searchExpand(id);
+    });
+    // }
     this._selectedIds = value;
     this.selectedIdsChange.emit(this._selectedIds);
   }
@@ -232,13 +276,25 @@ export class WafTreeComponent implements OnInit {
    */
   _searchName: string = null;
   @Input() set searchName(value: string) {
-    this._searchName = value || this._searchName;
-    this.searchNameChange.emit(this._searchName);
+    this._searchName = value;
+    if (!this.isSearchName) {
+      setTimeout(() => {
+        if (value === '') {
+          this.selectedIds = [];
+          return;
+        }
+        const searchList = this.nzTree.getMatchedNodeList();
+        let ids = [];
+        searchList.forEach((node: NzTreeNode) => {
+          ids.push(node.key);
+        });
+        this.selectedIds = ids.length > 0 ? ids : this.selectedIds;
+      });
+    }
   }
   get searchName() {
     return this._searchName;
   }
-  @Output() searchNameChange = new EventEmitter();
 
   /**
    * 节点点击事件
@@ -252,9 +308,11 @@ export class WafTreeComponent implements OnInit {
     if (Array.isArray(this.selectedIds) && this.selectedIds.length > 0) {
       this.selectedIds = this.proChange(this.selectedIds, event.node, 'isSelected');
     }
-    console.log(this.selectedIds);
-    this.wafTreeService.getNodeById(event.node.key, this.wafTreeNodes).setSelected(event.node.isSelected);
-    this.onClick.emit(event);
+    const wafNode: WafTreeNode = this.wafTreeService.getNodeById(event.node.key, this.wafTreeNodes);
+    if (wafNode) {
+      wafNode.setSelected(event.node.isSelected);
+    }
+    this.onClick.emit({ event: event.event, node: wafNode });
   }
 
   /**
@@ -262,7 +320,8 @@ export class WafTreeComponent implements OnInit {
    */
   @Output() onDbClick = new EventEmitter();
   dbClick(event: NzFormatEmitEvent) {
-    this.onDbClick.emit(event);
+    const wafNode: WafTreeNode = this.wafTreeService.getNodeById(event.node.key, this.wafTreeNodes);
+    this.onDbClick.emit({ event: event.event, node: wafNode });
   }
 
   /**
@@ -270,7 +329,8 @@ export class WafTreeComponent implements OnInit {
    */
   @Output() onContextClick = new EventEmitter();
   contextClick(event: NzFormatEmitEvent) {
-    this.onContextClick.emit(event);
+    const wafNode: WafTreeNode = this.wafTreeService.getNodeById(event.node.key, this.wafTreeNodes);
+    this.onContextClick.emit({ event: event.event, node: wafNode });
   }
 
   /**
@@ -281,13 +341,17 @@ export class WafTreeComponent implements OnInit {
     if (this.isSingleChecked) {//当前是单选状态
       this.checkedIds = [event.node.key];
     } else {//当前是多选
-      if (Array.isArray(this._checkedIds)) {
-        const node: NzTreeNode = event.node;
-        this.setCheckedIds(node.isChecked, node);
+      if (!Array.isArray(this.checkedIds) || this.checkedIds.length == 0) {
+        this._checkedIds = [];
       }
+      const node: NzTreeNode = event.node;
+      this.setCheckedIds(node.isChecked, node);
     }
-    this.wafTreeService.getNodeById(event.node.key, this.wafTreeNodes).setChecked(event.node.isChecked);
-    this.onCheckChange.emit(event);
+    const wafNode = this.wafTreeService.getNodeById(event.node.key, this.wafTreeNodes);
+    if (wafNode) {
+      wafNode.setChecked(event.node.isChecked);
+    }
+    this.onCheckChange.emit({ event: event.event, node: wafNode });
   }
 
   /**
@@ -301,8 +365,11 @@ export class WafTreeComponent implements OnInit {
     if (Array.isArray(this.selectedIds) && this.selectedIds.length > 0) {
       this.expandIds = this.proChange(this.expandIds, event.node, 'isExpanded');
     }
-    this.wafTreeService.getNodeById(event.node.key, this.wafTreeNodes).setExpanded(event.node.isExpanded);
-    this.onExpandChange.emit(event);
+    const wafNode = this.wafTreeService.getNodeById(event.node.key, this.wafTreeNodes);
+    if (wafNode) {
+      wafNode.setExpanded(event.node.isExpanded);
+    }
+    this.onExpandChange.emit({ event: event.event, node: wafNode });
   }
 
   /**
@@ -310,7 +377,8 @@ export class WafTreeComponent implements OnInit {
    */
   @Output() onDragStart = new EventEmitter();
   dragStart(event) {
-    this.onDragStart.emit(event);
+    const wafNode: WafTreeNode = this.wafTreeService.getNodeById(event.node.key, this.wafTreeNodes);
+    this.onDragStart.emit({ event: event.event, node: wafNode });
   }
 
   /**
@@ -318,7 +386,8 @@ export class WafTreeComponent implements OnInit {
    */
   @Output() onDragEnter = new EventEmitter();
   dragEnter(event) {
-    this.onDragEnter.emit(event);
+    const wafNode: WafTreeNode = this.wafTreeService.getNodeById(event.node.key, this.wafTreeNodes);
+    this.onDragEnter.emit({ event: event.event, node: wafNode });
   }
 
   /**
@@ -326,7 +395,8 @@ export class WafTreeComponent implements OnInit {
    */
   @Output() onDragOver = new EventEmitter();
   dragOver(event) {
-    this.onDragOver.emit(event);
+    const wafNode: WafTreeNode = this.wafTreeService.getNodeById(event.node.key, this.wafTreeNodes);
+    this.onDragOver.emit({ event: event.event, node: wafNode });
   }
 
   /**
@@ -334,7 +404,8 @@ export class WafTreeComponent implements OnInit {
    */
   @Output() onDragLeave = new EventEmitter();
   dragLeave(event) {
-    this.onDragLeave.emit(event);
+    const wafNode: WafTreeNode = this.wafTreeService.getNodeById(event.node.key, this.wafTreeNodes);
+    this.onDragLeave.emit({ event: event.event, node: wafNode });
   }
 
   /**
@@ -342,7 +413,8 @@ export class WafTreeComponent implements OnInit {
    */
   @Output() onDragEnd = new EventEmitter();
   dragEnd(event) {
-    this.onDragEnd.emit(event);
+    const wafNode: WafTreeNode = this.wafTreeService.getNodeById(event.node.key, this.wafTreeNodes);
+    this.onDragEnd.emit({ event: event.event, node: wafNode });
   }
 
   /**
@@ -350,29 +422,20 @@ export class WafTreeComponent implements OnInit {
    */
   @Output() onDrop = new EventEmitter();
   drop(event) {
-    this.onDrop.emit(event);
+    const wafNode: WafTreeNode = this.wafTreeService.getNodeById(event.node.key, this.wafTreeNodes);
+    this.onDrop.emit({ event: event.event, node: wafNode });
   }
 
-  @Output() frontIconClick: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
+  @Output() frontIconClick: EventEmitter<any> = new EventEmitter();
   _frontIconClick(event: MouseEvent, nzTreeNode: NzTreeNode) {
-    const ev: NzFormatEmitEvent = {
-      'eventName': 'click',
-      'node': nzTreeNode,
-      'event': event
-    } as NzFormatEmitEvent;
-    const wafNode = (nzTreeNode.origin.wafTreeNode || nzTreeNode.origin.origin.wafTreeNode) as WafTreeNode;
-    this.frontIconClick.emit(ev);
+    const wafNode = this.wafTreeService.getNodeById(nzTreeNode.key, this.wafTreeNodes);
+    this.frontIconClick.emit({ event: event, node: wafNode });
   }
 
-  @Output() behindIconClick: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
+  @Output() behindIconClick: EventEmitter<any> = new EventEmitter();
   _behindIconClick(event: MouseEvent, nzTreeNode: NzTreeNode) {
-    const ev: NzFormatEmitEvent = {
-      'eventName': 'click',
-      'node': nzTreeNode,
-      'event': event
-    } as NzFormatEmitEvent;
-    const wafNode = (nzTreeNode.origin.wafTreeNode || nzTreeNode.origin.origin.wafTreeNode) as WafTreeNode;
-    this.behindIconClick.emit(ev);
+    const wafNode = this.wafTreeService.getNodeById(nzTreeNode.key, this.wafTreeNodes);
+    this.behindIconClick.emit({ event: event, node: wafNode });
   }
 
   /**
@@ -437,38 +500,72 @@ export class WafTreeComponent implements OnInit {
    */
   public setChecked(id: string, checked: boolean) {
     this.wafTreeService.getNodeById(id, this.wafTreeNodes).setChecked(checked);
-    const loopNzNodes = (nodes: NzTreeNode[]) => {
-      if (Array.isArray(nodes) && nodes.length > 0) {
-        nodes.forEach((node: NzTreeNode) => {
-          if (node.key === id) {
-            node.setChecked(checked);
-            if (!this.isSingleChecked) {
-              const loopParent = (parent: NzTreeNode) => {
-                if (!parent) return;
-                parent.setChecked(checked, !checked);
-                loopParent(parent.getParentNode());
-              }
+    if (this.isSingleChecked) {
+      if (checked) {
+        this.checkedIds = [id];
+      } else {
+        this.checkedIds = [];
+      }
+    } else {
+      if (this.isCheckStrictly) {//父子无关联
+        const currentNode: NzTreeNode = this.getNzNodeById(id);
+        if (currentNode) {
+          currentNode.setChecked(false);
+        }
+      } else {//父子有关联
+        let index: number = -1;
+        if (this.checkedIds && this.checkedIds.length > 0) {
+          index = this.checkedIds.indexOf(id);
+        }
+        let ids: string[] = Array.isArray(this.checkedIds) && this.checkedIds.length > 0 ? [...this.checkedIds] : [];
+        if (checked) {
+          !Array.isArray(ids) || ids.length == 0 ? ids = [] : '';
+          this.checkedIds = ids.concat(id);
+        } else {
+          this.removeCheckedOfStrictly(id);
+        }
+      }
+    }
+  }
 
-              const loopChildren = (children: NzTreeNode[]) => {
-                if (Array.isArray(children) && children.length > 0) {
-                  children.forEach((child: NzTreeNode) => {
-                    child.setChecked(checked);
-                    loopChildren(child.getChildren());
-                  });
-                }
-              }
+  /**
+   * 设置节点禁用
+   * @param id 禁用节点id
+   * @param disabled 
+   */
+  public setDisabled(id: string, disabled: boolean, isDisableCheckbox: boolean = false) {
+    if (!Array.isArray(this.wafTreeNodes) || this.wafTreeNodes.length == 0) {
+      return;
+    }
+    const wafNode: WafTreeNode = this.wafTreeService.getNodeById(id, this.wafTreeNodes);
+    if (wafNode) {
+      wafNode.setDisabled(disabled);
+    }
+    const currentNode: NzTreeNode = this.getNzNodeById(id);
+    if (currentNode) {
+      currentNode.isDisableCheckbox = disabled;
+      if (!isDisableCheckbox) {
+        currentNode.isDisabled = disabled;
+      }
+      if (!this.isDisabledStrictly) {
+        this.setDisabledChildren(currentNode, disabled, isDisableCheckbox);
+      }
+    }
+  }
 
-              loopParent(node.getParentNode());
-              loopChildren(node.getChildren());
-              this.setCheckedIds(checked, node);
-            }
-            return;
+  private setDisabledChildren(disabledNode: NzTreeNode, value: boolean, isDisableCheckbox: boolean) {
+    const loopDisabled = (children: NzTreeNode[]) => {
+      if (Array.isArray(children) && children.length > 0) {
+        children.forEach((child: NzTreeNode) => {
+          child.isDisableCheckbox = value;
+          if (!isDisableCheckbox) {
+            child.isDisabled = value;
           }
-          loopNzNodes(node.getChildren());
+          loopDisabled(child.getChildren());
         });
       }
     }
-    loopNzNodes(this._dataSource);
+    loopDisabled(disabledNode.getChildren());
   }
 
   /**
@@ -477,7 +574,10 @@ export class WafTreeComponent implements OnInit {
    * @param selected 
    */
   public setSelected(id: string, selected: boolean) {
-    this.wafTreeService.getNodeById(id, this.wafTreeNodes).setSelected(selected);
+    const wafNode: WafTreeNode = this.wafTreeService.getNodeById(id, this.wafTreeNodes);
+    if (wafNode) {
+      wafNode.setSelected(selected);
+    }
     this.searchNzTreeNode(id, 'select', selected);
   }
 
@@ -487,7 +587,10 @@ export class WafTreeComponent implements OnInit {
    * @param expanded 
    */
   public setExpanded(id: string, expanded: boolean) {
-    this.wafTreeService.getNodeById(id, this.wafTreeNodes).setExpanded(expanded);
+    const wafNode: WafTreeNode = this.wafTreeService.getNodeById(id, this.wafTreeNodes);
+    if (wafNode) {
+      wafNode.setExpanded(expanded);
+    }
     this.searchNzTreeNode(id, 'expand', expanded);
   }
 
@@ -497,7 +600,10 @@ export class WafTreeComponent implements OnInit {
    * @param hide 
    */
   public setHide(id: string, hide: boolean) {
-    this.wafTreeService.getNodeById(id, this.wafTreeNodes).setHide(hide);
+    const wafNode: WafTreeNode = this.wafTreeService.getNodeById(id, this.wafTreeNodes);
+    if (wafNode) {
+      wafNode.setHide(hide);
+    }
     this.searchNzTreeNode(id, 'hide', hide);
   }
 
@@ -506,7 +612,10 @@ export class WafTreeComponent implements OnInit {
      * @param id
      */
   public clearChildren(id: string) {
-    this.wafTreeService.getNodeById(id, this.wafTreeNodes).clearChildren();
+    const wafNode: WafTreeNode = this.wafTreeService.getNodeById(id, this.wafTreeNodes);
+    if (wafNode) {
+      wafNode.clearChildren();
+    }
     this.searchNzTreeNode(id, 'clear');
   }
 
@@ -527,7 +636,7 @@ export class WafTreeComponent implements OnInit {
               node.isLeaf = false;
             }
             let nzNodes: NzTreeNode[] = [];
-            packDatasForZorro(children, nzNodes, currentNode);
+            nzNodes = packDatasForZorro(children, currentNode);
             node.addChildren(nzNodes, index);
             return;
           }
@@ -595,6 +704,9 @@ export class WafTreeComponent implements OnInit {
       }
     } else {//当前取消勾选中
       let removeIds = [node.key];
+      if (this._checkedIds.length === 0) {
+        return;
+      }
       const loopParent = (parent: NzTreeNode) => {
         if (!parent) return;
         if (parent.isHalfChecked) {
@@ -639,11 +751,11 @@ export class WafTreeComponent implements OnInit {
     const loopChild = (node: NzTreeNode) => {
       if (node.key === id) {
         loopParent(node);
-        if (node.children && node.children.length > 0) {
+        if (node.children && node.children.length > 0 && !this.isMutiple) {
           node.isExpanded = false;
         }
         node.isSelected = true;
-      } else {
+      } else if (!this.isMutiple) {
         node.isExpanded = false;
         node.isSelected = false;
       }
@@ -696,10 +808,11 @@ export class WafTreeComponent implements OnInit {
   private proChange(ids: string[], nzNode: NzTreeNode, type: string) {
     if (nzNode[type]) {
       ids = !ids ? [] : ids;
-      if (ids.indexOf(nzNode.key) > -1) {
+      if (ids.indexOf(nzNode.key) === -1) {
         ids = ids.concat([nzNode.key]);
       }
     } else {
+      if (!Array.isArray(ids) || ids.length === 0) return ids;
       const index: number = ids.indexOf(nzNode.key);
       if (index > -1) {
         ids.splice(index, 1);
@@ -744,7 +857,11 @@ export class WafTreeComponent implements OnInit {
           let children: NzTreeNode[] = node.getChildren();
           if (Array.isArray(children) && children.length > 0) {
             children.forEach((child: NzTreeNode) => {
-              nodes.push(this.wafTreeService.getNodeById(child.key, this.wafTreeNodes));
+              const wafNode: WafTreeNode = this.wafTreeService.getNodeById(child.key, this.wafTreeNodes);
+              if (wafNode) {
+                wafNode.setChecked(true);
+                nodes.push(wafNode);
+              }
               loop(child);
             });
           }
@@ -775,7 +892,84 @@ export class WafTreeComponent implements OnInit {
         });
       }
     }
+    if (Array.isArray(this._dataSource) && this._dataSource.length > 0) {
+      loopNzNodes(this._dataSource);
+    }
+  }
+
+  /**
+   * 根据节点id查找到相应NzTreeNode
+   * @param id 
+   */
+  private getNzNodeById(id: string) {
+    let result: NzTreeNode;
+    const loopNzNodes = (nodes: NzTreeNode[]) => {
+      if (Array.isArray(nodes) && nodes.length > 0) {
+        nodes.forEach((node: NzTreeNode) => {
+          if (node && node.key === id) {
+            result = node;
+            return;
+          }
+          loopNzNodes(node.getChildren());
+        });
+      }
+    }
     loopNzNodes(this._dataSource);
+    return result;
+  }
+
+  /**
+   * 移除父子关联下勾选节点
+   * @param id 
+   */
+  private removeCheckedOfStrictly(id: string) {
+    let removeIds: string[] = [id];
+    let isCheckedOfChild: boolean = false;
+    //向下遍历子级
+    const loopChildren = (children: NzTreeNode[], isChecked: boolean) => {
+      if (Array.isArray(children) && children.length > 0) {
+        children.forEach((item: NzTreeNode, index: number) => {
+          if (isChecked) {
+            if (item.isChecked) {
+              isCheckedOfChild = true;
+            }
+          } else {
+            item.setChecked(false);
+            removeIds.push(item.key);
+          }
+          loopChildren(item.getChildren(), isChecked);
+        })
+      }
+    }
+
+    //向上遍历父级
+    const loopParent = (parent: NzTreeNode) => {
+      if (!parent) return;
+      parent.setChecked(false, isCheckedOfChild);
+      loopParent(parent.getParentNode());
+    }
+
+    //遍历查找到对应节点
+    const currentNode: NzTreeNode = this.getNzNodeById(id);
+    if (currentNode) {
+      currentNode.setChecked(false);
+      loopChildren(currentNode.getChildren(), false);
+      const parent: NzTreeNode = currentNode.getParentNode();
+      if (parent) {
+        loopChildren(currentNode.getParentNode().getChildren(), true);
+      }
+      loopParent(currentNode.getParentNode());
+    }
+
+    //checkIds里对应的节点给清除
+    if (Array.isArray(removeIds) && removeIds.length > 0) {
+      removeIds.forEach((removeId) => {
+        const index = this.checkedIds.indexOf(removeId);
+        if (index > -1) {
+          this.checkedIds.splice(index, 1);
+        }
+      })
+    }
   }
 
 }

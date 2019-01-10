@@ -31,6 +31,8 @@ export class WafTreeNode {
     expanded?: boolean;//节点是否展开
     frontIcon?: string;//节点前图标
     behindIcon?: string;//节点后图标
+    isDisabled?: boolean;//节点禁用
+    isDisableCheckbox?: boolean;//节点勾选框禁用
     children?: WafTreeNode[];//当前节点的子节点
     parentNode: WafTreeNode;//父级节点
     [key: string]: any;//自定义属性
@@ -143,6 +145,15 @@ export class WafTreeNode {
      */
     setHide(value: boolean): void {
         this.isHide = value;
+    }
+
+    /**
+     * 设置节点禁用
+     * @param value 
+     */
+    setDisabled(value: boolean): void {
+        this.isDisabled = value;
+        this.isDisableCheckbox = value;
     }
 
     /**

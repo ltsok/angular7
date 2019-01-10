@@ -1,4 +1,5 @@
-<div [style.width.px]="width">
+<div [class.hide]="isHideTree" class="waf-tree-content" [style.width.px]="width" [style.backgroundColor]="backgroundColor"
+  [style.borderColor]="borderColor" [style.borderRadius]="borderRadius">
   <nz-tree #nzTree *ngIf="!isCanDraggable && !isSearchName; else default" 
   [nzData]="_dataSource" 
   [nzCheckable]="isShowCheckBox" 
@@ -33,9 +34,9 @@
           </ng-container>
           <!-- 使用默认模板 -->
           <ng-container *ngSwitchDefault>
-            <i *ngIf="isShowFrontIcon" class="waffont {{node.origin.frontIcon||'waf-houtai4'}}" (click)="_frontIconClick($event,node)"></i>
+            <i *ngIf="isShowFrontIcon" class="waffont {{node.origin.frontIcon||'waf-folder'}}" (click)="_frontIconClick($event,node)"></i>
             {{node.title}}
-            <i *ngIf="isShowBehindIcon" class="waffont {{node.origin.behindIcon||'waf-houtai7'}}" (click)="_behindIconClick($event,node)"></i>
+            <i *ngIf="isShowBehindIcon" class="waffont {{node.origin.behindIcon||'waf-pencil'}}" (click)="_behindIconClick($event,node)"></i>
           </ng-container>
         </ng-container>
       </span>

@@ -17,6 +17,7 @@ export class AppComponent {
     {name: '首页', path: '/home'},
     {name: '历届成绩', path: '/achievements'},
     {name: '关于我们', path: '/introduction'},
+    {name: '优秀作品', path: '/excellentworks'},
     {name: '最新资讯', path: '/information'},
     {name: '画室公开课', path: '/demonstration'},
     {name: '预约报名', path: '/contact'},
@@ -26,6 +27,7 @@ export class AppComponent {
     {name: '首页', path: '/home'},
     {name: '成绩', path: '/achievements'},
     {name: '我们', path: '/introduction'},
+    {name: '作品', path: '/excellentworks'},
     {name: '资讯', path: '/information'},
     {name: '公开课', path: '/demonstration'},
     {name: '报名', path: '/contact'}

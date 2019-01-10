@@ -6,6 +6,7 @@ export const ROUTER_CONFIG: Routes = [
     { path: 'heroes', loadChildren: './components/heroes/heroes.module#HeroesModule' },
     { path: 'home', loadChildren: './components/homepage/homepage.module#HomepageModule' },
     { path: 'introduction', loadChildren: './components/introduction/introduction.module#IntroductionModule' },
+    { path: 'excellentworks', loadChildren: './components/excellentworks/excellentworks.module#ExcellentworksModule' },
     { path: 'information', loadChildren: './components/information/information.module#InformationModule' },
     { path: 'achievements', loadChildren: './components/achievements/achievements.module#AchievementsModule' },
     { path: 'demonstration', loadChildren: './components/demonstration/demonstration.module#DemonstrationModule' },
