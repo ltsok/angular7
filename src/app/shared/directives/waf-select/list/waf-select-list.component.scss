@@ -15,15 +15,18 @@ ul.select-list {
         padding: 5px 12px;
         line-height: 23px;
         font-weight: normal;
-        color: rgba(0, 0, 0, 0.65);
+        color: var(--waf-secondary-color-5);
         white-space: nowrap;
         cursor: pointer;
         overflow: hidden;
         text-overflow: ellipsis;
         padding-right: 30px;
         transition: background 0.3s ease;
+        span {
+            display: inline-block;
+        }
         &:hover {
-            background-color: #e6f7ff;
+            background-color: var(--waf-primary-color-3);
             cursor: pointer;
         }
         .action {
@@ -43,10 +46,10 @@ ul.select-list {
         }
     }
     .itemSelected {
-        background-color: #fafafa;
+        background-color: var(--waf-secondary-color-2);
         font-weight: 600;
         i {
-            color: #1890ff;
+            color: var(--waf-primary-color-1);
         }
     }
 }

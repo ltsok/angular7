@@ -27,28 +27,28 @@
 }
 
 .ip-v4 {
-    background: url(/assets/img/unm/change_ipv4.png) no-repeat;
+    background: url(/assets/change_ipv4.png) no-repeat;
 }
 
 .ip-v6 {
-    background: url(/assets/img/unm/change_ipv6.png) no-repeat;
+    background: url(/assets/change_ipv6.png) no-repeat;
     transform: rotateY(-180deg);
 }
 
 // 删除按钮
 .anticon-close-circle {
     cursor: pointer;
-    color: #ccc;
+    color: var(--waf-secondary-color-4);
     transition: color 0.3s;
     font-size: 12px;
 }
 
 .anticon-close-circle:hover {
-    color: #999;
+    color: var(--waf-secondary-color-5);
 }
 
 .anticon-close-circle:active {
-    color: #666;
+    color: var(--waf-secondary-color-6);
 }
 
 ::-webkit-input-placeholder {

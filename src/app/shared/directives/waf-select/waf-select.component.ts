@@ -1,6 +1,8 @@
 import { Component, ViewChild, ElementRef, Renderer2, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import * as $ from 'jquery';
+import { fromEvent } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 
 /**
  * @export
@@ -77,6 +79,10 @@ export class WafSelectComponent implements OnChanges {
   @ViewChild('seletcContainer')
   seletctEle: ElementRef;
 
+  /** 所有项搜索input框 */
+  @ViewChild('searchInput')
+  searchInputEle: ElementRef;
+
   /** 下拉框点击事件 */
   @Output()
   clickItem: EventEmitter<any> = new EventEmitter<any>();
@@ -92,6 +98,9 @@ export class WafSelectComponent implements OnChanges {
   /** 所有选项数据 */
   @Input()
   set allItems(value) {
+    if ( value && value.length && Array.isArray(value[0].label) ) {
+      this.showMultiList = true;
+    }
     if (value && value.length) {
       this.allOptions = value;
     }
@@ -101,7 +110,7 @@ export class WafSelectComponent implements OnChanges {
   @Input()
   set selectedItems(value) {
     setTimeout(()=>{
-      if (value && value.length) {
+      if (value) {
         this.selectedOptions = value;
         this.showLabels();
       }
@@ -144,6 +153,12 @@ export class WafSelectComponent implements OnChanges {
   /** 在已选择的选项中搜索 */
   searchSelected: string;
 
+  /** 是否多列显示 */
+  showMultiList: boolean = false;
+
+  /** 输入框ID */
+  inputId: string;
+
   /**
    * 构造函数
    * @param {Renderer2} render
@@ -152,9 +167,12 @@ export class WafSelectComponent implements OnChanges {
   constructor(
     private render: Renderer2,
   ) {
+    this.inputId = this.getuuid();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+
+    // 所有数据列表变更时同步到已选项
     for (let item in changes) {
       if ( item === 'selectedItems' ) {
         // push
@@ -307,7 +325,7 @@ export class WafSelectComponent implements OnChanges {
   showLabels(): void {
 
     // 容器宽度
-    let containerWidth = parseInt($('#selectedContent').width());
+    let containerWidth = parseInt($(`#${this.inputId}`).width());
 
     // 汇总标签宽度:文字宽度 + 图标宽度 + 图标margin + border + padding + 整体margin
     let summaryTagWidth = this.getCurrentBlockWidth(`已选择${this.selectedOptions.length}项`) + 14 + 8 + 2 + 14 + 4;
@@ -322,7 +340,11 @@ export class WafSelectComponent implements OnChanges {
     let preInputWdiths: number = 0;
     
     this.selectedOptions.map((item)=>{
-      preInputWdiths += this.getCurrentBlockWidth(item.label) + 30 + 2 + 4;
+      if ( this.showMultiList ) {
+        preInputWdiths += this.getCurrentBlockWidth(item.label[0].name) + 30 + 2 + 4;
+      } else {
+        preInputWdiths += this.getCurrentBlockWidth(item.label) + 30 + 2 + 4;
+      }
     });
     
     // 是否显示汇总标签
@@ -332,7 +354,11 @@ export class WafSelectComponent implements OnChanges {
     if (this.showSummary) {
       let w: number = 0;
       this.selectedOptions = this.selectedOptions.map((item)=>{
-        w += this.getCurrentBlockWidth(item.label) + 30 + 2 + 4;
+        if ( this.showMultiList ) {
+          w += this.getCurrentBlockWidth(item.label[0].name) + 30 + 2 + 4;
+        } else {
+          w += this.getCurrentBlockWidth(item.label) + 30 + 2 + 4;
+        }
         item.showOptions = w > remainWidth ? false : true;
         return item;
       });
@@ -351,7 +377,7 @@ export class WafSelectComponent implements OnChanges {
    */
   getInputContentWidth(): number {
     let childsWidthSum:number = 0;
-    $('#selectedContent').find('li:not(.search-input,.select-edit)').each(function(){
+    $(`#${this.inputId}`).find('li:not(.search-input,.select-edit)').each(function(){
       childsWidthSum += $(this).outerWidth(true);
     });
     return Math.round(childsWidthSum * 100) / 100;
@@ -402,12 +428,29 @@ export class WafSelectComponent implements OnChanges {
       case 'all':
         // 所有选项中搜索
         if (this.selectType === 'tree') {
-          this.onSearch.emit(this.searchAll);
+          let $input = fromEvent(this.searchInputEle.nativeElement,'input')
+          .pipe(
+            debounceTime(1000)
+          )
+          .subscribe(()=>{
+            this.onSearch.emit(this.searchAll);
+          });
           return;
         } else {
           if ( this.searchAll ) {
             this.allOptions = this.allOptions.map((item)=>{
-              item.showSearch = item.label.indexOf(this.searchAll) !== -1 ? true : false;
+              // 多列
+              if (this.showMultiList) {
+                let matchSearch:boolean = false;
+                item.label.forEach((ele)=>{
+                  if (ele.name.indexOf(this.searchAll) !== -1 ) {
+                    matchSearch = true;
+                  }
+                });
+                item.showSearch = matchSearch ? true : false;
+              } else {
+                item.showSearch = item.label.indexOf(this.searchAll) !== -1 ? true : false;
+              }
               return item;
             });
             // 是否显示没有匹配项的提示信息
@@ -431,7 +474,18 @@ export class WafSelectComponent implements OnChanges {
         // 已选中的选项中搜索
         if ( this.searchSelected ) {
           this.selectedOptions = this.selectedOptions.map((item)=>{
-            item.showSearch = item.label.indexOf(this.searchSelected) !== -1 ? true : false;
+            // 多列
+            if (this.showMultiList) {
+              let matchSearch:boolean = false;
+              item.label.forEach((ele)=>{
+                if (ele.name.indexOf(this.searchSelected) !== -1 ) {
+                  matchSearch = true;
+                }
+              });
+              item.showSearch = matchSearch ? true : false;
+            } else {
+              item.showSearch = item.label.indexOf(this.searchSelected) !== -1 ? true : false;
+            }
             return item;
           });
           // 是否显示没有匹配项的提示信息
@@ -596,6 +650,26 @@ export class WafSelectComponent implements OnChanges {
       sourceCopy[item] = typeof source[item] === 'object' ? this.objDeepCopy(source[item]) : source[item];
     }
     return sourceCopy;
+  }
+  
+  /**
+   * 获取uuid
+   * @private
+   * @returns {string}
+   * @memberof TutorialEditorComponent
+   */
+  private getuuid(): string {
+    let s = [];
+    let hexDigits = '0123456789abcdef';
+    for (let i = 0; i < 36; i++) {
+      s[i] = hexDigits.substr(Math.floor(Math.random() * 0x10), 1);
+    }
+    s[14] = '4';
+    s[19] = hexDigits.substr((s[19] & 0x3) | 0x8, 1);
+    s[8] = s[13] = s[18] = s[23] = '-';
+
+    let uuid = s.join('');
+    return uuid;
   }
 
 }

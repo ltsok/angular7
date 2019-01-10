@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, forwardRef, ViewChild, OnChanges } from '@angular/core';
+import { Component, OnInit, Input, forwardRef, ViewChild, OnChanges, SimpleChanges } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { WafSelectComponent } from '../waf-select.component';
 
@@ -40,6 +40,9 @@ export class WafSelectListComponent implements OnChanges {
   /** 下拉所有选项数据 */
   allOptions: any[] = [];
 
+  /** 是否多列显示 */
+  showMultiList: boolean = false;
+
   /** 已选中项 */
   selectedOptions: any[] = [];
 
@@ -48,10 +51,9 @@ export class WafSelectListComponent implements OnChanges {
 
   private onTouched: () => void = () => null;
 
-  ngOnChanges(): void {
+  ngOnChanges(changes: SimpleChanges): void {
 
     // 格式化数据源
-    console.log(this.dataSource);
     this.formatData();
   }
 
@@ -64,6 +66,9 @@ export class WafSelectListComponent implements OnChanges {
     // dataSource格式化
     if (this.dataSource.length) {
       this.allOptions = [];
+      if (this.dataSource[0].label && Array.isArray(this.dataSource[0].label)) {
+        this.showMultiList = true;
+      }
       this.dataSource.map((item) => {
         this.allOptions.push(
           { label: item.label, value: item.value, selected: false, showOptions: true, showSearch: true }
@@ -107,11 +112,13 @@ export class WafSelectListComponent implements OnChanges {
           { label: item.label, value: item.value, selected: true, showOptions: true, showSearch: true }
         );
         this.allOptions.forEach((options, index, arr) => {
-          if (options.value === item.label) {
+          if (options.value === item.value) {
             arr[index].selected = true;
           }
         });
       })
+    } else {
+      this.selectedOptions = [];
     }
   }
 

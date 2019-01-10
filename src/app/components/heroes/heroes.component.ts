@@ -3,6 +3,8 @@ import { Component, OnInit, Inject, HostBinding } from '@angular/core';
 import { HeroService } from './heroes.service';
 import { AdItem, slideToRight, WafTreeNode  } from '@shared';
 import { apiUrl } from '@core';
+import * as zTree from 'zTree';
+import * as $ from 'jquery';
 
 @Component({
   selector: 'app-heroes',
@@ -42,7 +44,7 @@ export class HeroesComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.ads = this.heroservice.getAds();
+    // this.ads = this.heroservice.getAds();
     for (let i = 10; i < 50; i++) {
       this.selectData.push(
         { label: [{name: i.toString(36) + '--' + i, width: '20%'},{name: i.toString(36) + '@@' + i, width: '20%'}], value: i.toString(36) + i }
@@ -51,31 +53,33 @@ export class HeroesComponent implements OnInit {
     }
 
     // 测试nodelist
-    for (let i = 0; i < 900; i++) {
-      let node = null;
-      // if (i == 5) {
-        node = new WafTreeNode(
-          '0-' + i, '测试' + i, 
-          [new WafTreeNode(`${i}-0`, `测试${i}-0`), new WafTreeNode(`${i}-1`, `测试${i}-1`), new WafTreeNode(`${i}-2`, `测试${i}-2`)
-        ]
-        );
-      // } else {
-      //   node = new WafTreeNode('0-' + i, '测试' + i);
-      // }
-      this.nodes.push(node);
-    }
+    // for (let i = 0; i < 900; i++) {
+    //   let node = null;
+    //   // if (i == 5) {
+    //     node = new WafTreeNode(
+    //       '0-' + i, '测试' + i, 
+    //       [new WafTreeNode(`${i}-0`, `测试${i}-0`), new WafTreeNode(`${i}-1`, `测试${i}-1`), new WafTreeNode(`${i}-2`, `测试${i}-2`)
+    //     ]
+    //     );
+    //   // } else {
+    //   //   node = new WafTreeNode('0-' + i, '测试' + i);
+    //   // }
+    //   this.nodes.push(node);
+    // }
+
+    
   }
 
   changeData(): void {
     // list
-    this.selectData = [];
-    this.selectedList = [];
-    for (let i = 20; i < 50; i++) {
-      this.selectData.push(
-        { label: [{name: i.toString(36) + '--' + i, width: '20%'},{name: i.toString(36) + '@@' + i, width: '20%'}], value: i.toString(36) + i }
-        // { label: i.toString(36) + i, value: i.toString(36) + i }
-      );
-    }
+    // this.selectData = [];
+    // this.selectedList = [];
+    // for (let i = 20; i < 50; i++) {
+    //   this.selectData.push(
+    //     { label: [{name: i.toString(36) + '--' + i, width: '20%'},{name: i.toString(36) + '@@' + i, width: '20%'}], value: i.toString(36) + i }
+    //     // { label: i.toString(36) + i, value: i.toString(36) + i }
+    //   );
+    // }
 
     // node
     // this.nodes = [];

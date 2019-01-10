@@ -1,8 +1,8 @@
+import { WafTreeNode } from './../../waf-tree/model/waf-tree.node';
+import { WafTreeComponent } from './../../waf-tree/waf-tree.component';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Component, Input, ViewChild, forwardRef, OnChanges } from '@angular/core';
 import { WafSelectComponent } from '../waf-select.component';
-import { WafTreeNode } from '../../waf-tree/model/waf-tree.node';
-
 
 /**
  * @export
@@ -35,6 +35,10 @@ export class WafSelectTreeComponent implements OnChanges {
   @ViewChild(WafSelectComponent)
   wafSelectComponent: WafSelectComponent;
 
+  @ViewChild(WafTreeComponent)
+  wafTree: WafTreeComponent;
+
+
   /** 输入数据源 */
   dataSource: WafTreeNode[];
 
@@ -56,6 +60,10 @@ export class WafSelectTreeComponent implements OnChanges {
 
   ngOnChanges() {
     this.dataFlat(this.dataSource);
+  }
+
+  public getTreeInstance(): WafTreeComponent {
+    return this.wafTree;
   }
 
   /** checkbox点击事件 */
@@ -115,7 +123,7 @@ export class WafSelectTreeComponent implements OnChanges {
    * @memberof WafInputComponent
    */
   writeValue(value: any[]) {
-    if ( Array.isArray(value) && value.length ) {
+    if ( Array.isArray(value) ) {
       this.checkedItems = value;
       this.checkedChange();
     }
