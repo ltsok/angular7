@@ -24,6 +24,9 @@ ul.select-list {
         transition: background 0.3s ease;
         span {
             display: inline-block;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
         &:hover {
             background-color: var(--waf-primary-color-3);

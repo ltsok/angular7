@@ -61,11 +61,11 @@
       </div>
       <ul>
         <ng-container *ngFor="let item of selectedOptions; let i = index;">
-          <li *ngIf="item.showSearch" (click)="choseItem(i, $event, 'select')" class="itemSelected" [title]="item.label">
-            <span *ngIf="!showMultiList">{{item.label}}</span>
+          <li *ngIf="item.showSearch" (click)="choseItem(i, $event, 'select')" class="itemSelected">
+            <span *ngIf="!showMultiList" [title]="item.label">{{item.label}}</span>
             <ng-container *ngIf="showMultiList">
               <ng-container *ngFor="let label of item.label">
-                <span [style.width]="label.width">{{label.name}}</span>
+                <span [style.width]="label.width" [title]="label.name">{{label.name}}</span>
               </ng-container>
             </ng-container>
             <i class="action" nz-icon type="check"></i>

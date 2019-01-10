@@ -5,9 +5,9 @@
         {{item.label}}
         <i class="action" nz-icon type="check"></i>
       </li>
-      <li *ngIf="item.showSearch && showMultiList" (click)="clickItem(i, $event, 'select')" [class.itemSelected]="item.selected" [title]="item.label">
+      <li *ngIf="item.showSearch && showMultiList" (click)="clickItem(i, $event, 'select')" [class.itemSelected]="item.selected">
           <ng-container *ngFor="let label of item.label">
-            <span [style.width]="label.width">{{label.name}}</span>
+            <span [title]="label.name" [style.width]="label.width">{{label.name}}</span>
           </ng-container>
           <i class="action" nz-icon type="check"></i>
         </li>

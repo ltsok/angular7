@@ -47,7 +47,7 @@ export class HeroesComponent implements OnInit {
     // this.ads = this.heroservice.getAds();
     for (let i = 10; i < 50; i++) {
       this.selectData.push(
-        { label: [{name: i.toString(36) + '--' + i, width: '20%'},{name: i.toString(36) + '@@' + i, width: '20%'}], value: i.toString(36) + i }
+        { label: [{name: i.toString(36) +'1111111111111111111' + '--' + i, width: '20%'},{name: i.toString(36) + '@@' + i, width: '20%'}], value: i.toString(36) + i }
         // { label: i.toString(36) + i, value: i.toString(36) + i }
       );
     }

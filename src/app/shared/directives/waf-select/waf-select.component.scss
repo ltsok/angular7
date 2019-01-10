@@ -247,6 +247,9 @@
                 font-weight: 600;
                 span {
                     display: inline-block;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
                 }
                 i {
                     color: var(--waf-primary-color-1);
